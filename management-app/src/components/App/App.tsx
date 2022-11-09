@@ -1,25 +1,24 @@
+import Board from 'components/Board';
+import Boards from 'components/Boards';
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+import NotFound from 'components/NotFound';
+import WelcomePage from 'components/WelcomePage';
 import React from 'react';
-import logo from '../../logo.svg';
-import styles from './App.module.scss';
+import { Routes, Route } from 'react-router';
 
 function App() {
   return (
-    <div className="App">
-      <header className={styles.header}>
-        <img src={logo} className={styles.logo} alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/boards" element={<Boards />} />
+        <Route path="/boards/:board" element={<Board />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Footer />
+    </>
   );
 }
 

@@ -13,6 +13,16 @@ export default function BoardsManagement() {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="xl">
+        <h1
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: '5px',
+          }}
+        >
+          План заданий
+        </h1>
         <Box sx={{ flexGrow: 1 }}>
           <Grid
             container

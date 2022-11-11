@@ -8,6 +8,7 @@ import WelcomePage from '../WelcomePage';
 import React from 'react';
 import { Routes, Route } from 'react-router';
 import SignIn from '../SignIn';
+import Profile from '../Profile';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<WelcomePage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/boards" element={<Boards />} />
         <Route path="/boards/:board" element={<Board />} />
         <Route path="*" element={<NotFound />} />

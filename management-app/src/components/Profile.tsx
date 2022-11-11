@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
@@ -16,17 +15,30 @@ import {
   h2Styles,
 } from '../constants/mui-styles';
 
-function SignIn() {
+function Profile() {
+  const [isDirty, setIsDirty] = useState(false);
+
   const {
     register,
     handleSubmit,
-    reset,
+    watch,
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    const subscription = watch((value) => {
+      const formValues = Object.values(value);
+      if (formValues.every((item) => !item)) {
+        setIsDirty(false);
+      } else {
+        setIsDirty(true);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   const formSubmit = (data: FieldValues) => {
     console.log(data);
-    reset();
   };
 
   return (
@@ -34,18 +46,34 @@ function SignIn() {
       <CssBaseline />
       <Box sx={formContainerStyles}>
         <Typography component="h2" variant="h4" style={h2Styles}>
-          Sign In
+          Profile
         </Typography>
         <Box component="form" onSubmit={handleSubmit(formSubmit)} sx={{ mt: 1 }}>
           <Box sx={labelWrapperStyles}>
             <TextField
               margin="normal"
-              required
+              fullWidth
+              id="name"
+              label="Name"
+              {...register('name', {
+                minLength: { value: 2, message: 'Name must be more than 2 symbols' },
+              })}
+              autoComplete="Name"
+              sx={validatedInputStyles}
+            />
+            {errors.name && (
+              <Typography component="p" align="center" variant="caption" sx={validationAlertStyles}>
+                {errors.name.message as string}
+              </Typography>
+            )}
+          </Box>
+          <Box sx={labelWrapperStyles}>
+            <TextField
+              margin="normal"
               fullWidth
               id="login"
               label="Login"
               {...register('login', {
-                required: 'Please, enter login',
                 minLength: { value: 3, message: 'Login must be more than 3 symbols' },
               })}
               autoComplete="Login"
@@ -60,13 +88,10 @@ function SignIn() {
           <Box sx={labelWrapperStyles}>
             <TextField
               margin="normal"
-              required
               fullWidth
-              type="password"
               id="password"
               label="Password"
               {...register('password', {
-                required: 'Please, enter password',
                 pattern: {
                   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
                   message: 'Eight characters, at least one letter and one number',
@@ -81,11 +106,8 @@ function SignIn() {
               </Typography>
             )}
           </Box>
-          <Typography component="p" align="center">
-            Do not have an account? <Link to="/signup">Sign Up</Link>
-          </Typography>
-          <Button variant="contained" type="submit" fullWidth>
-            Sign In
+          <Button variant="contained" type="submit" fullWidth disabled={!isDirty}>
+            Update Profile
           </Button>
         </Box>
       </Box>
@@ -93,4 +115,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default Profile;

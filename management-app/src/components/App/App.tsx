@@ -1,11 +1,13 @@
-import Board from 'components/Board';
-import Boards from 'components/Boards';
-import Footer from 'components/Footer';
-import Header from 'components/Header';
-import NotFound from 'components/NotFound';
-import WelcomePage from 'components/WelcomePage';
+import Board from '../Board';
+import Boards from '../Boards';
+import Footer from '../Footer';
+import Header from '../Header';
+import NotFound from '../NotFound';
+import SignUp from '../SignUp';
+import WelcomePage from '../WelcomePage';
 import React from 'react';
 import { Routes, Route } from 'react-router';
+import SignIn from '../SignIn';
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<WelcomePage />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/boards" element={<Boards />} />
         <Route path="/boards/:board" element={<Board />} />
         <Route path="*" element={<NotFound />} />

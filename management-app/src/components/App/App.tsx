@@ -1,6 +1,6 @@
 import Board from 'components/Board';
 import Boards from 'components/Boards';
-import Footer from 'components/Footer';
+import Footer from 'components/Footer/Footer';
 import Header from 'components/Header/Header';
 import NotFound from 'components/NotFound';
 import WelcomePage from 'components/WelcomePage';

@@ -1,7 +1,8 @@
 import React from 'react';
+import BoardsManagement from './Boards/BoardsManagement';
 
 function Boards() {
-  return <div>Boards</div>;
+  return <BoardsManagement />;
 }
 
 export default Boards;

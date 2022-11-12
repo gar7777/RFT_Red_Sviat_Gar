@@ -1,12 +1,7 @@
 import React from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
+import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
 import {
   mainContainerStyles,
   formContainerStyles,
@@ -33,7 +28,7 @@ function SignUp() {
     <Container component="main" maxWidth="xs" sx={mainContainerStyles}>
       <CssBaseline />
       <Box sx={formContainerStyles}>
-        <Typography component="h2" variant="h4" style={h2Styles}>
+        <Typography component="h2" variant="h4" sx={h2Styles}>
           Sign Up
         </Typography>
         <Box component="form" onSubmit={handleSubmit(formSubmit)} sx={{ mt: 1 }}>

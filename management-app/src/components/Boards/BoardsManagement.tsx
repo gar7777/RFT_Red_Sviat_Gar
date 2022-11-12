@@ -5,10 +5,14 @@ import BoardCard from './BoardCard';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AddBoard } from './AddBoard';
-import AddBoardModal from './AddBoardModal';
+import AddBoardModal, { IElement } from './AddBoardModal';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
+  const [inputText, setInputText] = React.useState('');
+  const [description, setDescription] = React.useState('');
+  const [todos, setTodos] = React.useState<IElement[]>([]);
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -32,27 +36,40 @@ export default function BoardsManagement() {
             justifyContent="flex-start"
             alignItems="center"
           >
-            <Grid item xs={3}>
-              <BoardCard />
-            </Grid>
-            <Grid item xs={3}>
-              <BoardCard />
-            </Grid>
-            <Grid item xs={3}>
-              <BoardCard />
-            </Grid>
-            <Grid item xs={3}>
-              <BoardCard />
-            </Grid>
-            <Grid item xs={3}>
-              <BoardCard />
-            </Grid>
+            {todos.length !== 0 ? (
+              todos.map((todo) => (
+                <Grid item xs={3} key={todo.id}>
+                  <BoardCard
+                    title={todo.title}
+                    description={todo.description}
+                    todos={todos}
+                    setTodos={setTodos}
+                    todo={todo}
+                    setOpen={setOpen}
+                  />
+                </Grid>
+              ))
+            ) : (
+              <Grid item xs={3}>
+                <h3>Нажмите на крестик, чтобы добавить задание</h3>
+              </Grid>
+            )}
+
             <Grid item xs={3}>
               <AddBoard setOpen={setOpen} />
             </Grid>
           </Grid>
         </Box>
-        <AddBoardModal open={open} setOpen={setOpen} />
+        <AddBoardModal
+          open={open}
+          setOpen={setOpen}
+          setInputText={setInputText}
+          todos={todos}
+          setTodos={setTodos}
+          inputText={inputText}
+          description={description}
+          setDescription={setDescription}
+        />
       </Container>
     </React.Fragment>
   );

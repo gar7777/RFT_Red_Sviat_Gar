@@ -8,6 +8,7 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 
 import BoardCard from './BoardCard';
+import { IElement } from './AddBoardModal';
 
 export default function BoardCardList() {
   return (
@@ -16,23 +17,20 @@ export default function BoardCardList() {
         <List>
           <ListItem disablePadding>
             <ListItemButton>
-              {/* <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon> */}
               <ListItemText primary="Название" />
             </ListItemButton>
           </ListItem>
           <Divider />
           <ListItem disablePadding>
             <ListItemButton>
-              <BoardCard />
+              <ListItemText primary="Пока ничего" />
             </ListItemButton>
           </ListItem>
         </List>
       </nav>
       <Divider />
       <Button variant="text" fullWidth>
-        Добавит задачу
+        Добавить задачу
       </Button>
     </Box>
   );

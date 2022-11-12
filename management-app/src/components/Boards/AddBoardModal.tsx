@@ -16,15 +16,54 @@ const style = {
   p: 4,
 };
 
+export interface IElement {
+  title: string;
+  id: number;
+  description: string;
+}
+
 interface IAddBoardModal {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  inputText: string;
+  setInputText: React.Dispatch<React.SetStateAction<string>>;
+  description: string;
+  setDescription: React.Dispatch<React.SetStateAction<string>>;
+  todos: IElement[];
+  setTodos: React.Dispatch<React.SetStateAction<IElement[]>>;
 }
 
-export default function AddBoardModal({ open, setOpen }: IAddBoardModal) {
+export default function AddBoardModal({
+  open,
+  setOpen,
+  setInputText,
+  todos,
+  setTodos,
+  inputText,
+  description,
+  setDescription,
+}: IAddBoardModal) {
   const handleClose = () => setOpen(false);
-  const textFieldHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(event.target.value);
+  const textTitleHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputText(event.target.value);
+  };
+  const descriptionHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(event.target.value);
+  };
+
+  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setTodos([
+      ...todos,
+      {
+        title: inputText,
+        id: Math.random() * 1000,
+        description: description,
+      },
+    ]);
+    setInputText('');
+    setDescription('');
+    handleClose();
   };
 
   return (
@@ -38,6 +77,7 @@ export default function AddBoardModal({ open, setOpen }: IAddBoardModal) {
         <Box sx={style}>
           <Box
             component="form"
+            onSubmit={submitHandler}
             sx={{
               '& > :not(style)': { m: 1, width: '30ch' },
             }}
@@ -48,9 +88,17 @@ export default function AddBoardModal({ open, setOpen }: IAddBoardModal) {
               id="standard-basic"
               label="Название"
               variant="standard"
-              onChange={textFieldHandler}
+              onChange={textTitleHandler}
+              value={inputText}
             />
-            <TextField id="outlined-textarea" label="Описание" placeholder="Описание" multiline />
+            <TextField
+              id="outlined-textarea"
+              label="Описание"
+              placeholder="Описание"
+              onChange={descriptionHandler}
+              value={description}
+              multiline
+            />
             <Button type="submit" variant="outlined" size="small">
               Создать
             </Button>

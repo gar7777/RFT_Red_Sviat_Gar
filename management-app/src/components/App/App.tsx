@@ -1,5 +1,5 @@
 import Boards from 'components/Boards';
-import BoardCard from 'components/Boards/BoardCard';
+import CardDetail from 'components/Boards/CardDetail';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
 import NotFound from 'components/NotFound';
@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/boards" element={<Boards />} />
-        <Route path="/boards/:board" element={<BoardCard />} />
+        <Route path="/boards/:board" element={<CardDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

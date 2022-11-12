@@ -23,6 +23,9 @@ interface IAddBoardModal {
 
 export default function AddBoardModal({ open, setOpen }: IAddBoardModal) {
   const handleClose = () => setOpen(false);
+  const textFieldHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    console.log(event.target.value);
+  };
 
   return (
     <div>
@@ -41,7 +44,12 @@ export default function AddBoardModal({ open, setOpen }: IAddBoardModal) {
             noValidate
             autoComplete="off"
           >
-            <TextField id="standard-basic" label="Название" variant="standard" />
+            <TextField
+              id="standard-basic"
+              label="Название"
+              variant="standard"
+              onChange={textFieldHandler}
+            />
             <TextField id="outlined-textarea" label="Описание" placeholder="Описание" multiline />
             <Button type="submit" variant="outlined" size="small">
               Создать

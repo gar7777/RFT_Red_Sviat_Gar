@@ -11,10 +11,10 @@ import { useForm } from 'react-hook-form';
 import { IData } from '../../types/board-types';
 
 interface IProps {
-  addColumn: (data: IData) => void;
+  addTask: (data: IData) => void;
 }
 
-function AddColumnModal({ addColumn }: IProps) {
+function AddTaskModal({ addTask }: IProps) {
   const {
     register,
     handleSubmit,
@@ -24,11 +24,11 @@ function AddColumnModal({ addColumn }: IProps) {
   return (
     <Box sx={formContainerStyles}>
       <Typography component="h2" variant="h4" sx={h2Styles}>
-        Add New Column
+        Add New Task
       </Typography>
       <Box
         component="form"
-        onSubmit={handleSubmit((data) => addColumn(data as IData))}
+        onSubmit={handleSubmit((data) => addTask(data as IData))}
         sx={{ mt: 1 }}
       >
         <Box sx={labelWrapperStyles}>
@@ -73,11 +73,11 @@ function AddColumnModal({ addColumn }: IProps) {
           )}
         </Box>
         <Button variant="contained" type="submit" fullWidth>
-          Add New Column
+          Add New Task
         </Button>
       </Box>
     </Box>
   );
 }
 
-export default AddColumnModal;
+export default AddTaskModal;

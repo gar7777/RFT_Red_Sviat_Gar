@@ -33,7 +33,7 @@ export default function BoardCard({
   };
   return (
     <Card sx={{ maxWidth: 250 }}>
-      <Link to="/boards/:board" style={{ textDecoration: 'none' }}>
+      <Link to="/boards/board" style={{ textDecoration: 'none' }}>
         <CardContent>
           <Typography gutterBottom variant="h4" component="div">
             {title}
@@ -45,10 +45,10 @@ export default function BoardCard({
       </Link>
       <CardActions>
         <Button size="small" onClick={editHandler}>
-          Изменить
+          Edit
         </Button>
         <Button size="small" onClick={deletHandler}>
-          Удалить
+          Delete
         </Button>
       </CardActions>
     </Card>

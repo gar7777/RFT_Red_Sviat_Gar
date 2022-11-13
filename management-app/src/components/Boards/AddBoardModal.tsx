@@ -100,7 +100,7 @@ export default function AddBoardModal({
               multiline
             />
             <Button type="submit" variant="outlined" size="small">
-              Создать
+              Create
             </Button>
           </Box>
         </Box>

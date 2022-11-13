@@ -6,6 +6,8 @@ import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AddBoard } from './AddBoard';
 import AddBoardModal, { IElement } from './AddBoardModal';
+import SearchBoard from './SearchBoard';
+import './style.css';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
@@ -16,7 +18,7 @@ export default function BoardsManagement() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" className="board-container">
         <h1
           style={{
             display: 'flex',
@@ -25,8 +27,9 @@ export default function BoardsManagement() {
             marginTop: '5px',
           }}
         >
-          План заданий
+          Boards
         </h1>
+        <SearchBoard />
         <Box sx={{ flexGrow: 1 }}>
           <Grid
             container
@@ -51,7 +54,7 @@ export default function BoardsManagement() {
               ))
             ) : (
               <Grid item xs={3}>
-                <h3>Нажмите на крестик, чтобы добавить задание</h3>
+                <h3>Click to add a task</h3>
               </Grid>
             )}
 

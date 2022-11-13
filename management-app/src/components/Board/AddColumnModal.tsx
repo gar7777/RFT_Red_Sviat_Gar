@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, Button } from '@mui/material';
+import { Box, Typography, TextField, Button, IconButton } from '@mui/material';
 import {
   formContainerStyles,
   h2Styles,
@@ -10,7 +10,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { IData } from '../../types/board-types';
 import CloseIcon from '@mui/icons-material/Close';
-import Overlay from '../../components/Overlay';
+import styles from '../Overlay.module.scss';
 
 interface IProps {
   addColumn: (data: IData) => void;
@@ -26,9 +26,11 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
 
   return (
     <>
-      <Overlay onClick={closeColumnModal} />
+      <div className={styles.overlay} onClick={closeColumnModal}></div>
       <Box sx={formContainerStyles}>
-        <CloseIcon onClick={closeColumnModal} />
+        <IconButton sx={{ alignSelf: 'end' }} onClick={closeColumnModal}>
+          <CloseIcon />
+        </IconButton>
         <Typography component="h2" variant="h4" sx={h2Styles}>
           Add New Column
         </Typography>

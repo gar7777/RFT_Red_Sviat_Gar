@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { CssBaseline, Container, Stack } from '@mui/material';
+import { CssBaseline, Stack, Button, Box } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import AddColumnModal from './AddColumnModal';
 import AddTaskModal from './AddTaskModal';
 import { IData, ITask } from '../../types/board-types';
 import Column from './Column';
+import styles from './Board.module.scss';
 
 interface IBoard {
   id: string;
@@ -46,33 +47,44 @@ function Board() {
     setAddColumnModal(false);
   };
 
+  const closeTaskModal = (): void => {
+    setAddTaskModal(false);
+  };
+
   const handleAddTask = (id: string): void => {
     setAddTaskModal(true);
     setCurrenColumnId(id);
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <>
       <CssBaseline />
-      <Stack direction="row" spacing={2}>
-        {columns.map(({ id, title, description, tasks }) => (
-          <Column
-            key={id}
-            id={id}
-            title={title}
-            description={description}
-            tasks={tasks}
-            handleAddTask={handleAddTask}
-            deleteColumn={deleteColumn}
-          />
-        ))}
-        <AddBoxIcon onClick={handleAddColumn} />
+      <Stack className={styles.board_name__wrapper} direction="row">
+        <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>Board name</h2>
+        <Button onClick={handleAddColumn}>
+          <AddBoxIcon /> ADD NEW COLUMN
+        </Button>
       </Stack>
-      {addColumnModal && (
-        <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />
-      )}
-      {addTaskModal && <AddTaskModal addTask={addTask} />}
-    </Container>
+      <Box component="main" maxWidth="xs" className={styles['board__main-container']}>
+        <Stack direction="row" spacing={2} sx={{ alignItems: 'start' }}>
+          {columns.map(({ id, title, description, tasks }) => (
+            <Column
+              key={id}
+              id={id}
+              title={title}
+              description={description}
+              tasks={tasks}
+              handleAddTask={handleAddTask}
+              deleteColumn={deleteColumn}
+            />
+          ))}
+        </Stack>
+        {addColumnModal && (
+          <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />
+        )}
+        {addTaskModal && <AddTaskModal addTask={addTask} closeTaskModal={closeTaskModal} />}
+      </Box>
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
-import { Button, Card } from '@mui/material';
+import { Button, Card, Box } from '@mui/material';
 import React from 'react';
 import { ITask } from '../../types/board-types';
 import Task from './Task';
@@ -20,9 +20,11 @@ function Column({ id, title, description, tasks, handleAddTask, deleteColumn }: 
     <Card variant="outlined" className={styles.column}>
       <h2>{title}</h2>
       <p>{description}</p>
-      {tasks.map(({ id, title, description }) => (
-        <Task key={id} title={title} description={description} />
-      ))}
+      <Box className={styles.tasks_wrapper}>
+        {tasks.map(({ id, title, description }) => (
+          <Task key={id} title={title} description={description} />
+        ))}
+      </Box>
       <Button onClick={() => handleAddTask(id)}>
         <AddCardIcon /> ADD NEW TASK
       </Button>

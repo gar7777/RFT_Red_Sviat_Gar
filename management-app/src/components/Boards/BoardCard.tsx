@@ -6,31 +6,14 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { IElement } from './AddBoardModal';
+import { IBoard } from '../../store/boards/types/boards.type';
 
 interface IBoardCard {
   title: string;
   description: string;
-  todos: IElement[];
-  setTodos: React.Dispatch<React.SetStateAction<IElement[]>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  todo: IElement;
 }
 
-export default function BoardCard({
-  title,
-  description,
-  todos,
-  setTodos,
-  todo,
-  setOpen,
-}: IBoardCard) {
-  const deletHandler = () => {
-    setTodos(todos.filter((el) => el.id !== todo.id));
-  };
-  const editHandler = () => {
-    const selectedCard = todos.find((item) => item.id === todo.id);
-    setOpen(true);
-  };
+export default function BoardCard({ title, description }: IBoardCard) {
   return (
     <Card sx={{ maxWidth: 250 }}>
       <Link to="/boards/board" style={{ textDecoration: 'none' }}>
@@ -44,12 +27,8 @@ export default function BoardCard({
         </CardContent>
       </Link>
       <CardActions>
-        <Button size="small" onClick={editHandler}>
-          Edit
-        </Button>
-        <Button size="small" onClick={deletHandler}>
-          Delete
-        </Button>
+        <Button size="small">Edit</Button>
+        <Button size="small">Delete</Button>
       </CardActions>
     </Card>
   );

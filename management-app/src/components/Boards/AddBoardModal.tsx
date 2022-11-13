@@ -3,6 +3,10 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { createBoard, loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
+import { useAppDispatch } from '../../store/hooks';
+import { useForm, FieldValues } from 'react-hook-form';
+import { TBoardCreate } from '../../store/boards/types/boards.type';
 
 const style = {
   position: 'absolute',
@@ -25,45 +29,24 @@ export interface IElement {
 interface IAddBoardModal {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  inputText: string;
-  setInputText: React.Dispatch<React.SetStateAction<string>>;
-  description: string;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
-  todos: IElement[];
-  setTodos: React.Dispatch<React.SetStateAction<IElement[]>>;
 }
 
-export default function AddBoardModal({
-  open,
-  setOpen,
-  setInputText,
-  todos,
-  setTodos,
-  inputText,
-  description,
-  setDescription,
-}: IAddBoardModal) {
-  const handleClose = () => setOpen(false);
-  const textTitleHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputText(event.target.value);
-  };
-  const descriptionHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(event.target.value);
-  };
+export default function AddBoardModal({ open, setOpen }: IAddBoardModal) {
+  const dispatch = useAppDispatch();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setTodos([
-      ...todos,
-      {
-        title: inputText,
-        id: Math.random() * 1000,
-        description: description,
-      },
-    ]);
-    setInputText('');
-    setDescription('');
+  const handleClose = () => setOpen(false);
+
+  const formSubmit = (data: FieldValues) => {
+    dispatch(createBoard(data as TBoardCreate));
+    reset();
     handleClose();
+    dispatch(loadBoards());
   };
 
   return (
@@ -77,7 +60,7 @@ export default function AddBoardModal({
         <Box sx={style}>
           <Box
             component="form"
-            onSubmit={submitHandler}
+            onSubmit={handleSubmit(formSubmit)}
             sx={{
               '& > :not(style)': { m: 1, width: '30ch' },
             }}
@@ -85,18 +68,20 @@ export default function AddBoardModal({
             autoComplete="off"
           >
             <TextField
-              id="standard-basic"
-              label="Название"
+              id="title"
+              label="title"
               variant="standard"
-              onChange={textTitleHandler}
-              value={inputText}
+              {...register('title', {
+                required: 'Please, enter title',
+              })}
             />
             <TextField
-              id="outlined-textarea"
-              label="Описание"
-              placeholder="Описание"
-              onChange={descriptionHandler}
-              value={description}
+              id="description"
+              label="description"
+              placeholder="description"
+              {...register('description', {
+                required: 'Please, enter title',
+              })}
               multiline
             />
             <Button type="submit" variant="outlined" size="small">

@@ -8,12 +8,20 @@ import { AddBoard } from './AddBoard';
 import AddBoardModal, { IElement } from './AddBoardModal';
 import SearchBoard from './SearchBoard';
 import './style.css';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
+import { RootState } from '../../store/store';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
-  const [inputText, setInputText] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [todos, setTodos] = React.useState<IElement[]>([]);
+
+  const { boards } = useAppSelector((state: RootState) => state.boards);
+
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    dispatch(loadBoards());
+  }, []);
 
   return (
     <React.Fragment>
@@ -39,17 +47,10 @@ export default function BoardsManagement() {
             justifyContent="flex-start"
             alignItems="center"
           >
-            {todos.length !== 0 ? (
-              todos.map((todo) => (
-                <Grid item xs={3} key={todo.id}>
-                  <BoardCard
-                    title={todo.title}
-                    description={todo.description}
-                    todos={todos}
-                    setTodos={setTodos}
-                    todo={todo}
-                    setOpen={setOpen}
-                  />
+            {boards.length !== 0 ? (
+              boards.map((board) => (
+                <Grid item xs={3} key={board.id}>
+                  <BoardCard title={board.title} description={board.description} />
                 </Grid>
               ))
             ) : (
@@ -63,16 +64,7 @@ export default function BoardsManagement() {
             </Grid>
           </Grid>
         </Box>
-        <AddBoardModal
-          open={open}
-          setOpen={setOpen}
-          setInputText={setInputText}
-          todos={todos}
-          setTodos={setTodos}
-          inputText={inputText}
-          description={description}
-          setDescription={setDescription}
-        />
+        <AddBoardModal open={open} setOpen={setOpen} />
       </Container>
     </React.Fragment>
   );

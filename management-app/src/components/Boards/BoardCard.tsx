@@ -1,19 +1,18 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
-import { IElement } from './AddBoardModal';
-import { IBoard } from '../../store/boards/types/boards.type';
-
+import { BoardCardButtons } from './BoardCardButtons';
 interface IBoardCard {
   title: string;
   description: string;
+  id: string;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function BoardCard({ title, description }: IBoardCard) {
+export default function BoardCard({ title, description, id, setOpen, setIsEditing }: IBoardCard) {
   return (
     <Card sx={{ maxWidth: 250 }}>
       <Link to="/boards/board" style={{ textDecoration: 'none' }}>
@@ -26,10 +25,7 @@ export default function BoardCard({ title, description }: IBoardCard) {
           </Typography>
         </CardContent>
       </Link>
-      <CardActions>
-        <Button size="small">Edit</Button>
-        <Button size="small">Delete</Button>
-      </CardActions>
+      <BoardCardButtons id={id} setOpen={setOpen} setIsEditing={setIsEditing} />
     </Card>
   );
 }

@@ -7,6 +7,8 @@ import { createBoard, loadBoards } from '../../store/boards/thunks/loadBoards.th
 import { useAppDispatch } from '../../store/hooks';
 import { useForm, FieldValues } from 'react-hook-form';
 import { TBoardCreate } from '../../store/boards/types/boards.type';
+import { Typography } from '@mui/material';
+import { validationAlertStyles } from '../../constants/mui-styles';
 
 const style = {
   position: 'absolute',
@@ -29,10 +31,12 @@ export interface IElement {
 interface IAddBoardModal {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isEditing: boolean;
 }
 
-export default function AddBoardModal({ open, setOpen }: IAddBoardModal) {
+export default function AddBoardModal({ open, setOpen, isEditing }: IAddBoardModal) {
   const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
@@ -42,8 +46,14 @@ export default function AddBoardModal({ open, setOpen }: IAddBoardModal) {
 
   const handleClose = () => setOpen(false);
 
-  const formSubmit = (data: FieldValues) => {
-    dispatch(createBoard(data as TBoardCreate));
+  const formSubmit = async (data: FieldValues) => {
+    if (isEditing) {
+      // await dispatch(updateBoard({ title: data.title, description: data.description }));
+      console.log('not finished');
+    } else {
+      await dispatch(createBoard(data as TBoardCreate));
+    }
+
     reset();
     handleClose();
     dispatch(loadBoards());
@@ -72,20 +82,26 @@ export default function AddBoardModal({ open, setOpen }: IAddBoardModal) {
               label="title"
               variant="standard"
               {...register('title', {
-                required: 'Please, enter title',
+                required: 'title must be more than 3 symbols',
+                minLength: { value: 3, message: 'title must be more than 3 symbols' },
               })}
             />
+            {errors.title && (
+              <Typography component="p" align="center" variant="caption" sx={validationAlertStyles}>
+                {errors.title.message as string}
+              </Typography>
+            )}
             <TextField
               id="description"
               label="description"
               placeholder="description"
               {...register('description', {
-                required: 'Please, enter title',
+                required: 'Please, enter description',
               })}
               multiline
             />
             <Button type="submit" variant="outlined" size="small">
-              Create
+              {isEditing ? 'Edit' : 'Create'}
             </Button>
           </Box>
         </Box>

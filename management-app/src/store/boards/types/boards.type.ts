@@ -7,4 +7,4 @@ export interface IBoard {
 export type TBoardCreate = {
   title: string;
   description: string;
-}
+};

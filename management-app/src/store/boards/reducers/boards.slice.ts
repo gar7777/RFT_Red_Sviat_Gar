@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createBoard, loadBoards } from '../thunks/loadBoards.thunk';
+import { createBoard, deleteBoard, loadBoards, updateBoard } from '../thunks/loadBoards.thunk';
 import { IBoardsState } from '../types/boardsState.type';
 
 const initialState: IBoardsState = {
   boards: [],
   isLoading: false,
   error: '',
+  isEditing: false,
 };
 
 const boardsSlice = createSlice({
@@ -34,6 +35,28 @@ const boardsSlice = createSlice({
       state.error = '';
     });
     builder.addCase(createBoard.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message;
+    });
+    builder.addCase(deleteBoard.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteBoard.fulfilled, (state) => {
+      state.isLoading = false;
+      state.error = '';
+    });
+    builder.addCase(deleteBoard.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message;
+    });
+    builder.addCase(updateBoard.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateBoard.fulfilled, (state) => {
+      state.isLoading = false;
+      state.error = '';
+    });
+    builder.addCase(updateBoard.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error.message;
     });

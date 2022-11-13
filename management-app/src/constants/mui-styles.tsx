@@ -33,3 +33,8 @@ export const formContainerStyles = {
 export const h2Styles = {
   fontWeight: 'bold',
 };
+
+export const taskStyles = {
+  backgroundColor: 'lightgray',
+  margin: '10px',
+};

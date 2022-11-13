@@ -1,4 +1,5 @@
 import { Card } from '@mui/material';
+import { taskStyles } from '../../constants/mui-styles';
 import React from 'react';
 
 interface IProps {
@@ -8,7 +9,7 @@ interface IProps {
 
 function Task({ title, description }: IProps) {
   return (
-    <Card>
+    <Card sx={taskStyles}>
       <h2>{title}</h2>
       <p>{description}</p>
     </Card>

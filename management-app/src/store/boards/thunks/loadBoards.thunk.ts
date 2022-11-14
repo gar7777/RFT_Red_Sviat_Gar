@@ -45,16 +45,21 @@ export const deleteBoard = createAsyncThunk(DELETE_BOARD, async (id: IBoard['id'
 });
 
 export const updateBoard = createAsyncThunk(UPDATE_BOARD, async (boardUpdate: IBoard) => {
-  const url = `${API_URL}/boards/${boardUpdate.id}`;
+  console.log(boardUpdate);
+
+  const { id, title, description } = boardUpdate;
+  const url = `${API_URL}/boards/${id}`;
   const data = await fetch(url, {
     method: 'PUT',
     headers: {
       'Content-type': 'application/json',
       Authorization: `Bearer ${TOKEN}`,
     },
-    body: JSON.stringify(boardUpdate),
+    body: JSON.stringify({ title, description }),
   });
   const json = await data.json();
+
+  console.log(boardUpdate);
 
   return json;
 });

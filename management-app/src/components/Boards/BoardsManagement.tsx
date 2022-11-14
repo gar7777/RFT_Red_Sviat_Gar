@@ -11,10 +11,12 @@ import './style.css';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { RootState } from '../../store/store';
+import { IBoard } from '../../store/boards/types/boards.type';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
+  const [currentBoard, setCurrentBoard] = React.useState<IBoard | null>(null);
 
   const { boards } = useAppSelector((state: RootState) => state.boards);
 
@@ -57,6 +59,7 @@ export default function BoardsManagement() {
                     id={board.id}
                     setOpen={setOpen}
                     setIsEditing={setIsEditing}
+                    setCurrentBoard={setCurrentBoard}
                   />
                 </Grid>
               ))
@@ -71,7 +74,12 @@ export default function BoardsManagement() {
             </Grid>
           </Grid>
         </Box>
-        <AddBoardModal open={open} setOpen={setOpen} isEditing={isEditing} />
+        <AddBoardModal
+          open={open}
+          setOpen={setOpen}
+          isEditing={isEditing}
+          currentBoard={currentBoard}
+        />
       </Container>
     </React.Fragment>
   );

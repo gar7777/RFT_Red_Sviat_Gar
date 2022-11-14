@@ -7,9 +7,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 
-import BoardCard from './BoardCard';
-import { IElement } from './AddBoardModal';
-
 export default function BoardCardList() {
   return (
     <Box sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper' }}>

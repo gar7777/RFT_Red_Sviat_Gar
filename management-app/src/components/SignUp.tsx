@@ -5,8 +5,12 @@ import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui
 import formStyles from './scss/Form.module.scss';
 import typographyStyles from './scss/Typography.module.scss';
 import mainStyles from './scss/MainContainer.module.scss';
+import { setEmptyUser, setUserData } from '../store/authorization/user.slice';
+import { createUser } from '../store/authorization/api/api';
+import { useAppDispatch } from '../store/hooks';
 
 function SignUp() {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -14,8 +18,10 @@ function SignUp() {
     formState: { errors },
   } = useForm();
 
-  const formSubmit = (data: FieldValues) => {
-    console.log(data);
+  const formSubmit = async (data: FieldValues) => {
+    const { name, login, password } = data;
+    const user = createUser({ name, login, password });
+    dispatch(setUserData(await user));
     reset();
   };
 

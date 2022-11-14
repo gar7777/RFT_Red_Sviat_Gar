@@ -9,21 +9,25 @@ import SignIn from '../SignIn';
 import Profile from '../Profile';
 import BoardsManagement from '../Boards/BoardsManagement';
 import SignUp from '../SignUp';
+import { Provider } from 'react-redux';
+import { store } from '../../store/store';
 
 function App() {
   return (
     <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<WelcomePage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/boards" element={<BoardsManagement />} />
-        <Route path="/boards/board" element={<Board />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
+      <Provider store={store}>
+        <Header />
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/boards" element={<Boards />} />
+          <Route path="/boards/board" element={<Board />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </Provider>
     </>
   );
 }

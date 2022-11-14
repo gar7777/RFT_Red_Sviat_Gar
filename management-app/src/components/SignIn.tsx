@@ -5,8 +5,12 @@ import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui
 import formStyles from './scss/Form.module.scss';
 import typographyStyles from './scss/Typography.module.scss';
 import mainStyles from './scss/MainContainer.module.scss';
+import { logInUser } from '../store/authorization/api/api';
+import { useAppDispatch } from '../store/hooks';
+import { loginUser } from '../store/authorization/auth.slice';
 
 function SignIn() {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -14,8 +18,10 @@ function SignIn() {
     formState: { errors },
   } = useForm();
 
-  const formSubmit = (data: FieldValues) => {
-    console.log(data);
+  const formSubmit = async (data: FieldValues) => {
+    const { login, password } = data;
+    const token = logInUser({ login, password });
+    dispatch(loginUser(await token));
     reset();
   };
 

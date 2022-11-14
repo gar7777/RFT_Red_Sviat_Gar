@@ -2,14 +2,9 @@ import React from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
-import {
-  mainContainerStyles,
-  formContainerStyles,
-  labelWrapperStyles,
-  validatedInputStyles,
-  validationAlertStyles,
-  h2Styles,
-} from '../constants/mui-styles';
+import formStyles from './scss/Form.module.scss';
+import typographyStyles from './scss/Typography.module.scss';
+import mainStyles from './scss/MainContainer.module.scss';
 
 function SignIn() {
   const {
@@ -25,14 +20,14 @@ function SignIn() {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={mainContainerStyles}>
+    <Container component="main" maxWidth="xs" className={mainStyles.mainContainer}>
       <CssBaseline />
-      <Box sx={formContainerStyles}>
-        <Typography component="h2" variant="h4" sx={h2Styles}>
+      <Box className={formStyles.formContainer}>
+        <Typography component="h2" variant="h4" className={typographyStyles.h2}>
           Sign In
         </Typography>
         <Box component="form" onSubmit={handleSubmit(formSubmit)} sx={{ mt: 1 }}>
-          <Box sx={labelWrapperStyles}>
+          <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
               required
@@ -44,15 +39,20 @@ function SignIn() {
                 minLength: { value: 3, message: 'Login must be more than 3 symbols' },
               })}
               autoComplete="Login"
-              sx={validatedInputStyles}
+              className={formStyles.validatedInput}
             />
             {errors.login && (
-              <Typography component="p" align="center" variant="caption" sx={validationAlertStyles}>
+              <Typography
+                component="p"
+                align="center"
+                variant="caption"
+                className={formStyles.validationAlert}
+              >
                 {errors.login.message as string}
               </Typography>
             )}
           </Box>
-          <Box sx={labelWrapperStyles}>
+          <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
               required
@@ -68,10 +68,15 @@ function SignIn() {
                 },
               })}
               autoComplete="Password"
-              sx={validatedInputStyles}
+              className={formStyles.validatedInput}
             />
             {errors.password && (
-              <Typography component="p" align="center" variant="caption" sx={validationAlertStyles}>
+              <Typography
+                component="p"
+                align="center"
+                variant="caption"
+                className={formStyles.validationAlert}
+              >
                 {errors.password.message as string}
               </Typography>
             )}

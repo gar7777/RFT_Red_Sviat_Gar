@@ -1,15 +1,10 @@
 import { Box, Typography, TextField, Button } from '@mui/material';
-import {
-  formContainerStyles,
-  h2Styles,
-  labelWrapperStyles,
-  validatedInputStyles,
-  validationAlertStyles,
-} from '../../constants/mui-styles';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { IData } from '../../types/board-types';
-import styles from '../Overlay.module.scss';
+import overlayStyles from '../scss/Overlay.module.scss';
+import formStyles from '../scss/Form.module.scss';
+import typographyStyles from '../scss/Typography.module.scss';
 
 interface IProps {
   addTask: (data: IData) => void;
@@ -25,9 +20,9 @@ function AddTaskModal({ addTask, closeTaskModal }: IProps) {
 
   return (
     <>
-      <div className={styles.overlay} onClick={closeTaskModal}></div>
-      <Box sx={formContainerStyles}>
-        <Typography component="h2" variant="h4" sx={h2Styles}>
+      <div className={overlayStyles.overlay} onClick={closeTaskModal}></div>
+      <Box className={formStyles.formContainer}>
+        <Typography component="h2" variant="h4" className={typographyStyles.h2}>
           Add New Task
         </Typography>
         <Box
@@ -35,7 +30,7 @@ function AddTaskModal({ addTask, closeTaskModal }: IProps) {
           onSubmit={handleSubmit((data) => addTask(data as IData))}
           sx={{ mt: 1 }}
         >
-          <Box sx={labelWrapperStyles}>
+          <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
               required
@@ -47,15 +42,20 @@ function AddTaskModal({ addTask, closeTaskModal }: IProps) {
                 minLength: { value: 3, message: 'Title must be more than 3 symbols' },
               })}
               autoComplete="Title"
-              sx={validatedInputStyles}
+              className={formStyles.validatedInput}
             />
             {errors.title && (
-              <Typography component="p" align="center" variant="caption" sx={validationAlertStyles}>
+              <Typography
+                component="p"
+                align="center"
+                variant="caption"
+                className={formStyles.validationAlert}
+              >
                 {errors.title.message as string}
               </Typography>
             )}
           </Box>
-          <Box sx={labelWrapperStyles}>
+          <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
               required
@@ -68,10 +68,15 @@ function AddTaskModal({ addTask, closeTaskModal }: IProps) {
                 minLength: { value: 8, message: 'Description must be more than 8 symbols' },
               })}
               autoComplete="Description"
-              sx={validatedInputStyles}
+              className={formStyles.validatedInput}
             />
             {errors.description && (
-              <Typography component="p" align="center" variant="caption" sx={validationAlertStyles}>
+              <Typography
+                component="p"
+                align="center"
+                variant="caption"
+                className={formStyles.validationAlert}
+              >
                 {errors.description.message as string}
               </Typography>
             )}

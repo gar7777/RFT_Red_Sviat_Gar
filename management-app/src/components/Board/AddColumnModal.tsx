@@ -1,16 +1,11 @@
 import { Box, Typography, TextField, Button, IconButton } from '@mui/material';
-import {
-  formContainerStyles,
-  h2Styles,
-  labelWrapperStyles,
-  validatedInputStyles,
-  validationAlertStyles,
-} from '../../constants/mui-styles';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { IData } from '../../types/board-types';
 import CloseIcon from '@mui/icons-material/Close';
-import styles from '../Overlay.module.scss';
+import overlayStyles from '../scss/Overlay.module.scss';
+import formStyles from '../scss/Form.module.scss';
+import typographyStyles from '../scss/Typography.module.scss';
 
 interface IProps {
   addColumn: (data: IData) => void;
@@ -26,12 +21,12 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
 
   return (
     <>
-      <div className={styles.overlay} onClick={closeColumnModal}></div>
-      <Box sx={formContainerStyles}>
+      <div className={overlayStyles.overlay} onClick={closeColumnModal}></div>
+      <Box className={formStyles.formContainer}>
         <IconButton sx={{ alignSelf: 'end' }} onClick={closeColumnModal}>
           <CloseIcon />
         </IconButton>
-        <Typography component="h2" variant="h4" sx={h2Styles}>
+        <Typography component="h2" variant="h4" className={typographyStyles.h2}>
           Add New Column
         </Typography>
         <Box
@@ -39,7 +34,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
           onSubmit={handleSubmit((data) => addColumn(data as IData))}
           sx={{ mt: 1 }}
         >
-          <Box sx={labelWrapperStyles}>
+          <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
               required
@@ -51,15 +46,20 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
                 minLength: { value: 3, message: 'Title must be more than 3 symbols' },
               })}
               autoComplete="Title"
-              sx={validatedInputStyles}
+              className={formStyles.validatedInput}
             />
             {errors.title && (
-              <Typography component="p" align="center" variant="caption" sx={validationAlertStyles}>
+              <Typography
+                component="p"
+                align="center"
+                variant="caption"
+                className={formStyles.validationAlert}
+              >
                 {errors.title.message as string}
               </Typography>
             )}
           </Box>
-          <Box sx={labelWrapperStyles}>
+          <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
               required
@@ -72,10 +72,15 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
                 minLength: { value: 8, message: 'Description must be more than 8 symbols' },
               })}
               autoComplete="Description"
-              sx={validatedInputStyles}
+              className={formStyles.validatedInput}
             />
             {errors.description && (
-              <Typography component="p" align="center" variant="caption" sx={validationAlertStyles}>
+              <Typography
+                component="p"
+                align="center"
+                variant="caption"
+                className={formStyles.validationAlert}
+              >
                 {errors.description.message as string}
               </Typography>
             )}

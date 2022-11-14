@@ -28,8 +28,19 @@ export const formContainerStyles = {
   alignItems: 'center',
   border: '1px solid black',
   borderRadius: '5px',
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  zIndex: '1000',
+  backgroundColor: 'white',
 };
 
 export const h2Styles = {
   fontWeight: 'bold',
+};
+
+export const taskStyles = {
+  backgroundColor: 'lightgray',
+  margin: '10px',
 };

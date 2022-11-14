@@ -1,7 +1,7 @@
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import NotFound from '../NotFound';
-import WelcomePage from '../WelcomePage';
+import WelcomePage from '../WelcomePage/WelcomePage';
 import React from 'react';
 import { Routes, Route } from 'react-router';
 import SignIn from '../SignIn';

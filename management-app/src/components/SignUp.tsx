@@ -1,15 +1,16 @@
 import React from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
 import formStyles from './scss/Form.module.scss';
 import typographyStyles from './scss/Typography.module.scss';
 import mainStyles from './scss/MainContainer.module.scss';
-import { setEmptyUser, setUserData } from '../store/authorization/user.slice';
+import { setUserData } from '../store/authorization/user.slice';
 import { createUser } from '../store/authorization/api/api';
 import { useAppDispatch } from '../store/hooks';
 
 function SignUp() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {
     register,
@@ -23,6 +24,7 @@ function SignUp() {
     const user = createUser({ name, login, password });
     dispatch(setUserData(await user));
     reset();
+    navigate('/signin');
   };
 
   return (

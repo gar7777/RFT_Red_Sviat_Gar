@@ -1,14 +1,14 @@
-import Board from '../Board';
-import Boards from '../Boards';
+import Board from '../Board/Board';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import NotFound from '../NotFound';
-import SignUp from '../SignUp';
 import WelcomePage from '../WelcomePage';
 import React from 'react';
 import { Routes, Route } from 'react-router';
 import SignIn from '../SignIn';
 import Profile from '../Profile';
+import BoardsManagement from '../Boards/BoardsManagement';
+import SignUp from '../SignUp';
 import { Provider } from 'react-redux';
 import { store } from '../../store/store';
 

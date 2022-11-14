@@ -1,0 +1,11 @@
+.column {
+  padding: 10px;
+  display: inline-block;
+  min-width: 20rem;
+  max-height: 72vh;
+}
+
+.tasks_wrapper {
+  max-height: 50vh;
+  overflow-x: auto;
+}

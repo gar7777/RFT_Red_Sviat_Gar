@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppBar, Button, Toolbar } from '@mui/material';
-import { Home, Language } from '@mui/icons-material';
+import { AppBar, Button, Toolbar, Typography } from '@mui/material';
+import { Home, Language, Task } from '@mui/icons-material';
 import Menu from './Menu/Menu';
 import styles from './Header.module.scss';
 import BtnLogIn from './Menu/BtnLogIn';
@@ -13,17 +13,32 @@ import { useAppSelector } from '../../store/hooks';
 function Header() {
   const { userToken } = useAppSelector((state) => state.auth);
 
-  return (
-    <AppBar className={styles.appbar} position="sticky">
-      <Toolbar className={styles.toolbar}>
-        <div className={styles.toolbarItem}>
+  const mainPageLink = () => {
+    if (userToken) {
+      return (
+        <>
           <Home fontSize="large" />
           <NavLink to="/boards">
             <Button variant="text" sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}>
               ГЛАВНАЯ
             </Button>
           </NavLink>
-        </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Task fontSize="large" />
+          <Typography variant="h5">TASK MANAGER</Typography>
+        </>
+      );
+    }
+  };
+
+  return (
+    <AppBar className={styles.appbar} position="sticky">
+      <Toolbar className={styles.toolbar}>
+        <div className={styles.toolbarItem}>{mainPageLink()}</div>
         <div className={styles.toolbarItem} style={{ marginLeft: 'auto' }}>
           <Language fontSize="large" />
           <Menu />

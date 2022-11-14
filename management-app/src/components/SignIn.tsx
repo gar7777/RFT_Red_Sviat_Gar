@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
 import formStyles from './scss/Form.module.scss';
 import typographyStyles from './scss/Typography.module.scss';
@@ -10,6 +10,7 @@ import { useAppDispatch } from '../store/hooks';
 import { loginUser } from '../store/authorization/auth.slice';
 
 function SignIn() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {
     register,
@@ -23,6 +24,7 @@ function SignIn() {
     const token = logInUser({ login, password });
     dispatch(loginUser(await token));
     reset();
+    navigate('/boards');
   };
 
   return (

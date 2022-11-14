@@ -1,7 +1,7 @@
 export interface IBoard {
-  id: string;
-  title: string;
-  description: string;
+  id: string | undefined;
+  title: string | undefined;
+  description: string | undefined;
 }
 
 export type TBoardCreate = {

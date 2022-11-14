@@ -3,10 +3,10 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { createBoard, loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
+import { createBoard, loadBoards, updateBoard } from '../../store/boards/thunks/loadBoards.thunk';
 import { useAppDispatch } from '../../store/hooks';
 import { useForm, FieldValues } from 'react-hook-form';
-import { TBoardCreate } from '../../store/boards/types/boards.type';
+import { IBoard, TBoardCreate } from '../../store/boards/types/boards.type';
 import { Typography } from '@mui/material';
 import { validationAlertStyles } from '../../constants/mui-styles';
 
@@ -22,19 +22,14 @@ const style = {
   p: 4,
 };
 
-export interface IElement {
-  title: string;
-  id: number;
-  description: string;
-}
-
 interface IAddBoardModal {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isEditing: boolean;
+  currentBoard: IBoard | null;
 }
 
-export default function AddBoardModal({ open, setOpen, isEditing }: IAddBoardModal) {
+export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }: IAddBoardModal) {
   const dispatch = useAppDispatch();
 
   const {
@@ -44,12 +39,24 @@ export default function AddBoardModal({ open, setOpen, isEditing }: IAddBoardMod
     formState: { errors },
   } = useForm();
 
+  React.useEffect(() => {
+    reset({
+      title: currentBoard?.title || '',
+      description: currentBoard?.description || '',
+    });
+  }, [currentBoard]);
+
   const handleClose = () => setOpen(false);
 
   const formSubmit = async (data: FieldValues) => {
-    if (isEditing) {
-      // await dispatch(updateBoard({ title: data.title, description: data.description }));
-      console.log('not finished');
+    if (isEditing && currentBoard?.id) {
+      await dispatch(
+        updateBoard({
+          title: data.title,
+          id: currentBoard.id,
+          description: data.description,
+        })
+      );
     } else {
       await dispatch(createBoard(data as TBoardCreate));
     }

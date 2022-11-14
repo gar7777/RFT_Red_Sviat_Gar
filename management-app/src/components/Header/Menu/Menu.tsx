@@ -1,17 +1,15 @@
-import * as React from 'react';
-import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
-import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
-import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
-import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+import React, { SyntheticEvent, useState } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Typography } from '@mui/material';
 
 export default function ToggleButtons() {
-  const [lang, setLang] = React.useState('ru');
+  const [lang, setLang] = useState('ru');
 
-  const handleChange = (event: React.SyntheticEvent, newLang: string) => {
-    setLang(newLang);
+  const handleChange = (event: SyntheticEvent, newLang: string) => {
+    if (event) {
+      setLang(newLang);
+    }
   };
 
   return (

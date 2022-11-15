@@ -1,4 +1,4 @@
-export function getLocalStorageItem(key: string): string | null {
+export function getLocalStorage(key: string): string | null {
   try {
     return window.localStorage.getItem(key);
   } catch (error) {
@@ -7,7 +7,7 @@ export function getLocalStorageItem(key: string): string | null {
   }
 }
 
-export function setLocaleStorageItem(key: string, value: string): void {
+export function setLocaleStorage(key: string, value: string): void {
   try {
     window.localStorage.setItem(key, value);
   } catch (error) {

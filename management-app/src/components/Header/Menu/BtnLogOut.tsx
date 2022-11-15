@@ -3,13 +3,15 @@ import { Button } from '@mui/material';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { logoutUser } from '../../../store/authorization/auth.slice';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useAppDispatch } from '../../../store/hooks';
+import { setTokenToLS } from '../../../utilities/getToken';
 
 export default function BtnLogOut() {
   const dispatch = useAppDispatch();
 
   const handleClick = () => {
     dispatch(logoutUser());
+    setTokenToLS('');
   };
 
   return (

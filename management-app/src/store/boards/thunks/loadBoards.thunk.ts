@@ -18,6 +18,7 @@ export const loadBoards = createAsyncThunk(LOAD_BOARDS, async () => {
 });
 
 export const createBoard = createAsyncThunk(CREATE_BOARD, async (dataBoard: TBoardCreate) => {
+  console.log(getToken());
   const url = `${API_URL}/boards`;
   const data = await fetch(url, {
     method: 'POST',

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { API_URL, TOKEN } from '../../../constants/api';
+import { API_URL } from '../../../constants/api';
+import { getTokenFromLS } from '../../../utilities/getToken';
 import { CREATE_BOARD, DELETE_BOARD, LOAD_BOARDS, UPDATE_BOARD } from '../actions/boards.action';
 import { IBoard, TBoardCreate } from '../types/boards.type';
 
@@ -8,7 +9,7 @@ export const loadBoards = createAsyncThunk(LOAD_BOARDS, async () => {
   const data = await fetch(url, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${getTokenFromLS}`,
     },
   });
   const json = await data.json();
@@ -17,12 +18,13 @@ export const loadBoards = createAsyncThunk(LOAD_BOARDS, async () => {
 });
 
 export const createBoard = createAsyncThunk(CREATE_BOARD, async (dataBoard: TBoardCreate) => {
+  console.log(getToken());
   const url = `${API_URL}/boards`;
   const data = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${getTokenFromLS}`,
     },
     body: JSON.stringify(dataBoard),
   });
@@ -36,7 +38,7 @@ export const deleteBoard = createAsyncThunk(DELETE_BOARD, async (id: IBoard['id'
   const data = await fetch(url, {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${getTokenFromLS}`,
     },
   });
   const json = await data.json();
@@ -45,15 +47,13 @@ export const deleteBoard = createAsyncThunk(DELETE_BOARD, async (id: IBoard['id'
 });
 
 export const updateBoard = createAsyncThunk(UPDATE_BOARD, async (boardUpdate: IBoard) => {
-  console.log(boardUpdate);
-
   const { id, title, description } = boardUpdate;
   const url = `${API_URL}/boards/${id}`;
   const data = await fetch(url, {
     method: 'PUT',
     headers: {
       'Content-type': 'application/json',
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${getTokenFromLS}`,
     },
     body: JSON.stringify({ title, description }),
   });

@@ -45,8 +45,6 @@ export const deleteBoard = createAsyncThunk(DELETE_BOARD, async (id: IBoard['id'
 });
 
 export const updateBoard = createAsyncThunk(UPDATE_BOARD, async (boardUpdate: IBoard) => {
-  console.log(boardUpdate);
-
   const { id, title, description } = boardUpdate;
   const url = `${API_URL}/boards/${id}`;
   const data = await fetch(url, {

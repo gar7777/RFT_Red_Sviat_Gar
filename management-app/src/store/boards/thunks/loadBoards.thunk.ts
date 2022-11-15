@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { API_URL, TOKEN } from '../../../constants/api';
+import { API_URL } from '../../../constants/api';
+import { getToken } from '../../../utilities/getToken';
 import { CREATE_BOARD, DELETE_BOARD, LOAD_BOARDS, UPDATE_BOARD } from '../actions/boards.action';
 import { IBoard, TBoardCreate } from '../types/boards.type';
 
@@ -8,7 +9,7 @@ export const loadBoards = createAsyncThunk(LOAD_BOARDS, async () => {
   const data = await fetch(url, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${getToken}`,
     },
   });
   const json = await data.json();
@@ -22,7 +23,7 @@ export const createBoard = createAsyncThunk(CREATE_BOARD, async (dataBoard: TBoa
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${getToken}`,
     },
     body: JSON.stringify(dataBoard),
   });
@@ -36,7 +37,7 @@ export const deleteBoard = createAsyncThunk(DELETE_BOARD, async (id: IBoard['id'
   const data = await fetch(url, {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${getToken}`,
     },
   });
   const json = await data.json();
@@ -51,7 +52,7 @@ export const updateBoard = createAsyncThunk(UPDATE_BOARD, async (boardUpdate: IB
     method: 'PUT',
     headers: {
       'Content-type': 'application/json',
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${getToken}`,
     },
     body: JSON.stringify({ title, description }),
   });

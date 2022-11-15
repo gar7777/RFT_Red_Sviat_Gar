@@ -4,6 +4,7 @@ import { setLocaleStorage } from '../../../utilities/localStorage';
 
 export const KEY = 'token';
 
+
 type UserCreate = {
   name?: string;
   login: string;
@@ -35,7 +36,6 @@ export const logInUser = async (user: UserCreate) => {
     body: JSON.stringify(user),
   });
   const json = await data.json();
-  setLocaleStorage(KEY, json.token);
 
   return json.token;
 };

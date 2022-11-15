@@ -7,7 +7,7 @@ export function getLocalStorage(key: string): string | null {
   }
 }
 
-export function setLocaleStorage(key: string, value: string): void {
+export function setLocalStorage(key: string, value: string): void {
   try {
     window.localStorage.setItem(key, value);
   } catch (error) {

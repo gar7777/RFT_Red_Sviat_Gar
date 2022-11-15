@@ -1,6 +1,10 @@
-import { KEY } from '../store/authorization/api/api';
-import { getLocalStorage } from './localStorage';
+import { TOKEN } from '../constants/ls';
+import { getLocalStorage, setLocalStorage } from './localStorage';
 
-export const getToken = () => {
-  return getLocalStorage(KEY);
+export const getTokenFromLS = () => {
+  return getLocalStorage(TOKEN);
+};
+
+export const setTokenToLS = (value: string) => {
+  return setLocalStorage(TOKEN, value);
 };

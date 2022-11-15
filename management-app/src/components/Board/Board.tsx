@@ -6,8 +6,14 @@ import AddTaskModal from './AddTaskModal';
 import { IData, ITask } from '../../types/board-types';
 import Column from './Column';
 import styles from './Board.module.scss';
+import { useParams } from 'react-router';
+import { useSelector } from 'react-redux';
+import { IBoardsState } from '../../store/boards/types/boardsState.type';
+import { IBoard } from '../../store/boards/types/boards.type';
+import { useAppSelector } from '../../store/hooks';
+import { RootState } from '../../store/store';
 
-interface IBoard {
+interface IBoard2 {
   id: string;
   title: string;
   description: string;
@@ -15,7 +21,10 @@ interface IBoard {
 }
 
 function Board() {
-  const [columns, setColumns] = useState<IBoard[]>([]);
+  const params = useParams();
+  const { boards } = useAppSelector((state: RootState) => state.boards);
+  const currentBoard = boards.find((board: IBoard) => board.id === params.board);
+  const [columns, setColumns] = useState<IBoard2[]>([]);
   const [addColumnModal, setAddColumnModal] = useState(false);
   const [addTaskModal, setAddTaskModal] = useState(false);
   const [currentColumnId, setCurrenColumnId] = useState('');
@@ -60,7 +69,7 @@ function Board() {
     <>
       <CssBaseline />
       <Stack className={styles.board_name__wrapper} direction="row">
-        <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>Board name</h2>
+        <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{currentBoard?.title}</h2>
         <Button onClick={handleAddColumn}>
           <AddBoxIcon /> ADD NEW COLUMN
         </Button>

@@ -1,9 +1,8 @@
 import { API_URL } from '../../../constants/api';
-import { getToken } from '../../../utilities/getToken';
-import { setLocaleStorage } from '../../../utilities/localStorage';
+// import { getToken } from '../../../utilities/getToken';
+// import { setLocaleStorage } from '../../../utilities/localStorage';
 
 export const KEY = 'token';
-
 
 type UserCreate = {
   name?: string;

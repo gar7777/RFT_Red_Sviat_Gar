@@ -9,7 +9,7 @@ export const loadBoards = createAsyncThunk(LOAD_BOARDS, async () => {
   const data = await fetch(url, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${getTokenFromLS}`,
+      Authorization: `Bearer ${getTokenFromLS()}`,
     },
   });
   const json = await data.json();
@@ -18,13 +18,13 @@ export const loadBoards = createAsyncThunk(LOAD_BOARDS, async () => {
 });
 
 export const createBoard = createAsyncThunk(CREATE_BOARD, async (dataBoard: TBoardCreate) => {
-  console.log(getToken());
+  console.log(dataBoard);
   const url = `${API_URL}/boards`;
   const data = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
-      Authorization: `Bearer ${getTokenFromLS}`,
+      Authorization: `Bearer ${getTokenFromLS()}`,
     },
     body: JSON.stringify(dataBoard),
   });
@@ -38,7 +38,7 @@ export const deleteBoard = createAsyncThunk(DELETE_BOARD, async (id: IBoard['id'
   const data = await fetch(url, {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${getTokenFromLS}`,
+      Authorization: `Bearer ${getTokenFromLS()}`,
     },
   });
   const json = await data.json();
@@ -53,7 +53,7 @@ export const updateBoard = createAsyncThunk(UPDATE_BOARD, async (boardUpdate: IB
     method: 'PUT',
     headers: {
       'Content-type': 'application/json',
-      Authorization: `Bearer ${getTokenFromLS}`,
+      Authorization: `Bearer ${getTokenFromLS()}`,
     },
     body: JSON.stringify({ title, description }),
   });

@@ -5,24 +5,16 @@ import {
   CREATE_COLUMN,
   DELETE_COLUMN,
   LOAD_COLUMNS,
-  UPDATE_COLUMN,
+  // UPDATE_COLUMN,
 } from '../actions/columns.actions';
-// import { IBoard, TBoardCreate } from '../types/boards.type';
+import { ICreateColumn, IDeleteColumn } from '../types/columns.type';
 
-interface IDataColumn {
-  id: string;
-  title: string;
-  description: string;
-}
-
-const boardId = 2;
-
-export const loadColumns = createAsyncThunk(LOAD_COLUMNS, async () => {
+export const loadColumns = createAsyncThunk(LOAD_COLUMNS, async (boardId: string) => {
   const url = `${API_URL}/boards/${boardId}/columns`;
   const data = await fetch(url, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${getTokenFromLS}`,
+      Authorization: `Bearer ${getTokenFromLS()}`,
     },
   });
   const json = await data.json();
@@ -30,33 +22,42 @@ export const loadColumns = createAsyncThunk(LOAD_COLUMNS, async () => {
   return json;
 });
 
-export const createColumn = createAsyncThunk(CREATE_COLUMN, async (dataBoard: IDataColumn) => {
-  const url = `${API_URL}/boards`;
-  const data = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
-      Authorization: `Bearer ${getTokenFromLS}`,
-    },
-    body: JSON.stringify(dataBoard),
-  });
-  const json = await data.json();
+export const createColumn = createAsyncThunk(
+  CREATE_COLUMN,
+  async ({ title, boardId }: ICreateColumn) => {
+    const url = `${API_URL}/boards/${boardId}/columns`;
+    const body = {
+      title: title,
+    };
+    const data = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${getTokenFromLS()}`,
+      },
+      body: JSON.stringify(body),
+    });
+    const json = await data.json();
 
-  return json;
-});
+    return json;
+  }
+);
 
-export const deleteColumn = createAsyncThunk(DELETE_COLUMN, async (id: string) => {
-  const url = `${API_URL}/boards/${id}`;
-  const data = await fetch(url, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${getTokenFromLS}`,
-    },
-  });
-  const json = await data.json();
+export const deleteColumn = createAsyncThunk(
+  DELETE_COLUMN,
+  async ({ id, boardId }: IDeleteColumn) => {
+    const url = `${API_URL}/boards/${boardId}/columns/${id}`;
+    const data = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${getTokenFromLS()}`,
+      },
+    });
+    const json = await data.json();
 
-  return json;
-});
+    return json;
+  }
+);
 
 // export const updateColumn = createAsyncThunk(UPDATE_COLUMN, async (boardUpdate: IBoard) => {
 //   const { id, title, description } = boardUpdate;

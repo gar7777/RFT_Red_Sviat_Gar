@@ -13,6 +13,7 @@ interface IColumnsState {
   isLoading: boolean;
   error: string;
   isEditing: boolean;
+  currentBoard: string;
 }
 
 const initialState: IColumnsState = {
@@ -20,6 +21,7 @@ const initialState: IColumnsState = {
   isLoading: false,
   error: '',
   isEditing: false,
+  currentBoard: '',
 };
 
 const columnsSlice = createSlice({
@@ -38,7 +40,7 @@ const columnsSlice = createSlice({
     builder.addCase(loadColumns.rejected, (state, action) => {
       state.isLoading = false;
       state.columns = [];
-      state.error = action.error.message || '';
+      state.error = action.error.message || 'Some error ocurred';
     });
     builder.addCase(createColumn.pending, (state) => {
       state.isLoading = true;
@@ -49,7 +51,7 @@ const columnsSlice = createSlice({
     });
     builder.addCase(createColumn.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message || '';
+      state.error = action.error.message || 'Some error ocurred';
     });
     builder.addCase(deleteColumn.pending, (state) => {
       state.isLoading = true;
@@ -60,7 +62,7 @@ const columnsSlice = createSlice({
     });
     builder.addCase(deleteColumn.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message || '';
+      state.error = action.error.message || 'Some error ocurred';
     });
     // builder.addCase(updateColumn.pending, (state) => {
     //   state.isLoading = true;

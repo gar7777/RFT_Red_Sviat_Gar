@@ -15,15 +15,22 @@ import { IColumn, IDeleteColumn, ICreateColumn } from '../../store/columns/types
 
 function Board() {
   const params = useParams();
+  const dispatch = useAppDispatch();
   const { boards } = useAppSelector((state: RootState) => state.boards);
   const currentBoard = boards.find((board: IBoard) => board.id === params.board);
-  const boardId = currentBoard?.id as string;
 
-  const dispatch = useAppDispatch();
+  const boardId = currentBoard?.id || localStorage.getItem('currentBoard') || '';
 
   const [addColumnModal, setAddColumnModal] = useState(false);
   // const [addTaskModal, setAddTaskModal] = useState(false);
   // const [currentColumnId, setCurrenColumnId] = useState('');
+
+  useEffect(() => {
+    dispatch(loadColumns(boardId));
+    return () => {
+      localStorage.setItem('currentBoard', boardId);
+    };
+  }, []);
 
   const handleAddColumn = (): void => {
     setAddColumnModal(true);
@@ -31,14 +38,10 @@ function Board() {
 
   const { columns } = useAppSelector((state) => state.columns);
 
-  useEffect(() => {
-    dispatch(loadColumns(boardId));
-  }, [currentBoard]);
-
   const addColumn = async ({ title }: IColumn) => {
     const columnData: ICreateColumn = {
       title: title,
-      boardId: currentBoard?.id,
+      boardId: boardId,
     };
     await dispatch(createColumn(columnData));
     await dispatch(loadColumns(boardId));
@@ -48,7 +51,7 @@ function Board() {
   const handleDeleteColumn = async (id: string): Promise<void> => {
     const deleteData: IDeleteColumn = {
       id: id,
-      boardId: currentBoard?.id as string,
+      boardId: boardId,
     };
     await dispatch(deleteColumn(deleteData));
     await dispatch(loadColumns(boardId));

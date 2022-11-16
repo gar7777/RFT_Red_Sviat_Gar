@@ -5,7 +5,7 @@ import { createColumn, deleteColumn, loadColumns } from '../thunks/columns.thunk
 interface IColumn {
   id: string;
   title: string;
-  description: string;
+  order: number;
 }
 
 interface IColumnsState {

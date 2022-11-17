@@ -6,5 +6,5 @@ export interface IBoardsState {
   isLoading: boolean;
   error?: string;
   isEditing: boolean;
-  inputText: string;
+  searchQuery: string;
 }

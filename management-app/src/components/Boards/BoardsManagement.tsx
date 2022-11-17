@@ -20,18 +20,23 @@ export default function BoardsManagement() {
   const [currentBoard, setCurrentBoard] = React.useState<IBoard | null>(null);
   const [boardsToShow, setBoardsToShow] = React.useState<IBoard[]>([]);
 
-  const { boards, inputText, filteredBoards } = useAppSelector((state: RootState) => state.boards);
+  const { boards, searchQuery, filteredBoards } = useAppSelector(
+    (state: RootState) => state.boards
+  );
 
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    if (inputText.length > 0) {
+    dispatch(loadBoards());
+  }, []);
+
+  React.useEffect(() => {
+    if (searchQuery.length > 0) {
       setBoardsToShow(filteredBoards);
     } else {
       setBoardsToShow(boards);
     }
-    dispatch(loadBoards());
-  }, []);
+  }, [searchQuery, filteredBoards, boards]);
 
   return (
     <React.Fragment>

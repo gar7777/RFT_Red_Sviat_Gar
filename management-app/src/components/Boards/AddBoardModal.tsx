@@ -8,7 +8,6 @@ import { useAppDispatch } from '../../store/hooks';
 import { useForm, FieldValues } from 'react-hook-form';
 import { IBoard, TBoardCreate } from '../../store/boards/types/boards.type';
 import { Typography } from '@mui/material';
-import { validationAlertStyles } from '../../constants/mui-styles';
 
 const style = {
   position: 'absolute',
@@ -60,7 +59,6 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
     } else {
       await dispatch(createBoard(data as TBoardCreate));
     }
-
     reset();
     handleClose();
     dispatch(loadBoards());
@@ -89,12 +87,12 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
               label="title"
               variant="standard"
               {...register('title', {
-                required: 'title must be more than 3 symbols',
-                minLength: { value: 3, message: 'title must be more than 3 symbols' },
+                required: 'title must be filled',
+                minLength: { value: 3, message: 'at least 3 symbols' },
               })}
             />
             {errors.title && (
-              <Typography component="p" align="center" variant="caption" sx={validationAlertStyles}>
+              <Typography component="p" align="center" variant="caption" style={{ color: 'red' }}>
                 {errors.title.message as string}
               </Typography>
             )}
@@ -103,10 +101,16 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
               label="description"
               placeholder="description"
               {...register('description', {
-                required: 'Please, enter description',
+                required: 'description must be filled',
+                minLength: { value: 3, message: 'at least 3 symbols' },
               })}
               multiline
             />
+            {errors.description && (
+              <Typography component="p" align="center" variant="caption" style={{ color: 'red' }}>
+                {errors.description.message as string}
+              </Typography>
+            )}
             <Button type="submit" variant="outlined" size="small">
               {isEditing ? 'Edit' : 'Create'}
             </Button>

@@ -6,9 +6,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import overlayStyles from '../scss/Overlay.module.scss';
 import formStyles from '../scss/Form.module.scss';
 import typographyStyles from '../scss/Typography.module.scss';
+import { IColumn } from '../../store/columns/types/columns.type';
 
 interface IProps {
-  addColumn: (data: IData) => void;
+  addColumn: (data: IColumn) => void;
   closeColumnModal: () => void;
 }
 
@@ -47,6 +48,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
               })}
               autoComplete="Title"
               className={formStyles.validatedInput}
+              autoFocus
             />
             {errors.title && (
               <Typography
@@ -59,7 +61,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
               </Typography>
             )}
           </Box>
-          <Box className={formStyles.labelWrapper}>
+          {/* <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
               required
@@ -84,7 +86,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
                 {errors.description.message as string}
               </Typography>
             )}
-          </Box>
+          </Box> */}
           <Button variant="contained" type="submit" fullWidth>
             Add New Column
           </Button>

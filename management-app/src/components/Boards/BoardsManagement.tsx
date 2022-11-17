@@ -12,7 +12,6 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { RootState } from '../../store/store';
 import { IBoard } from '../../store/boards/types/boards.type';
-import { searchByTitle } from '../../store/boards/reducers/boards.slice';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);

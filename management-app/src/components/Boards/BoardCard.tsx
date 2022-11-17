@@ -24,7 +24,7 @@ export default function BoardCard({
 }: IBoardCard) {
   return (
     <Card sx={{ maxWidth: 250 }}>
-      <Link to="/boards/board" style={{ textDecoration: 'none' }}>
+      <Link to={`/boards/${id}`} style={{ textDecoration: 'none' }}>
         <CardContent>
           <Typography gutterBottom variant="h4" component="div">
             {title}

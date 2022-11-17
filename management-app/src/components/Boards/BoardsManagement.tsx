@@ -12,18 +12,26 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { RootState } from '../../store/store';
 import { IBoard } from '../../store/boards/types/boards.type';
+import { searchByTitle } from '../../store/boards/reducers/boards.slice';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
   const [currentBoard, setCurrentBoard] = React.useState<IBoard | null>(null);
+  const [boardsToShow, setBoardsToShow] = React.useState<IBoard[]>([]);
 
-  const { boards } = useAppSelector((state: RootState) => state.boards);
-  console.log(boards);
+
+  const { boards, inputText, filteredBoards } = useAppSelector((state: RootState) => state.boards);
+
 
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
+    if (inputText.length > 0) {
+      setBoardsToShow(filteredBoards);
+    } else {
+      setBoardsToShow(boards);
+    }
     dispatch(loadBoards());
   }, []);
 
@@ -51,8 +59,8 @@ export default function BoardsManagement() {
             justifyContent="flex-start"
             alignItems="center"
           >
-            {boards.length !== 0 ? (
-              boards.map((board) => (
+            {boardsToShow.length !== 0 ? (
+              boardsToShow.map((board) => (
                 <Grid item xs={3} key={board.id}>
                   <BoardCard
                     title={board.title}

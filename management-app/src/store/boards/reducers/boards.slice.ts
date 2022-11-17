@@ -8,7 +8,7 @@ const initialState: IBoardsState = {
   isLoading: false,
   error: '',
   isEditing: false,
-  inputText: '',
+  searchQuery: '',
 };
 
 const boardsSlice = createSlice({
@@ -16,11 +16,11 @@ const boardsSlice = createSlice({
   initialState,
   reducers: {
     setSearchQuery: (state, action) => {
-      return { ...state, inputText: action.payload.toLocaleLowerCase() };
+      return { ...state, searchQuery: action.payload.toLocaleLowerCase() };
     },
     searchByTitle: (state) => {
       const filteredBoards = state.boards.filter(
-        (board) => board.title?.toLocaleLowerCase().indexOf(state.inputText) != -1
+        (board) => board.title?.toLocaleLowerCase().indexOf(state.searchQuery) != -1
       );
       return { ...state, filteredBoards: filteredBoards };
     },

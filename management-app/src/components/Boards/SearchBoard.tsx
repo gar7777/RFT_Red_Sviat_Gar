@@ -2,8 +2,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import SearchIcon from '@mui/icons-material/Search';
-import { IconButton } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../store/hooks';
 import { setSearchQuery, searchByTitle } from '../../store/boards/reducers/boards.slice';

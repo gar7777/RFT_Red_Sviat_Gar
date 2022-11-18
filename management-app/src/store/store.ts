@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './authorization/auth.slice';
-import userSlice from './authorization/user.slice';
+import userSlice from './user/reducers/user.slice';
 import boardsSlice from './boards/reducers/boards.slice';
 import columnsSlice from './columns/reducers/columns.slice';
 

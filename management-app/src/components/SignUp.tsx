@@ -5,7 +5,7 @@ import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui
 import formStyles from './scss/Form.module.scss';
 import typographyStyles from './scss/Typography.module.scss';
 import mainStyles from './scss/MainContainer.module.scss';
-import { setUserData } from '../store/authorization/user.slice';
+//import { setUserData } from '../store/user/reducers/user.slice';
 import { createUser } from '../store/authorization/api/api';
 import { useAppDispatch } from '../store/hooks';
 
@@ -22,7 +22,7 @@ function SignUp() {
   const formSubmit = async (data: FieldValues) => {
     const { name, login, password } = data;
     const user = createUser({ name, login, password });
-    dispatch(setUserData(await user));
+    //dispatch(setUserData(await user));
     reset();
     navigate('/signin');
   };

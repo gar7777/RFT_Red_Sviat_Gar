@@ -1,7 +1,5 @@
 import { API_URL } from '../../../constants/api';
 
-export const KEY = 'token';
-
 type UserCreate = {
   name?: string;
   login: string;

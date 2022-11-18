@@ -17,15 +17,25 @@ export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
   const [currentBoard, setCurrentBoard] = React.useState<IBoard | null>(null);
+  const [boardsToShow, setBoardsToShow] = React.useState<IBoard[]>([]);
 
-  const { boards } = useAppSelector((state: RootState) => state.boards);
-  console.log(boards);
+  const { boards, searchQuery, filteredBoards } = useAppSelector(
+    (state: RootState) => state.boards
+  );
 
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     dispatch(loadBoards());
   }, []);
+
+  React.useEffect(() => {
+    if (searchQuery.length > 0) {
+      setBoardsToShow(filteredBoards);
+    } else {
+      setBoardsToShow(boards);
+    }
+  }, [searchQuery, filteredBoards, boards]);
 
   return (
     <React.Fragment>
@@ -51,8 +61,8 @@ export default function BoardsManagement() {
             justifyContent="flex-start"
             alignItems="center"
           >
-            {boards.length !== 0 ? (
-              boards.map((board) => (
+            {boardsToShow.length !== 0 ? (
+              boardsToShow.map((board) => (
                 <Grid item xs={3} key={board.id}>
                   <BoardCard
                     title={board.title}

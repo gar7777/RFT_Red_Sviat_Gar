@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
 import formStyles from './scss/Form.module.scss';
 import typographyStyles from './scss/Typography.module.scss';
 import mainStyles from './scss/MainContainer.module.scss';
-import { deleteUser, updateUser } from '../store/user/thunks/loadUser.thunks';
-import { useAppDispatch } from '../store/hooks';
+import { deleteUser, loadUser, updateUser } from '../store/user/thunks/loadUser.thunks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { logoutUser } from '../store/authorization/auth.slice';
 import { setTokenToLS } from '../utilities/getToken';
 import { useNavigate } from 'react-router';
+import { RootState } from '../store/store';
+import { setEmptyUser } from '../store/user/reducers/user.slice';
 
 function Profile() {
+  const { user } = useAppSelector((state: RootState) => state.user);
+  const { name, login } = user;
   const navigate = useNavigate();
   const [isDirty, setIsDirty] = useState(false);
+  const [nameValue, setNameValue] = useState(name);
+  const [loginValue, setLoginValue] = useState(login);
   const dispatch = useAppDispatch();
 
   const {
@@ -43,14 +49,24 @@ function Profile() {
         password: data.password,
       })
     );
+    await dispatch(loadUser());
+    navigate('/boards');
   };
 
   const deleteHandler = async () => {
     await dispatch(deleteUser());
     dispatch(logoutUser());
     setTokenToLS('');
-    reset();
+    dispatch(setEmptyUser());
     navigate('/');
+  };
+
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNameValue(event.target.value);
+  };
+
+  const handleLoginChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setLoginValue(event.target.value);
   };
 
   return (
@@ -63,15 +79,18 @@ function Profile() {
         <Box component="form" sx={{ mt: 1 }}>
           <Box className={formStyles.labelWrapper}>
             <TextField
+              type="input"
               margin="normal"
               fullWidth
               id="name"
               label="Name"
+              value={nameValue}
               {...register('name', {
                 minLength: { value: 2, message: 'Name must be more than 2 symbols' },
               })}
               autoComplete="Name"
               className={formStyles.validatedInput}
+              onChange={handleNameChange}
             />
             {errors.name && (
               <Typography
@@ -90,11 +109,13 @@ function Profile() {
               fullWidth
               id="login"
               label="Login"
+              value={loginValue}
               {...register('login', {
                 minLength: { value: 3, message: 'Login must be more than 3 symbols' },
               })}
               autoComplete="Login"
               className={formStyles.validatedInput}
+              onChange={handleLoginChange}
             />
             {errors.login && (
               <Typography

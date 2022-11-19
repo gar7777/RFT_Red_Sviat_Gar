@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { deleteUser, updateUser } from '../thunks/loadUser.thunks';
+import { deleteUser, loadUser, updateUser } from '../thunks/loadUser.thunks';
 import { IUserState } from '../types/types';
 
 const initialState: IUserState = {
   user: {
+    id: '',
     name: '',
     login: '',
     password: '',
@@ -15,9 +16,25 @@ const initialState: IUserState = {
 
 const userSlice = createSlice({
   name: 'user',
-  initialState,
-  reducers: {},
+  initialState: initialState,
+  reducers: {
+    setEmptyUser() {
+      return initialState;
+    },
+  },
   extraReducers(builder) {
+    builder.addCase(loadUser.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(loadUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.isLoading = false;
+      state.error = '';
+    });
+    builder.addCase(loadUser.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message;
+    });
     builder.addCase(deleteUser.pending, (state) => {
       state.isLoading = true;
     });
@@ -43,5 +60,5 @@ const userSlice = createSlice({
   },
 });
 
-export const {} = userSlice.actions;
+export const { setEmptyUser } = userSlice.actions;
 export default userSlice.reducer;

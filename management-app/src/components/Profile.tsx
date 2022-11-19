@@ -25,7 +25,6 @@ function Profile() {
     register,
     handleSubmit,
     watch,
-    reset,
     formState: { errors },
   } = useForm();
 

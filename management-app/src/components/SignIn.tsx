@@ -5,11 +5,14 @@ import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui
 import formStyles from './scss/Form.module.scss';
 import typographyStyles from './scss/Typography.module.scss';
 import mainStyles from './scss/MainContainer.module.scss';
-import { logInUser } from '../store/authorization/api/api';
-import { useAppDispatch } from '../store/hooks';
-import { loginUser } from '../store/authorization/auth.slice';
+//import { logInUser } from '../store/authorization/thunks/authorization.thunks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+//import { loginUser } from '../store/authorization/auth.slice';
 import { setTokenToLS } from '../utilities/getToken';
 import { loadUser } from '../store/user/thunks/loadUser.thunks';
+import { signIn } from '../store/authorization/thunks/authorization.thunks';
+import { RootState } from '../store/store';
+import { loginUser } from '../store/authorization/auth.slice';
 
 function SignIn() {
   const navigate = useNavigate();
@@ -23,9 +26,7 @@ function SignIn() {
 
   const formSubmit = async (data: FieldValues) => {
     const { login, password } = data;
-    const token = logInUser({ login, password });
-    dispatch(loginUser(await token));
-    setTokenToLS(await token);
+    await dispatch(signIn({ login, password }));
     reset();
     navigate('/boards');
     dispatch(loadUser());

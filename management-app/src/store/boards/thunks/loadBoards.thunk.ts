@@ -56,6 +56,5 @@ export const updateBoard = createAsyncThunk(UPDATE_BOARD, async (boardUpdate: IB
     body: JSON.stringify({ title, description }),
   });
   const json = await data.json();
-  
   return json;
 });

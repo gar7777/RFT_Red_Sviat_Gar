@@ -49,7 +49,8 @@ const userSlice = createSlice({
     builder.addCase(updateUser.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(updateUser.fulfilled, (state) => {
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.user = action.payload;
       state.isLoading = false;
       state.error = '';
     });

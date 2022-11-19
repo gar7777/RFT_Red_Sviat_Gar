@@ -15,7 +15,7 @@ import {
   ICreateColumn,
   ILoadedColumn,
 } from '../../store/columns/types/columns.type';
-import { setCurrentBoard } from '../../store/columns/reducers/columns.slice';
+import DeleteConfirmModal from '../DeleteConfirmModal';
 
 function Board() {
   const params = useParams();
@@ -25,17 +25,10 @@ function Board() {
   const boardId = currentBoard?.id || localStorage.getItem('currentBoard') || '';
   const boardTitle = currentBoard?.title || localStorage.getItem('currentBoardTitle') || '';
   const [addColumnModal, setAddColumnModal] = useState(false);
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
+  const [deletedColumn, setDeletedColumn] = useState('');
   const { columns } = useAppSelector((state: RootState) => state.columns);
   const [currentColumns, setCurrentColumns] = useState<ILoadedColumn[]>([]);
-
-  useEffect(() => {
-    dispatch(loadColumns(boardId));
-    setCurrentColumns([...columns]);
-    return () => {
-      localStorage.setItem('currentBoard', boardId);
-      localStorage.setItem('currentBoardTitle', boardTitle);
-    };
-  }, []);
 
   const handleAddColumn = (): void => {
     setAddColumnModal(true);
@@ -58,11 +51,24 @@ function Board() {
     };
     await dispatch(deleteColumn(deleteData));
     await dispatch(loadColumns(boardId));
+    setDeleteConfirmModal(false);
   };
 
   const closeColumnModal = (): void => {
     setAddColumnModal(false);
   };
+
+  useEffect(() => {
+    setCurrentColumns([...columns]);
+    return () => {
+      localStorage.setItem('currentBoard', boardId);
+      localStorage.setItem('currentBoardTitle', boardTitle);
+    };
+  }, [addColumnModal, deleteConfirmModal]);
+
+  useEffect(() => {
+    dispatch(loadColumns(boardId));
+  }, []);
 
   return (
     <>
@@ -84,12 +90,20 @@ function Board() {
                 title={title}
                 boardId={boardId}
                 order={order}
-                handleDeleteColumn={handleDeleteColumn}
+                setDeletedColumn={setDeletedColumn}
+                setDeleteConfirmModal={setDeleteConfirmModal}
               />
             ))}
         </Stack>
         {addColumnModal && (
           <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />
+        )}
+        {deleteConfirmModal && (
+          <DeleteConfirmModal
+            setDeleteConfirmModal={setDeleteConfirmModal}
+            deletedColumn={deletedColumn}
+            handleDeleteColumn={handleDeleteColumn}
+          />
         )}
       </Box>
     </>

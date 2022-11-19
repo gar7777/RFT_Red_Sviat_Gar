@@ -1,5 +1,5 @@
 import { Button, Card, Stack, TextField, Typography, Box } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { IData, ITask } from '../../types/board-types';
 import Task from './Task';
 import AddCardIcon from '@mui/icons-material/AddCard';
@@ -15,16 +15,19 @@ import AddTaskModal from './AddTaskModal';
 import { ILoadedColumnTasks, ITaskFull } from '../../store/tasks/types/tasks.types';
 import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
+import { setDefaultResultOrder } from 'dns';
+import DeleteConfirmModal from '../DeleteConfirmModal';
 
 interface IProps {
   id: string;
   title: string;
   order: number;
   boardId: string;
-  handleDeleteColumn: (id: string) => void;
+  setDeletedColumn: Dispatch<SetStateAction<string>>;
+  setDeleteConfirmModal: Dispatch<SetStateAction<boolean>>;
 }
 
-function Column({ id, title, boardId, order, handleDeleteColumn }: IProps) {
+function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmModal }: IProps) {
   const [isEditingTitle, setIsEdidingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
   const [addTaskModal, setAddTaskModal] = useState(false);
@@ -67,17 +70,21 @@ function Column({ id, title, boardId, order, handleDeleteColumn }: IProps) {
   useEffect(() => {
     const getTasks = async (boardId: string, columnId: string) => {
       const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
-      const data = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${getTokenFromLS()}`,
-        },
-      });
-      const json = await data.json();
-      setTasks(json);
+      try {
+        const data = await fetch(url, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${getTokenFromLS()}`,
+          },
+        });
+        const json = await data.json();
+        setTasks(json);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getTasks(boardId, id);
-  }, [handleEditTitle, addTask]);
+  }, [addTaskModal]);
 
   return (
     <>
@@ -124,7 +131,12 @@ function Column({ id, title, boardId, order, handleDeleteColumn }: IProps) {
           <AddCardIcon /> ADD NEW TASK
         </Button>
         <Button>
-          <DeleteForeverIcon onClick={() => handleDeleteColumn(id)} />
+          <DeleteForeverIcon
+            onClick={() => {
+              setDeletedColumn(id);
+              setDeleteConfirmModal(true);
+            }}
+          />
         </Button>
       </Card>
       {addTaskModal && <AddTaskModal addTask={addTask} closeTaskModal={closeTaskModal} />}

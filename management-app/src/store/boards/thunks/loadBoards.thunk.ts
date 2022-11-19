@@ -18,7 +18,6 @@ export const loadBoards = createAsyncThunk(LOAD_BOARDS, async () => {
 });
 
 export const createBoard = createAsyncThunk(CREATE_BOARD, async (dataBoard: TBoardCreate) => {
-
   const url = `${API_URL}/boards`;
   const data = await fetch(url, {
     method: 'POST',
@@ -35,15 +34,14 @@ export const createBoard = createAsyncThunk(CREATE_BOARD, async (dataBoard: TBoa
 
 export const deleteBoard = createAsyncThunk(DELETE_BOARD, async (id: IBoard['id']) => {
   const url = `${API_URL}/boards/${id}`;
-  const data = await fetch(url, {
+  await fetch(url, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${getTokenFromLS()}`,
     },
   });
-  const json = await data.json();
 
-  return json;
+  return 'OK';
 });
 
 export const updateBoard = createAsyncThunk(UPDATE_BOARD, async (boardUpdate: IBoard) => {
@@ -58,8 +56,6 @@ export const updateBoard = createAsyncThunk(UPDATE_BOARD, async (boardUpdate: IB
     body: JSON.stringify({ title, description }),
   });
   const json = await data.json();
-
-  console.log(boardUpdate);
 
   return json;
 });

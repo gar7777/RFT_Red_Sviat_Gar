@@ -11,6 +11,7 @@ import SignUp from '../SignUp';
 import Board from '../Board/Board';
 import { Provider } from 'react-redux';
 import { store } from '../../store/store';
+import SnackBar from '../SnackBar/SnackBar';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
+        <SnackBar />
       </Provider>
     </>
   );

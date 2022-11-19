@@ -27,7 +27,7 @@ export default function BoardsManagement() {
 
   React.useEffect(() => {
     dispatch(loadBoards());
-  }, []);
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (searchQuery.length > 0) {

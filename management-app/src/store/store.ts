@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './authorization/auth.slice';
 import userSlice from './authorization/user.slice';
+import { boardlistenerMiddleWare } from './boards/listeners/listeners.boards';
 import boardsSlice from './boards/reducers/boards.slice';
 import columnsSlice from './columns/reducers/columns.slice';
 import snackSlice from './snack/reducers/snack.slice';
@@ -13,6 +14,8 @@ export const store = configureStore({
     user: userSlice,
     snack: snackSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend(boardlistenerMiddleWare.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

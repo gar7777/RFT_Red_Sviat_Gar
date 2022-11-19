@@ -1,5 +1,7 @@
 import { Card } from '@mui/material';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import { useAppDispatch } from '../../store/hooks';
+import { setCurrentTask } from '../../store/tasks/reducers/tasks.slice';
 import taskStyles from './Task.module.scss';
 
 interface IProps {
@@ -19,11 +21,25 @@ function Task({
   setUpdateTaskModal,
   setDeletedTaskId,
 }: IProps) {
+  const dispatch = useAppDispatch();
   return (
     <Card className={taskStyles.task__container}>
       <h2>{title}</h2>
       <p>{description}</p>
-      <button onClick={() => setUpdateTaskModal(true)}>Update</button>
+      <button
+        onClick={() => {
+          setUpdateTaskModal(true);
+          dispatch(
+            setCurrentTask({
+              id,
+              title,
+              description,
+            })
+          );
+        }}
+      >
+        Update
+      </button>
       <button
         onClick={() => {
           setDeleteTaskModal(true);

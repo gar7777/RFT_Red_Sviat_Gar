@@ -15,7 +15,7 @@ import {
   ICreateColumn,
   ILoadedColumn,
 } from '../../store/columns/types/columns.type';
-import DeleteConfirmModal from '../DeleteConfirmModal';
+import DeleteConfirmModal from './DeleteConfirmModal';
 
 function Board() {
   const params = useParams();

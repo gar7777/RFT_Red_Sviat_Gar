@@ -15,8 +15,8 @@ import AddTaskModal from './AddTaskModal';
 import { ITaskFull } from '../../store/tasks/types/tasks.types';
 import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
-import DeleteTaskModal from '../DeleteTaskModal';
-import UpdateTaskModal from '../UpdateTaskModal';
+import DeleteTaskModal from './DeleteTaskModal';
+import UpdateTaskModal from './UpdateTaskModal';
 
 interface IProps {
   id: string;
@@ -34,6 +34,7 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
   const [deleteTaskModal, setDeleteTaskModal] = useState(false);
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
   const [deletedTaskId, setDeletedTaskId] = useState('');
+  // const [updatedTaskId, setUpdatedTaskId] = useState('');
   const [tasks, setTasks] = useState<ITaskFull[]>([]);
   const dispatch = useAppDispatch();
   const {
@@ -98,7 +99,7 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
       }
     };
     getTasks(boardId, id);
-  }, [addTaskModal, deleteTaskModal]);
+  }, [addTaskModal, deleteTaskModal, updateTaskModal]);
 
   return (
     <>
@@ -168,7 +169,9 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
           setDeleteTaskModal={setDeleteTaskModal}
         />
       )}
-      {updateTaskModal && <UpdateTaskModal />}
+      {updateTaskModal && (
+        <UpdateTaskModal setUpdateTaskModal={setUpdateTaskModal} boardId={boardId} columnId={id} />
+      )}
     </>
   );
 }

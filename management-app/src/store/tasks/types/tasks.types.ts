@@ -25,3 +25,11 @@ export interface IDeleteTask {
   columnId: string;
   taskId: string;
 }
+
+export interface IUpdateTask {
+  id: string;
+  title: string;
+  description: string;
+  boardId: string;
+  columnId: string;
+}

@@ -19,3 +19,9 @@ export interface ILoadedColumnTasks {
   order: number;
   tasks: ITaskFull[];
 }
+
+export interface IDeleteTask {
+  boardId: string;
+  columnId: string;
+  taskId: string;
+}

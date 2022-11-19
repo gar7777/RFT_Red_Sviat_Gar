@@ -8,15 +8,15 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getColumnTasks, updateColumn } from '../../store/columns/thunks/columns.thunks';
-import { createTask, loadTasks } from '../../store/tasks/thunks/tasks.thunks';
+import { useAppDispatch } from '../../store/hooks';
+import { updateColumn } from '../../store/columns/thunks/columns.thunks';
+import { createTask, deleteTask } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
-import { ILoadedColumnTasks, ITaskFull } from '../../store/tasks/types/tasks.types';
+import { ITaskFull } from '../../store/tasks/types/tasks.types';
 import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
-import { setDefaultResultOrder } from 'dns';
-import DeleteConfirmModal from '../DeleteConfirmModal';
+import DeleteTaskModal from '../DeleteTaskModal';
+import UpdateTaskModal from '../UpdateTaskModal';
 
 interface IProps {
   id: string;
@@ -31,6 +31,9 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
   const [isEditingTitle, setIsEdidingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
   const [addTaskModal, setAddTaskModal] = useState(false);
+  const [deleteTaskModal, setDeleteTaskModal] = useState(false);
+  const [updateTaskModal, setUpdateTaskModal] = useState(false);
+  const [deletedTaskId, setDeletedTaskId] = useState('');
   const [tasks, setTasks] = useState<ITaskFull[]>([]);
   const dispatch = useAppDispatch();
   const {
@@ -51,6 +54,17 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentTitle(e.target.value);
+  };
+
+  const handleDeleteTask = async () => {
+    const deleteData = {
+      boardId: boardId,
+      columnId: id,
+      taskId: deletedTaskId,
+    };
+    await dispatch(deleteTask(deleteData));
+    setDeleteTaskModal(false);
+    setDeletedTaskId('');
   };
 
   const closeTaskModal = (): void => {
@@ -84,7 +98,7 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
       }
     };
     getTasks(boardId, id);
-  }, [addTaskModal]);
+  }, [addTaskModal, deleteTaskModal]);
 
   return (
     <>
@@ -124,7 +138,15 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
         )}
         <Box className={styles.tasks_wrapper}>
           {tasks.map(({ id, title, description }) => (
-            <Task key={id} title={title} description={description} />
+            <Task
+              key={id}
+              title={title}
+              description={description}
+              id={id}
+              setDeleteTaskModal={setDeleteTaskModal}
+              setUpdateTaskModal={setUpdateTaskModal}
+              setDeletedTaskId={setDeletedTaskId}
+            />
           ))}
         </Box>
         <Button onClick={handleAddTask}>
@@ -140,6 +162,13 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
         </Button>
       </Card>
       {addTaskModal && <AddTaskModal addTask={addTask} closeTaskModal={closeTaskModal} />}
+      {deleteTaskModal && (
+        <DeleteTaskModal
+          handleDeleteTask={handleDeleteTask}
+          setDeleteTaskModal={setDeleteTaskModal}
+        />
+      )}
+      {updateTaskModal && <UpdateTaskModal />}
     </>
   );
 }

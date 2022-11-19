@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { API_URL } from '../../../constants/api';
 import { getTokenFromLS } from '../../../utilities/getToken';
 import { CREATE_TASK, DELETE_TASK, LOAD_TASKS, UPDATE_TASK } from '../actions/tasks.actions';
+import { IDeleteTask } from '../types/tasks.types';
 // import { ICreateColumn, IDeleteColumn, IUpdateColumn } from '../types/columns.type';
 
 interface ITaskCreateData {
@@ -53,21 +54,21 @@ export const createTask = createAsyncThunk(CREATE_TASK, async (taskCreateData: I
   return json;
 });
 
-// export const deleteColumn = createAsyncThunk(
-//   DELETE_TASK,
-//   async ({ id, boardId }: IDeleteColumn) => {
-//     const url = `${API_URL}/boards/${boardId}/columns/${id}`;
-//     const data = await fetch(url, {
-//       method: 'DELETE',
-//       headers: {
-//         Authorization: `Bearer ${getTokenFromLS()}`,
-//       },
-//     });
-//     const json = await data.json();
+export const deleteTask = createAsyncThunk(
+  DELETE_TASK,
+  async ({ boardId, columnId, taskId }: IDeleteTask) => {
+    const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`;
+    const data = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${getTokenFromLS()}`,
+      },
+    });
+    const json = await data.json();
 
-//     return json;
-//   }
-// );
+    return json;
+  }
+);
 
 // export const updateColumn = createAsyncThunk(
 //   UPDATE_TASK,

@@ -8,6 +8,7 @@ import mainStyles from './scss/MainContainer.module.scss';
 import { logInUser } from '../store/authorization/api/api';
 import { useAppDispatch } from '../store/hooks';
 import { loginUser } from '../store/authorization/auth.slice';
+import { setTokenToLS } from '../utilities/getToken';
 
 function SignIn() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ function SignIn() {
     const { login, password } = data;
     const token = logInUser({ login, password });
     dispatch(loginUser(await token));
+    setTokenToLS(await token);
     reset();
     navigate('/boards');
   };

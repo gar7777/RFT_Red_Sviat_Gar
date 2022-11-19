@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getTokenFromLS } from '../../utilities/getToken';
 
 interface AuthState {
   userToken: string;
 }
 
 const initAuthState: AuthState = {
-  userToken: '',
+  userToken: getTokenFromLS() as string,
 };
 
 const authSlice = createSlice({

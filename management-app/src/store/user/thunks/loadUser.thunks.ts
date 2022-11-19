@@ -1,0 +1,42 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { API_URL } from '../../../constants/api';
+import { getTokenFromLS } from '../../../utilities/getToken';
+import decodeJwt from '../../../utilities/jwtDecode';
+import { DELETE_USER, UPDATE_USER } from '../actions/user.actions';
+import { IUser } from '../types/types';
+
+export const deleteUser = createAsyncThunk(DELETE_USER, async () => {
+  const token = getTokenFromLS();
+  const id = decodeJwt(token as string);
+  const url = `${API_URL}/users/${id}`;
+  const data = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const json = await data.json();
+
+  return json;
+});
+
+export const updateUser = createAsyncThunk(UPDATE_USER, async (userUpdate: IUser) => {
+  const token = getTokenFromLS();
+  const id = decodeJwt(token as string);
+  const { name, login, password } = userUpdate;
+  const url = `${API_URL}/users/${id}`;
+  console.log(url + '\n' + token);
+  const data = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name, login, password }),
+  });
+  const json = await data.json();
+
+  console.log('thunk' + JSON.stringify(userUpdate));
+
+  return json;
+});

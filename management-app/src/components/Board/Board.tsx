@@ -1,88 +1,98 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CssBaseline, Stack, Button, Box } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import AddColumnModal from './AddColumnModal';
-import AddTaskModal from './AddTaskModal';
-import { IData, ITask } from '../../types/board-types';
+// import AddTaskModal from './AddTaskModal';
+// import { IData, ITask } from '../../types/board-types';
 import Column from './Column';
 import styles from './Board.module.scss';
-
-interface IBoard {
-  id: string;
-  title: string;
-  description: string;
-  tasks: ITask[];
-}
+import { useParams } from 'react-router';
+import { IBoard } from '../../store/boards/types/boards.type';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { RootState } from '../../store/store';
+import { createColumn, loadColumns, deleteColumn } from '../../store/columns/thunks/columns.thunks';
+import { IColumn, IDeleteColumn, ICreateColumn } from '../../store/columns/types/columns.type';
 
 function Board() {
-  const [columns, setColumns] = useState<IBoard[]>([]);
+  const params = useParams();
+  const { boards } = useAppSelector((state: RootState) => state.boards);
+  const currentBoard = boards.find((board: IBoard) => board.id === params.board);
+  const boardId = currentBoard?.id as string;
+
+  const dispatch = useAppDispatch();
+
   const [addColumnModal, setAddColumnModal] = useState(false);
-  const [addTaskModal, setAddTaskModal] = useState(false);
-  const [currentColumnId, setCurrenColumnId] = useState('');
+  // const [addTaskModal, setAddTaskModal] = useState(false);
+  // const [currentColumnId, setCurrenColumnId] = useState('');
 
   const handleAddColumn = (): void => {
     setAddColumnModal(true);
   };
 
-  const addColumn = ({ title, description }: IData): void => {
-    const id = Date.now().toString();
-    setColumns([...columns, { id: id, title: title, description: description, tasks: [] }]);
+  const { columns } = useAppSelector((state) => state.columns);
+
+  useEffect(() => {
+    dispatch(loadColumns(boardId));
+  }, [currentBoard]);
+
+  const addColumn = async ({ title }: IColumn) => {
+    const columnData: ICreateColumn = {
+      title: title,
+      boardId: currentBoard?.id,
+    };
+    await dispatch(createColumn(columnData));
+    await dispatch(loadColumns(boardId));
     setAddColumnModal(false);
   };
 
-  const addTask = ({ title, description }: IData): void => {
-    const currentColumn = columns.find(({ id }) => id === currentColumnId);
-    const id = Date.now().toString();
-    const currentTask = { title: title, description: description, id: id };
-    currentColumn?.tasks.push(currentTask);
-    setColumns([...columns]);
-    setAddTaskModal(false);
-  };
-
-  const deleteColumn = (id: string): void => {
-    setColumns(columns.filter((column) => column.id !== id));
+  const handleDeleteColumn = async (id: string): Promise<void> => {
+    const deleteData: IDeleteColumn = {
+      id: id,
+      boardId: currentBoard?.id as string,
+    };
+    await dispatch(deleteColumn(deleteData));
+    await dispatch(loadColumns(boardId));
   };
 
   const closeColumnModal = (): void => {
     setAddColumnModal(false);
   };
 
-  const closeTaskModal = (): void => {
-    setAddTaskModal(false);
-  };
+  // const closeTaskModal = (): void => {
+  //   setAddTaskModal(false);
+  // };
 
-  const handleAddTask = (id: string): void => {
-    setAddTaskModal(true);
-    setCurrenColumnId(id);
-  };
+  // const handleAddTask = (id: string): void => {
+  //   setAddTaskModal(true);
+  //   setCurrenColumnId(id);
+  // };
 
   return (
     <>
       <CssBaseline />
       <Stack className={styles.board_name__wrapper} direction="row">
-        <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>Board name</h2>
+        <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{currentBoard?.title}</h2>
         <Button onClick={handleAddColumn}>
           <AddBoxIcon /> ADD NEW COLUMN
         </Button>
       </Stack>
       <Box component="main" maxWidth="xs" className={styles['board__main-container']}>
         <Stack direction="row" spacing={2} sx={{ alignItems: 'start' }}>
-          {columns.map(({ id, title, description, tasks }) => (
+          {columns.map(({ id, title }) => (
             <Column
               key={id}
               id={id}
               title={title}
-              description={description}
-              tasks={tasks}
-              handleAddTask={handleAddTask}
-              deleteColumn={deleteColumn}
+              // tasks={tasks}
+              // handleAddTask={handleAddTask}
+              handleDeleteColumn={handleDeleteColumn}
             />
           ))}
         </Stack>
         {addColumnModal && (
           <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />
         )}
-        {addTaskModal && <AddTaskModal addTask={addTask} closeTaskModal={closeTaskModal} />}
+        {/* {addTaskModal && <AddTaskModal addTask={addTask} closeTaskModal={closeTaskModal} />} */}
       </Box>
     </>
   );

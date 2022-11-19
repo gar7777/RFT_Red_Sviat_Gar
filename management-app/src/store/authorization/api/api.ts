@@ -7,7 +7,6 @@ type UserCreate = {
 };
 
 export const createUser = async (user: UserCreate) => {
-  console.log(user);
   const url = `${API_URL}/signup`;
   const data = await fetch(url, {
     method: 'POST',

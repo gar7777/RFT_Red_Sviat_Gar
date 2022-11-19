@@ -6,5 +6,5 @@ export const getTokenFromLS = () => {
 };
 
 export const setTokenToLS = (value: string) => {
-  return setLocalStorage(TOKEN, value);
+  return setLocalStorage(TOKEN, value ? value : '');
 };

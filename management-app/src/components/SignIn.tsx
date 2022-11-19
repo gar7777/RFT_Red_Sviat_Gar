@@ -9,6 +9,7 @@ import { logInUser } from '../store/authorization/api/api';
 import { useAppDispatch } from '../store/hooks';
 import { loginUser } from '../store/authorization/auth.slice';
 import { setTokenToLS } from '../utilities/getToken';
+import { loadUser } from '../store/user/thunks/loadUser.thunks';
 
 function SignIn() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ function SignIn() {
     setTokenToLS(await token);
     reset();
     navigate('/boards');
+    dispatch(loadUser());
   };
 
   return (

@@ -4,6 +4,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { logoutUser } from '../../../store/authorization/auth.slice';
 import { useAppDispatch } from '../../../store/hooks';
+import { setEmptyUser } from '../../../store/user/reducers/user.slice';
 import { setTokenToLS } from '../../../utilities/getToken';
 
 export default function BtnLogOut() {
@@ -11,6 +12,7 @@ export default function BtnLogOut() {
 
   const handleClick = () => {
     dispatch(logoutUser());
+    dispatch(setEmptyUser());
     setTokenToLS('');
   };
 

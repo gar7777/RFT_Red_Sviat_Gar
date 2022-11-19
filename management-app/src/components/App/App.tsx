@@ -11,25 +11,25 @@ import SignUp from '../SignUp';
 import Board from '../Board/Board';
 import { Provider } from 'react-redux';
 import { store } from '../../store/store';
+import SnackBar from '../SnackBar/SnackBar';
 
 function App() {
   return (
     <>
-      <React.StrictMode>
-        <Provider store={store}>
-          <Header />
-          <Routes>
-            <Route path="/" element={<WelcomePage />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/boards" element={<BoardsManagement />} />
-            <Route path="/boards/:board" element={<Board />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Footer />
-        </Provider>
-      </React.StrictMode>
+      <Provider store={store}>
+        <Header />
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/boards" element={<BoardsManagement />} />
+          <Route path="/boards/:board" element={<Board />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+        <SnackBar />
+      </Provider>
     </>
   );
 }

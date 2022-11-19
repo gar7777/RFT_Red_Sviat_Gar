@@ -4,15 +4,27 @@ import { IBoardsState } from '../types/boardsState.type';
 
 const initialState: IBoardsState = {
   boards: [],
+  filteredBoards: [],
   isLoading: false,
   error: '',
   isEditing: false,
+  searchQuery: '',
 };
 
 const boardsSlice = createSlice({
   name: 'boards',
   initialState,
-  reducers: {},
+  reducers: {
+    setSearchQuery: (state, action) => {
+      return { ...state, searchQuery: action.payload.toLocaleLowerCase() };
+    },
+    searchByTitle: (state) => {
+      const filteredBoards = state.boards.filter(
+        (board) => board.title?.toLocaleLowerCase().indexOf(state.searchQuery) != -1
+      );
+      return { ...state, filteredBoards: filteredBoards };
+    },
+  },
   extraReducers(builder) {
     builder.addCase(loadBoards.pending, (state) => {
       state.isLoading = true;
@@ -63,5 +75,5 @@ const boardsSlice = createSlice({
   },
 });
 
-export const {} = boardsSlice.actions;
+export const { setSearchQuery, searchByTitle } = boardsSlice.actions;
 export default boardsSlice.reducer;

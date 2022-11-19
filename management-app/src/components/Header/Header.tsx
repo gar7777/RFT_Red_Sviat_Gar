@@ -8,10 +8,16 @@ import BtnLogOut from './Menu/BtnLogOut';
 import BtnProfile from './Menu/BtnProfile';
 import BtnSignUp from './Menu/BtnSignUp';
 import { NavLink } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { loadUser } from '../../store/user/thunks/loadUser.thunks';
 
 function Header() {
   const { userToken } = useAppSelector((state) => state.auth);
+  /*const dispatch = useAppDispatch();
+
+  if (userToken.length) {
+    dispatch(loadUser());
+  }*/
 
   const mainPageLink = () => {
     if (userToken) {

@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './authorization/auth.slice';
-import userSlice from './authorization/user.slice';
 import { boardlistenerMiddleWare } from './boards/listeners/listeners.boards';
 import boardsSlice from './boards/reducers/boards.slice';
 import columnsSlice from './columns/reducers/columns.slice';
 import snackSlice from './snack/reducers/snack.slice';
+import userSlice from './user/reducers/user.slice';
 
 export const store = configureStore({
   reducer: {

@@ -19,7 +19,7 @@ export default function BoardsManagement() {
   const [currentBoard, setCurrentBoard] = React.useState<IBoard | null>(null);
 
   const { boards } = useAppSelector((state: RootState) => state.boards);
-  console.log(boards);
+  // console.log(boards);
 
   const dispatch = useAppDispatch();
 

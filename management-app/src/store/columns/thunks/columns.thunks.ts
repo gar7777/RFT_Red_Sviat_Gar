@@ -5,9 +5,9 @@ import {
   CREATE_COLUMN,
   DELETE_COLUMN,
   LOAD_COLUMNS,
-  // UPDATE_COLUMN,
+  UPDATE_COLUMN,
 } from '../actions/columns.actions';
-import { ICreateColumn, IDeleteColumn } from '../types/columns.type';
+import { ICreateColumn, IDeleteColumn, IUpdateColumn } from '../types/columns.type';
 
 export const loadColumns = createAsyncThunk(LOAD_COLUMNS, async (boardId: string) => {
   const url = `${API_URL}/boards/${boardId}/columns`;
@@ -59,20 +59,24 @@ export const deleteColumn = createAsyncThunk(
   }
 );
 
-// export const updateColumn = createAsyncThunk(UPDATE_COLUMN, async (boardUpdate: IBoard) => {
-//   const { id, title, description } = boardUpdate;
-//   const url = `${API_URL}/boards/${id}`;
-//   const data = await fetch(url, {
-//     method: 'PUT',
-//     headers: {
-//       'Content-type': 'application/json',
-//       Authorization: `Bearer ${getTokenFromLS}`,
-//     },
-//     body: JSON.stringify({ title, description }),
-//   });
-//   const json = await data.json();
-
-//   console.log(boardUpdate);
-
-//   return json;
-// });
+export const updateColumn = createAsyncThunk(
+  UPDATE_COLUMN,
+  async ({ title, boardId, order, columnId }: IUpdateColumn) => {
+    const url = `${API_URL}/boards/${boardId}/columns/${columnId}`;
+    const body = {
+      title: title,
+      order: order,
+    };
+    const data = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${getTokenFromLS()}`,
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify(body),
+    });
+    const json = await data.json();
+    return json;
+  }
+);

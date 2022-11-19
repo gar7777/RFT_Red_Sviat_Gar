@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { CssBaseline, Stack, Button, Box } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import AddColumnModal from './AddColumnModal';
@@ -9,7 +9,12 @@ import { IBoard } from '../../store/boards/types/boards.type';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { RootState } from '../../store/store';
 import { createColumn, loadColumns, deleteColumn } from '../../store/columns/thunks/columns.thunks';
-import { IColumn, IDeleteColumn, ICreateColumn } from '../../store/columns/types/columns.type';
+import {
+  IColumn,
+  IDeleteColumn,
+  ICreateColumn,
+  ILoadedColumn,
+} from '../../store/columns/types/columns.type';
 import { setCurrentBoard } from '../../store/columns/reducers/columns.slice';
 
 function Board() {
@@ -20,11 +25,12 @@ function Board() {
   const boardId = currentBoard?.id || localStorage.getItem('currentBoard') || '';
   const boardTitle = currentBoard?.title || localStorage.getItem('currentBoardTitle') || '';
   const [addColumnModal, setAddColumnModal] = useState(false);
-  const { columns } = useAppSelector((state) => state.columns);
+  const { columns } = useAppSelector((state: RootState) => state.columns);
+  const [currentColumns, setCurrentColumns] = useState<ILoadedColumn[]>([]);
 
   useEffect(() => {
     dispatch(loadColumns(boardId));
-    dispatch(setCurrentBoard(currentBoard));
+    setCurrentColumns([...columns]);
     return () => {
       localStorage.setItem('currentBoard', boardId);
       localStorage.setItem('currentBoardTitle', boardTitle);
@@ -69,16 +75,18 @@ function Board() {
       </Stack>
       <Box component="main" maxWidth="xs" className={styles['board__main-container']}>
         <Stack direction="row" spacing={2} sx={{ alignItems: 'start' }}>
-          {columns.map(({ id, title, order }) => (
-            <Column
-              key={id}
-              id={id}
-              title={title}
-              boardId={boardId}
-              order={order}
-              handleDeleteColumn={handleDeleteColumn}
-            />
-          ))}
+          {currentColumns
+            .sort((a, b) => a.order - b.order)
+            .map(({ id, title, order }) => (
+              <Column
+                key={id}
+                id={id}
+                title={title}
+                boardId={boardId}
+                order={order}
+                handleDeleteColumn={handleDeleteColumn}
+              />
+            ))}
         </Stack>
         {addColumnModal && (
           <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />

@@ -9,9 +9,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { updateColumn } from '../../store/columns/thunks/columns.thunks';
+import { getColumnTasks, updateColumn } from '../../store/columns/thunks/columns.thunks';
 import { createTask, loadTasks } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
+import { ILoadedColumnTasks, ITaskFull } from '../../store/tasks/types/tasks.types';
+import { API_URL } from '../../constants/api';
+import { getTokenFromLS } from '../../utilities/getToken';
 
 interface IProps {
   id: string;
@@ -25,20 +28,12 @@ function Column({ id, title, boardId, order, handleDeleteColumn }: IProps) {
   const [isEditingTitle, setIsEdidingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
   const [addTaskModal, setAddTaskModal] = useState(false);
-  const { tasks } = useAppSelector((state) => state.tasks);
+  const [tasks, setTasks] = useState<ITaskFull[]>([]);
   const dispatch = useAppDispatch();
   const {
     register,
     formState: { errors },
   } = useForm();
-  const loadTasksData = {
-    boardId: boardId,
-    columnId: id,
-  };
-
-  useEffect(() => {
-    dispatch(loadTasks(loadTasksData));
-  }, []);
 
   const handleEditTitle = async () => {
     const columnUpdateData = {
@@ -48,7 +43,6 @@ function Column({ id, title, boardId, order, handleDeleteColumn }: IProps) {
       order: order,
     };
     await dispatch(updateColumn(columnUpdateData));
-    await dispatch(loadTasks(loadTasksData));
     setIsEdidingTitle(false);
   };
 
@@ -68,8 +62,22 @@ function Column({ id, title, boardId, order, handleDeleteColumn }: IProps) {
     setAddTaskModal(false);
     const createTasksData = { ...data, boardId, columnId: id };
     await dispatch(createTask(createTasksData));
-    await dispatch(loadTasks(loadTasksData));
   };
+
+  useEffect(() => {
+    const getTasks = async (boardId: string, columnId: string) => {
+      const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
+      const data = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${getTokenFromLS()}`,
+        },
+      });
+      const json = await data.json();
+      setTasks(json);
+    };
+    getTasks(boardId, id);
+  }, [handleEditTitle, addTask]);
 
   return (
     <>
@@ -107,7 +115,6 @@ function Column({ id, title, boardId, order, handleDeleteColumn }: IProps) {
             <ModeEditIcon onClick={() => setIsEdidingTitle(true)} />
           </Stack>
         )}
-
         <Box className={styles.tasks_wrapper}>
           {tasks.map(({ id, title, description }) => (
             <Task key={id} title={title} description={description} />

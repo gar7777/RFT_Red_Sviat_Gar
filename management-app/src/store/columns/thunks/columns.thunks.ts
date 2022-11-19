@@ -4,10 +4,11 @@ import { getTokenFromLS } from '../../../utilities/getToken';
 import {
   CREATE_COLUMN,
   DELETE_COLUMN,
+  GET_COLUMN_TASKS,
   LOAD_COLUMNS,
   UPDATE_COLUMN,
 } from '../actions/columns.actions';
-import { ICreateColumn, IDeleteColumn, IUpdateColumn } from '../types/columns.type';
+import { ICreateColumn, IDeleteColumn, IGetColumnTask, IUpdateColumn } from '../types/columns.type';
 
 export const loadColumns = createAsyncThunk(LOAD_COLUMNS, async (boardId: string) => {
   const url = `${API_URL}/boards/${boardId}/columns`;
@@ -39,6 +40,22 @@ export const createColumn = createAsyncThunk(
     });
     const json = await data.json();
 
+    return json;
+  }
+);
+
+export const getColumnTasks = createAsyncThunk(
+  GET_COLUMN_TASKS,
+  async ({ boardId, columnId }: IGetColumnTask) => {
+    const url = `${API_URL}/boards/${boardId}/columns/${columnId}`;
+    const data = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${getTokenFromLS()}`,
+      },
+    });
+    const json = await data.json();
+    console.log(json);
     return json;
   }
 );

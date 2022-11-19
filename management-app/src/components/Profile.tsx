@@ -4,14 +4,22 @@ import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui
 import formStyles from './scss/Form.module.scss';
 import typographyStyles from './scss/Typography.module.scss';
 import mainStyles from './scss/MainContainer.module.scss';
+import { deleteUser, updateUser } from '../store/user/thunks/loadUser.thunks';
+import { useAppDispatch } from '../store/hooks';
+import { logoutUser } from '../store/authorization/auth.slice';
+import { setTokenToLS } from '../utilities/getToken';
+import { useNavigate } from 'react-router';
 
 function Profile() {
+  const navigate = useNavigate();
   const [isDirty, setIsDirty] = useState(false);
+  const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -27,8 +35,22 @@ function Profile() {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const formSubmit = (data: FieldValues) => {
-    console.log(data);
+  const formSubmit = async (data: FieldValues) => {
+    await dispatch(
+      updateUser({
+        name: data.name,
+        login: data.login,
+        password: data.password,
+      })
+    );
+  };
+
+  const deleteHandler = async () => {
+    await dispatch(deleteUser());
+    dispatch(logoutUser());
+    setTokenToLS('');
+    reset();
+    navigate('/');
   };
 
   return (
@@ -38,7 +60,7 @@ function Profile() {
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
           Profile
         </Typography>
-        <Box component="form" onSubmit={handleSubmit(formSubmit)} sx={{ mt: 1 }}>
+        <Box component="form" sx={{ mt: 1 }}>
           <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
@@ -111,8 +133,24 @@ function Profile() {
               </Typography>
             )}
           </Box>
-          <Button variant="contained" type="submit" fullWidth disabled={!isDirty}>
+          <Button
+            variant="contained"
+            type="submit"
+            fullWidth
+            disabled={!isDirty}
+            sx={{ marginBottom: '10px' }}
+            onClick={handleSubmit(formSubmit)}
+          >
             Update Profile
+          </Button>
+          <Button
+            variant="contained"
+            type="button"
+            fullWidth
+            disabled={!isDirty}
+            onClick={deleteHandler}
+          >
+            Delete Profile
           </Button>
         </Box>
       </Box>

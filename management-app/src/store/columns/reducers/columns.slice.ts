@@ -1,11 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createColumn, deleteColumn, loadColumns } from '../thunks/columns.thunks';
-// import { IBoardsState } from '../types/boardsState.type';
+import { IBoard } from '../../boards/types/boards.type';
+import { ILoadedColumnTasks } from '../../tasks/types/tasks.types';
+import {
+  createColumn,
+  deleteColumn,
+  getColumnTasks,
+  loadColumns,
+  updateColumn,
+} from '../thunks/columns.thunks';
 
 interface IColumn {
   id: string;
   title: string;
-  description: string;
+  order: number;
 }
 
 interface IColumnsState {
@@ -13,7 +20,8 @@ interface IColumnsState {
   isLoading: boolean;
   error: string;
   isEditing: boolean;
-  currentBoard: string;
+  currentBoard: IBoard | null;
+  currentTasks: ILoadedColumnTasks[];
 }
 
 const initialState: IColumnsState = {
@@ -21,18 +29,36 @@ const initialState: IColumnsState = {
   isLoading: false,
   error: '',
   isEditing: false,
-  currentBoard: '',
+  currentBoard: null,
+  currentTasks: [],
 };
 
 const columnsSlice = createSlice({
   name: 'columns',
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentBoard(state, action) {
+      state.currentBoard = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(loadColumns.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(loadColumns.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.columns = action.payload;
+      state.error = '';
+    });
+    builder.addCase(getColumnTasks.rejected, (state, action) => {
+      state.isLoading = false;
+      state.columns = [];
+      state.error = action.error.message || 'Some error ocurred';
+    });
+    builder.addCase(getColumnTasks.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getColumnTasks.fulfilled, (state, action) => {
       state.isLoading = false;
       state.columns = action.payload;
       state.error = '';
@@ -64,19 +90,19 @@ const columnsSlice = createSlice({
       state.isLoading = false;
       state.error = action.error.message || 'Some error ocurred';
     });
-    // builder.addCase(updateColumn.pending, (state) => {
-    //   state.isLoading = true;
-    // });
-    // builder.addCase(updateColumn.fulfilled, (state) => {
-    //   state.isLoading = false;
-    //   state.error = '';
-    // });
-    // builder.addCase(updateColumn.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   state.error = action.error.message;
-    // });
+    builder.addCase(updateColumn.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateColumn.fulfilled, (state) => {
+      state.isLoading = false;
+      state.error = '';
+    });
+    builder.addCase(updateColumn.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message || 'Some error ocurred';
+    });
   },
 });
 
-export const {} = columnsSlice.actions;
+export const { setCurrentBoard } = columnsSlice.actions;
 export default columnsSlice.reducer;

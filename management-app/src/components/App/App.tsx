@@ -1,6 +1,6 @@
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import NotFound from '../NotFound';
+import { NotFound } from '../NotFound';
 import WelcomePage from '../WelcomePage/WelcomePage';
 import React from 'react';
 import { Routes, Route } from 'react-router';

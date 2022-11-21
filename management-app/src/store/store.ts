@@ -1,7 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './authorization/auth.slice';
 import { boardlistenerMiddleWare } from './boards/listeners/listeners.boards';
-import { columnListenerMiddleWare } from './columns/listeners/listeners.columns';
+import { columnListenerMiddleWare } from './columns/listeners/columns.listeners';
+import { taskListenerMiddleWare } from './tasks/listeners/tasks.listeners';
 import boardsSlice from './boards/reducers/boards.slice';
 import columnsSlice from './columns/reducers/columns.slice';
 import tasksSlice from './tasks/reducers/tasks.slice';
@@ -20,7 +21,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend(
       boardlistenerMiddleWare.middleware,
-      columnListenerMiddleWare.middleware
+      columnListenerMiddleWare.middleware,
+      taskListenerMiddleWare.middleware
     ),
 });
 

@@ -57,16 +57,14 @@ export const deleteTask = createAsyncThunk(
   DELETE_TASK,
   async ({ boardId, columnId, taskId }: IDeleteTask) => {
     const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`;
-    const data = await fetch(url, {
+    await fetch(url, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${getTokenFromLS()}`,
         'Access-Control-Allow-Origin': '*',
       },
     });
-    const json = await data.json();
-
-    return json;
+    return 'OK';
   }
 );
 

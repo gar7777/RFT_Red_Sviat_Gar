@@ -1,12 +1,13 @@
 import { Box, Typography, TextField, Button } from '@mui/material';
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
-import { IData } from '../../types/board-types';
-import overlayStyles from '../scss/Overlay.module.scss';
-import formStyles from '../scss/Form.module.scss';
-import typographyStyles from '../scss/Typography.module.scss';
+import { IFormData } from '../../store/columns/types/columns.type';
+import overlayStyles from '../../scss/Overlay.module.scss';
+import formStyles from '../../scss/Form.module.scss';
+import typographyStyles from '../../scss/Typography.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { updateTask } from '../../store/tasks/thunks/tasks.thunks';
+import { RootState } from '../../store/store';
 
 interface IProps {
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
@@ -15,7 +16,7 @@ interface IProps {
 }
 
 function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
-  const { currentTask } = useAppSelector((state) => state.tasks);
+  const { currentTask } = useAppSelector((state: RootState) => state.tasks);
   const {
     register,
     handleSubmit,
@@ -24,7 +25,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
 
   const dispatch = useAppDispatch();
 
-  const handleUpdateTask = async (data: IData) => {
+  const handleUpdateTask = async (data: IFormData) => {
     const updateData = {
       ...data,
       boardId,
@@ -44,7 +45,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit((data) => handleUpdateTask(data as IData))}
+          onSubmit={handleSubmit((data) => handleUpdateTask(data as IFormData))}
           sx={{ mt: 1 }}
         >
           <Box className={formStyles.labelWrapper}>

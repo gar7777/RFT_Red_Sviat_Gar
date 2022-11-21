@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import errorPageStyle from './scss/ErrorPage.module.scss';
+import errorPageStyle from '../scss/ErrorPage.module.scss';
 
 export function NotFound() {
   return (

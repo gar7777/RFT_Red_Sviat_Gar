@@ -1,6 +1,5 @@
 import { Button, Card, Stack, TextField, Typography, Box } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { IData, ITask } from '../../types/board-types';
 import Task from './Task';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -13,6 +12,7 @@ import { updateColumn } from '../../store/columns/thunks/columns.thunks';
 import { createTask, deleteTask } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
 import { ITaskFull } from '../../store/tasks/types/tasks.types';
+import { IFormData } from '../../store/columns/types/columns.type';
 import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
 import DeleteTaskModal from './DeleteTaskModal';
@@ -34,7 +34,6 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
   const [deleteTaskModal, setDeleteTaskModal] = useState(false);
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
   const [deletedTaskId, setDeletedTaskId] = useState('');
-  // const [updatedTaskId, setUpdatedTaskId] = useState('');
   const [tasks, setTasks] = useState<ITaskFull[]>([]);
   const dispatch = useAppDispatch();
   const {
@@ -76,7 +75,7 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
     setAddTaskModal(true);
   };
 
-  const addTask = async (data: IData) => {
+  const addTask = async (data: IFormData) => {
     setAddTaskModal(false);
     const createTasksData = { ...data, boardId, columnId: id };
     await dispatch(createTask(createTasksData));

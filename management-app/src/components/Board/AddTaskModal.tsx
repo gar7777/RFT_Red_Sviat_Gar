@@ -1,13 +1,13 @@
 import { Box, Typography, TextField, Button } from '@mui/material';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { IData } from '../../types/board-types';
-import overlayStyles from '../scss/Overlay.module.scss';
-import formStyles from '../scss/Form.module.scss';
-import typographyStyles from '../scss/Typography.module.scss';
+import { IFormData } from '../../store/columns/types/columns.type';
+import overlayStyles from '../../scss/Overlay.module.scss';
+import formStyles from '../../scss/Form.module.scss';
+import typographyStyles from '../../scss/Typography.module.scss';
 
 interface IProps {
-  addTask: (data: IData) => void;
+  addTask: (data: IFormData) => void;
   closeTaskModal: () => void;
 }
 
@@ -27,7 +27,7 @@ function AddTaskModal({ addTask, closeTaskModal }: IProps) {
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit((data) => addTask(data as IData))}
+          onSubmit={handleSubmit((data) => addTask(data as IFormData))}
           sx={{ mt: 1 }}
         >
           <Box className={formStyles.labelWrapper}>

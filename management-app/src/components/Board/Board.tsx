@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CssBaseline, Stack, Button, Box } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddColumnModal from './AddColumnModal';
 import Column from './Column';
 import styles from './Board.module.scss';
@@ -16,6 +17,7 @@ import {
   ILoadedColumn,
 } from '../../store/columns/types/columns.type';
 import DeleteConfirmModal from './DeleteConfirmModal';
+import { Link } from 'react-router-dom';
 
 function Board() {
   const params = useParams();
@@ -64,7 +66,7 @@ function Board() {
       localStorage.setItem('currentBoard', boardId);
       localStorage.setItem('currentBoardTitle', boardTitle);
     };
-  }, [addColumnModal, deleteConfirmModal]);
+  }, [addColumnModal, deleteConfirmModal, columns]);
 
   useEffect(() => {
     dispatch(loadColumns(boardId));
@@ -74,6 +76,11 @@ function Board() {
     <>
       <CssBaseline />
       <Stack className={styles.board_name__wrapper} direction="row">
+        <Link to="/boards">
+          <Button>
+            <ArrowBackIcon /> BACK TO ALL BOARDS
+          </Button>
+        </Link>
         <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{boardTitle}</h2>
         <Button onClick={handleAddColumn}>
           <AddBoxIcon /> ADD NEW COLUMN

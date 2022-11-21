@@ -1,5 +1,5 @@
 import { Card } from '@mui/material';
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { setCurrentTask } from '../../store/tasks/reducers/tasks.slice';
 import taskStyles from './Task.module.scss';

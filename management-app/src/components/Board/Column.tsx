@@ -7,7 +7,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { updateColumn } from '../../store/columns/thunks/columns.thunks';
 import { createTask, deleteTask } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
@@ -15,26 +15,26 @@ import { ITaskFull } from '../../store/tasks/types/tasks.types';
 import { IFormData } from '../../store/columns/types/columns.type';
 import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
-import DeleteTaskModal from './DeleteTaskModal';
 import UpdateTaskModal from './UpdateTaskModal';
+import ConfirmModal from '../ConfirmModal';
+import { setCurrentColumn } from '../../store/columns/reducers/columns.slice';
 
 interface IProps {
   id: string;
   title: string;
   order: number;
   boardId: string;
-  setDeletedColumn: Dispatch<SetStateAction<string>>;
   setDeleteConfirmModal: Dispatch<SetStateAction<boolean>>;
 }
 
-function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmModal }: IProps) {
-  const [isEditingTitle, setIsEdidingTitle] = useState(false);
+function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
   const [addTaskModal, setAddTaskModal] = useState(false);
   const [deleteTaskModal, setDeleteTaskModal] = useState(false);
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
-  const [deletedTaskId, setDeletedTaskId] = useState('');
   const [tasks, setTasks] = useState<ITaskFull[]>([]);
+  const currentTask = useAppSelector((state) => state.tasks.currentTask);
   const dispatch = useAppDispatch();
   const {
     register,
@@ -49,7 +49,7 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
       order: order,
     };
     await dispatch(updateColumn(columnUpdateData));
-    setIsEdidingTitle(false);
+    setIsEditingTitle(false);
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,14 +57,14 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
   };
 
   const handleDeleteTask = async () => {
+    if (!currentTask) return;
     const deleteData = {
       boardId: boardId,
       columnId: id,
-      taskId: deletedTaskId,
+      taskId: currentTask.id,
     };
     await dispatch(deleteTask(deleteData));
     setDeleteTaskModal(false);
-    setDeletedTaskId('');
   };
 
   const closeTaskModal = (): void => {
@@ -133,7 +133,7 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
         ) : (
           <Stack direction="row" component="form">
             <h2>{currentTitle}</h2>
-            <ModeEditIcon onClick={() => setIsEdidingTitle(true)} />
+            <ModeEditIcon onClick={() => setIsEditingTitle(true)} />
           </Stack>
         )}
         <Box className={styles.tasks_wrapper}>
@@ -145,7 +145,6 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
               id={id}
               setDeleteTaskModal={setDeleteTaskModal}
               setUpdateTaskModal={setUpdateTaskModal}
-              setDeletedTaskId={setDeletedTaskId}
             />
           ))}
         </Box>
@@ -155,21 +154,35 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
         <Button>
           <DeleteForeverIcon
             onClick={() => {
-              setDeletedColumn(id);
+              dispatch(setCurrentColumn({ title, id, order }));
               setDeleteConfirmModal(true);
             }}
           />
         </Button>
       </Card>
-      {addTaskModal && <AddTaskModal addTask={addTask} closeTaskModal={closeTaskModal} />}
+      {addTaskModal && (
+        <AddTaskModal
+          addTask={addTask}
+          closeTaskModal={closeTaskModal}
+          addTaskModal={addTaskModal}
+        />
+      )}
       {deleteTaskModal && (
-        <DeleteTaskModal
-          handleDeleteTask={handleDeleteTask}
-          setDeleteTaskModal={setDeleteTaskModal}
+        <ConfirmModal
+          confirm={handleDeleteTask}
+          deny={setDeleteTaskModal}
+          isOpen={deleteTaskModal}
+          type="task"
+          title={currentTask?.title}
         />
       )}
       {updateTaskModal && (
-        <UpdateTaskModal setUpdateTaskModal={setUpdateTaskModal} boardId={boardId} columnId={id} />
+        <UpdateTaskModal
+          setUpdateTaskModal={setUpdateTaskModal}
+          boardId={boardId}
+          columnId={id}
+          updateTaskModal={updateTaskModal}
+        />
       )}
     </>
   );

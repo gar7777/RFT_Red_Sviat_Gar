@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, Button } from '@mui/material';
+import { Box, Typography, TextField, Button, Dialog } from '@mui/material';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { IFormData } from '../../store/columns/types/columns.type';
@@ -9,9 +9,10 @@ import typographyStyles from '../../scss/Typography.module.scss';
 interface IProps {
   addTask: (data: IFormData) => void;
   closeTaskModal: () => void;
+  addTaskModal: boolean;
 }
 
-function AddTaskModal({ addTask, closeTaskModal }: IProps) {
+function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
   const {
     register,
     handleSubmit,
@@ -19,8 +20,7 @@ function AddTaskModal({ addTask, closeTaskModal }: IProps) {
   } = useForm();
 
   return (
-    <>
-      <div className={overlayStyles.overlay} onClick={closeTaskModal}></div>
+    <Dialog open={addTaskModal} onClose={closeTaskModal}>
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
           Add New Task
@@ -86,7 +86,7 @@ function AddTaskModal({ addTask, closeTaskModal }: IProps) {
           </Button>
         </Box>
       </Box>
-    </>
+    </Dialog>
   );
 }
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CssBaseline, Stack, Button, Box } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 import AddColumnModal from './AddColumnModal';
 import Column from './Column';
 import styles from './Board.module.scss';
@@ -16,8 +17,8 @@ import {
   ICreateColumn,
   ILoadedColumn,
 } from '../../store/columns/types/columns.type';
-import DeleteConfirmModal from './DeleteConfirmModal';
 import { Link } from 'react-router-dom';
+import ConfirmModal from '../ConfirmModal';
 
 function Board() {
   const params = useParams();
@@ -28,9 +29,9 @@ function Board() {
   const boardTitle = currentBoard?.title || localStorage.getItem('currentBoardTitle') || '';
   const [addColumnModal, setAddColumnModal] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
-  const [deletedColumn, setDeletedColumn] = useState('');
   const { columns } = useAppSelector((state: RootState) => state.columns);
   const [currentColumns, setCurrentColumns] = useState<ILoadedColumn[]>([]);
+  const currentColumn = useAppSelector((state: RootState) => state.columns.currentColumn);
 
   const handleAddColumn = (): void => {
     setAddColumnModal(true);
@@ -46,9 +47,10 @@ function Board() {
     setAddColumnModal(false);
   };
 
-  const handleDeleteColumn = async (id: string): Promise<void> => {
+  const handleDeleteColumn = async (): Promise<void> => {
+    if (!currentColumn) return;
     const deleteData: IDeleteColumn = {
-      id: id,
+      id: currentColumn.id,
       boardId: boardId,
     };
     await dispatch(deleteColumn(deleteData));
@@ -97,7 +99,6 @@ function Board() {
                 title={title}
                 boardId={boardId}
                 order={order}
-                setDeletedColumn={setDeletedColumn}
                 setDeleteConfirmModal={setDeleteConfirmModal}
               />
             ))}
@@ -106,10 +107,12 @@ function Board() {
           <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />
         )}
         {deleteConfirmModal && (
-          <DeleteConfirmModal
-            setDeleteConfirmModal={setDeleteConfirmModal}
-            deletedColumn={deletedColumn}
-            handleDeleteColumn={handleDeleteColumn}
+          <ConfirmModal
+            confirm={handleDeleteColumn}
+            deny={setDeleteConfirmModal}
+            isOpen={deleteConfirmModal}
+            type="column"
+            title={currentColumn?.title}
           />
         )}
       </Box>

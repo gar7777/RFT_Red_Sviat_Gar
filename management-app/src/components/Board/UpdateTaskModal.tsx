@@ -1,8 +1,7 @@
-import { Box, Typography, TextField, Button } from '@mui/material';
+import { Box, Typography, TextField, Button, Dialog } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { IFormData } from '../../store/columns/types/columns.type';
-import overlayStyles from '../../scss/Overlay.module.scss';
 import formStyles from '../../scss/Form.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -11,11 +10,12 @@ import { RootState } from '../../store/store';
 
 interface IProps {
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
+  updateTaskModal: boolean;
   boardId: string;
   columnId: string;
 }
 
-function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
+function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModal }: IProps) {
   const { currentTask } = useAppSelector((state: RootState) => state.tasks);
   const {
     register,
@@ -37,8 +37,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
   };
 
   return (
-    <>
-      <div className={overlayStyles.overlay} onClick={() => setUpdateTaskModal(false)}></div>
+    <Dialog open={updateTaskModal} onClose={() => setUpdateTaskModal(false)}>
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
           Update Task
@@ -98,11 +97,11 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
             )}
           </Box>
           <Button variant="contained" type="submit" fullWidth>
-            Add New Task
+            Update Task
           </Button>
         </Box>
       </Box>
-    </>
+    </Dialog>
   );
 }
 

@@ -64,15 +64,14 @@ export const deleteColumn = createAsyncThunk(
   DELETE_COLUMN,
   async ({ id, boardId }: IDeleteColumn) => {
     const url = `${API_URL}/boards/${boardId}/columns/${id}`;
-    const data = await fetch(url, {
+    await fetch(url, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${getTokenFromLS()}`,
       },
     });
-    const json = await data.json();
 
-    return json;
+    return 'OK';
   }
 );
 

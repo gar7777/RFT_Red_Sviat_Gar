@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
-import formStyles from './scss/Form.module.scss';
-import typographyStyles from './scss/Typography.module.scss';
-import mainStyles from './scss/MainContainer.module.scss';
+import formStyles from '../scss/Form.module.scss';
+import typographyStyles from '../scss/Typography.module.scss';
+import mainStyles from '../scss/MainContainer.module.scss';
 import { deleteUser, loadUser, updateUser } from '../store/user/thunks/loadUser.thunks';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { logoutUser } from '../store/authorization/reducers/auth.slice';

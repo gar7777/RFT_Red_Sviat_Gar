@@ -29,3 +29,8 @@ export interface IGetColumnTask {
   columnId: string;
   boardId: string;
 }
+
+export interface IFormData {
+  title: string;
+  description: string;
+}

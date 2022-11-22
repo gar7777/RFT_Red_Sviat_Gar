@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CssBaseline, Stack, Button, Box } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 import AddColumnModal from './AddColumnModal';
 import Column from './Column';
 import styles from './Board.module.scss';
@@ -17,6 +19,8 @@ import {
 } from '../../store/columns/types/columns.type';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import { l18n } from '../../features/l18n';
+import { Link } from 'react-router-dom';
+import ConfirmModal from '../ConfirmModal';
 
 function Board() {
   const params = useParams();
@@ -27,10 +31,10 @@ function Board() {
   const boardTitle = currentBoard?.title || localStorage.getItem('currentBoardTitle') || '';
   const [addColumnModal, setAddColumnModal] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
-  const [deletedColumn, setDeletedColumn] = useState('');
   const { columns } = useAppSelector((state: RootState) => state.columns);
   const [currentColumns, setCurrentColumns] = useState<ILoadedColumn[]>([]);
   const { lang } = useAppSelector((state: RootState) => state.lang);
+  const currentColumn = useAppSelector((state: RootState) => state.columns.currentColumn);
 
   const handleAddColumn = (): void => {
     setAddColumnModal(true);
@@ -46,9 +50,10 @@ function Board() {
     setAddColumnModal(false);
   };
 
-  const handleDeleteColumn = async (id: string): Promise<void> => {
+  const handleDeleteColumn = async (): Promise<void> => {
+    if (!currentColumn) return;
     const deleteData: IDeleteColumn = {
-      id: id,
+      id: currentColumn.id,
       boardId: boardId,
     };
     await dispatch(deleteColumn(deleteData));
@@ -66,7 +71,7 @@ function Board() {
       localStorage.setItem('currentBoard', boardId);
       localStorage.setItem('currentBoardTitle', boardTitle);
     };
-  }, [addColumnModal, deleteConfirmModal]);
+  }, [addColumnModal, deleteConfirmModal, columns]);
 
   useEffect(() => {
     dispatch(loadColumns(boardId));
@@ -76,6 +81,11 @@ function Board() {
     <>
       <CssBaseline />
       <Stack className={styles.board_name__wrapper} direction="row">
+        <Link to="/boards">
+          <Button>
+            <ArrowBackIcon /> BACK TO ALL BOARDS
+          </Button>
+        </Link>
         <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{boardTitle}</h2>
         <Button onClick={handleAddColumn}>
           <AddBoxIcon /> {l18n[lang].addColumn}
@@ -92,7 +102,6 @@ function Board() {
                 title={title}
                 boardId={boardId}
                 order={order}
-                setDeletedColumn={setDeletedColumn}
                 setDeleteConfirmModal={setDeleteConfirmModal}
               />
             ))}
@@ -101,10 +110,12 @@ function Board() {
           <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />
         )}
         {deleteConfirmModal && (
-          <DeleteConfirmModal
-            setDeleteConfirmModal={setDeleteConfirmModal}
-            deletedColumn={deletedColumn}
-            handleDeleteColumn={handleDeleteColumn}
+          <ConfirmModal
+            confirm={handleDeleteColumn}
+            deny={setDeleteConfirmModal}
+            isOpen={deleteConfirmModal}
+            type="column"
+            title={currentColumn?.title}
           />
         )}
       </Box>

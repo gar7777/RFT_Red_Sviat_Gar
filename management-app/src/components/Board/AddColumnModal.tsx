@@ -1,11 +1,11 @@
 import { Box, Typography, TextField, Button, IconButton } from '@mui/material';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { IData } from '../../types/board-types';
+import { IFormData } from '../../store/columns/types/columns.type';
 import CloseIcon from '@mui/icons-material/Close';
-import overlayStyles from '../scss/Overlay.module.scss';
-import formStyles from '../scss/Form.module.scss';
-import typographyStyles from '../scss/Typography.module.scss';
+import overlayStyles from '../../scss/Overlay.module.scss';
+import formStyles from '../../scss/Form.module.scss';
+import typographyStyles from '../../scss/Typography.module.scss';
 import { IColumn } from '../../store/columns/types/columns.type';
 import { useAppSelector } from '../../store/hooks';
 import { l18n } from '../../features/l18n';
@@ -35,7 +35,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit((data) => addColumn(data as IData))}
+          onSubmit={handleSubmit((data) => addColumn(data as IFormData))}
           sx={{ mt: 1 }}
         >
           <Box className={formStyles.labelWrapper}>
@@ -64,32 +64,6 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
               </Typography>
             )}
           </Box>
-          {/* <Box className={formStyles.labelWrapper}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              type="description"
-              id="description"
-              label="Description"
-              {...register('description', {
-                required: 'Please, enter description',
-                minLength: { value: 8, message: 'Description must be more than 8 symbols' },
-              })}
-              autoComplete="Description"
-              className={formStyles.validatedInput}
-            />
-            {errors.description && (
-              <Typography
-                component="p"
-                align="center"
-                variant="caption"
-                className={formStyles.validationAlert}
-              >
-                {errors.description.message as string}
-              </Typography>
-            )}
-          </Box> */}
           <Button variant="contained" type="submit" fullWidth>
             {l18n[lang].add}
           </Button>

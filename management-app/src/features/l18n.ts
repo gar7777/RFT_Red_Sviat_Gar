@@ -27,6 +27,8 @@ export const l18n = {
     create: 'Создать',
     delete: 'Удалить',
     update: 'Обновить',
+    updateS: 'обновить',
+    deleteS: 'удалить',
     minLength: 'Минимум 3 символа',
     minDescrLength: 'Минимум 8 символов',
     titleMustBeFilled: 'Поле должно быть заполнено',
@@ -44,6 +46,8 @@ export const l18n = {
     updateTask: 'Обновить задачу',
     yes: 'Да',
     no: 'Нет',
+    task: 'задачу',
+    areYouShure: 'Вы уверены, что хотите ',
   },
   [enLang]: {
     signIn: 'Sign In',
@@ -89,5 +93,9 @@ export const l18n = {
     updateTask: 'Update task',
     yes: 'Yes',
     no: 'No',
+    task: 'task',
+    areYouShure: 'Are you shure you want to ',
+    updateS: 'update',
+    deleteS: 'delete',
   },
 };

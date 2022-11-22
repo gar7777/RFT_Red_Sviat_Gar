@@ -115,6 +115,7 @@ function Board() {
             isOpen={deleteConfirmModal}
             type="column"
             title={currentColumn?.title}
+            action={l18n[lang].deleteS}
           />
         )}
       </Box>

@@ -33,3 +33,30 @@ export interface IUpdateTask {
   boardId: string;
   columnId: string;
 }
+
+export interface IUpdatetaskData {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  userId: string | undefined;
+}
+
+export interface IAddTaskData {
+  userId: string;
+  title: string;
+  description: string;
+}
+
+export interface ITaskCreateData {
+  boardId: string;
+  columnId: string;
+  title: string;
+  description: string;
+  userId: string;
+}
+
+export interface ITaskLoadData {
+  boardId: string;
+  columnId: string;
+}

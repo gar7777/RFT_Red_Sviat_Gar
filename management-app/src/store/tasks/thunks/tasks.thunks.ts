@@ -2,19 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { API_URL } from '../../../constants/api';
 import { getTokenFromLS } from '../../../utilities/getToken';
 import { CREATE_TASK, DELETE_TASK, LOAD_TASKS, UPDATE_TASK } from '../actions/tasks.actions';
-import { IDeleteTask, IUpdateTask } from '../types/tasks.types';
-
-interface ITaskCreateData {
-  boardId: string;
-  columnId: string;
-  title: string;
-  description: string;
-}
-
-interface ITaskLoadData {
-  boardId: string;
-  columnId: string;
-}
+import { IDeleteTask, ITaskCreateData, ITaskLoadData, IUpdateTask } from '../types/tasks.types';
 
 export const loadTasks = createAsyncThunk(
   LOAD_TASKS,
@@ -32,12 +20,12 @@ export const loadTasks = createAsyncThunk(
 );
 
 export const createTask = createAsyncThunk(CREATE_TASK, async (taskCreateData: ITaskCreateData) => {
-  const { boardId, columnId, title, description } = taskCreateData;
+  const { boardId, columnId, title, description, userId } = taskCreateData;
   const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
   const body = {
     title: title,
     description: description,
-    userId: 'eecbc190-e7b6-4605-8626-939f490c47f4',
+    userId: userId,
   };
   const data = await fetch(url, {
     method: 'POST',
@@ -57,16 +45,14 @@ export const deleteTask = createAsyncThunk(
   DELETE_TASK,
   async ({ boardId, columnId, taskId }: IDeleteTask) => {
     const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`;
-    const data = await fetch(url, {
+    await fetch(url, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${getTokenFromLS()}`,
         'Access-Control-Allow-Origin': '*',
       },
     });
-    const json = await data.json();
-
-    return json;
+    return 'OK';
   }
 );
 

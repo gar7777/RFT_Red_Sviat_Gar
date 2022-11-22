@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { deleteUser, loadUser, updateUser } from '../thunks/loadUser.thunks';
-import { IUserState } from '../types/types';
+import { deleteUser, loadUser, loadUsers, updateUser } from '../thunks/loadUser.thunks';
+import { IUserState } from '../types/user.types';
 
 const initialState: IUserState = {
   user: {
@@ -12,6 +12,7 @@ const initialState: IUserState = {
   isLoading: false,
   error: '',
   isEditing: false,
+  users: null,
 };
 
 const userSlice = createSlice({
@@ -28,6 +29,18 @@ const userSlice = createSlice({
     });
     builder.addCase(loadUser.fulfilled, (state, action) => {
       state.user = action.payload;
+      state.isLoading = false;
+      state.error = '';
+    });
+    builder.addCase(loadUsers.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message;
+    });
+    builder.addCase(loadUsers.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(loadUsers.fulfilled, (state, action) => {
+      state.users = action.payload;
       state.isLoading = false;
       state.error = '';
     });

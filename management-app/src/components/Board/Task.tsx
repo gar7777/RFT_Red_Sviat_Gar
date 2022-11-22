@@ -1,53 +1,51 @@
-import { Card } from '@mui/material';
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import { Card, Button } from '@mui/material';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { setCurrentTask } from '../../store/tasks/reducers/tasks.slice';
+import { IUpdatetaskData } from '../../store/tasks/types/tasks.types';
+import { IUsersLoad } from '../../store/user/types/user.types';
 import taskStyles from './Task.module.scss';
 
 interface IProps {
   title: string;
   description: string;
   id: string;
+  order: number;
   setDeleteTaskModal: Dispatch<SetStateAction<boolean>>;
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
-  setDeletedTaskId: Dispatch<SetStateAction<string>>;
 }
 
-function Task({
-  id,
-  title,
-  description,
-  setDeleteTaskModal,
-  setUpdateTaskModal,
-  setDeletedTaskId,
-}: IProps) {
+function Task({ id, title, description, order, setDeleteTaskModal, setUpdateTaskModal }: IProps) {
   const dispatch = useAppDispatch();
+  const [currentUser, setCurrentUser] = useState<IUsersLoad | null>(null);
+  const updateCurrentTaskData: IUpdatetaskData = {
+    id,
+    title,
+    description,
+    order: order,
+    userId: currentUser?.id,
+  };
+
   return (
     <Card className={taskStyles.task__container}>
       <h2>{title}</h2>
       <p>{description}</p>
-      <button
+      <Button
         onClick={() => {
           setUpdateTaskModal(true);
-          dispatch(
-            setCurrentTask({
-              id,
-              title,
-              description,
-            })
-          );
+          dispatch(setCurrentTask(updateCurrentTaskData));
         }}
       >
         Update
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => {
           setDeleteTaskModal(true);
-          setDeletedTaskId(id);
+          dispatch(setCurrentTask(updateCurrentTaskData));
         }}
       >
         Delete
-      </button>
+      </Button>
     </Card>
   );
 }

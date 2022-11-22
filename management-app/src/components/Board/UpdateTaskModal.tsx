@@ -1,21 +1,22 @@
-import { Box, Typography, TextField, Button } from '@mui/material';
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import { Box, Typography, TextField, Button, Dialog } from '@mui/material';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
-import { IData } from '../../types/board-types';
-import overlayStyles from '../scss/Overlay.module.scss';
-import formStyles from '../scss/Form.module.scss';
-import typographyStyles from '../scss/Typography.module.scss';
+import { IFormData } from '../../store/columns/types/columns.type';
+import formStyles from '../../scss/Form.module.scss';
+import typographyStyles from '../../scss/Typography.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { updateTask } from '../../store/tasks/thunks/tasks.thunks';
+import { RootState } from '../../store/store';
 
 interface IProps {
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
+  updateTaskModal: boolean;
   boardId: string;
   columnId: string;
 }
 
-function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
-  const { currentTask } = useAppSelector((state) => state.tasks);
+function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModal }: IProps) {
+  const { currentTask } = useAppSelector((state: RootState) => state.tasks);
   const {
     register,
     handleSubmit,
@@ -24,7 +25,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
 
   const dispatch = useAppDispatch();
 
-  const handleUpdateTask = async (data: IData) => {
+  const handleUpdateTask = async (data: IFormData) => {
     const updateData = {
       ...data,
       boardId,
@@ -36,15 +37,14 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
   };
 
   return (
-    <>
-      <div className={overlayStyles.overlay} onClick={() => setUpdateTaskModal(false)}></div>
+    <Dialog open={updateTaskModal} onClose={() => setUpdateTaskModal(false)}>
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
           Update Task
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit((data) => handleUpdateTask(data as IData))}
+          onSubmit={handleSubmit((data) => handleUpdateTask(data as IFormData))}
           sx={{ mt: 1 }}
         >
           <Box className={formStyles.labelWrapper}>
@@ -97,11 +97,11 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
             )}
           </Box>
           <Button variant="contained" type="submit" fullWidth>
-            Add New Task
+            Update Task
           </Button>
         </Box>
       </Box>
-    </>
+    </Dialog>
   );
 }
 

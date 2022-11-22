@@ -5,7 +5,7 @@ import WelcomePage from '../WelcomePage/WelcomePage';
 import React from 'react';
 import { Routes, Route } from 'react-router';
 import SignIn from '../SignIn';
-import Profile from '../Profile';
+import Profile from '../Profile/Profile';
 import BoardsManagement from '../Boards/BoardsManagement';
 import SignUp from '../SignUp';
 import Board from '../Board/Board';

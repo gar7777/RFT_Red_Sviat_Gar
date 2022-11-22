@@ -184,8 +184,9 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
           confirm={handleDeleteTask}
           deny={setDeleteTaskModal}
           isOpen={deleteTaskModal}
-          type="task"
+          type={l18n[lang].task}
           title={currentTask?.title}
+          action={l18n[lang].deleteS}
         />
       )}
       {updateTaskModal && (

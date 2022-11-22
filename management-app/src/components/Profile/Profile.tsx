@@ -1,17 +1,18 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
-import formStyles from '../scss/Form.module.scss';
-import typographyStyles from '../scss/Typography.module.scss';
-import mainStyles from '../scss/MainContainer.module.scss';
-import { deleteUser, loadUser, updateUser } from '../store/user/thunks/loadUser.thunks';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { logoutUser } from '../store/authorization/reducers/auth.slice';
-import { setTokenToLS } from '../utilities/getToken';
+import formStyles from '../../scss/Form.module.scss';
+import typographyStyles from '../../scss/Typography.module.scss';
+import mainStyles from '../../scss/MainContainer.module.scss';
+import { deleteUser, loadUser, updateUser } from '../../store/user/thunks/loadUser.thunks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { logoutUser } from '../../store/authorization/reducers/auth.slice';
+import { setTokenToLS } from '../../utilities/getToken';
 import { useNavigate } from 'react-router';
-import { RootState } from '../store/store';
-import { setEmptyUser } from '../store/user/reducers/user.slice';
-import { l18n } from '../features/l18n';
+import { RootState } from '../../store/store';
+import { setEmptyUser } from '../../store/user/reducers/user.slice';
+import { l18n } from '../../features/l18n';
+import ConfirmModal from '../ConfirmModal';
 
 function Profile() {
   const { lang } = useAppSelector((state: RootState) => state.lang);
@@ -22,6 +23,8 @@ function Profile() {
   const [nameValue, setNameValue] = useState(name);
   const [loginValue, setLoginValue] = useState(login);
   const dispatch = useAppDispatch();
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
+  const [updateConfirmModal, setUpdateConfirmModal] = useState(false);
 
   const {
     register,
@@ -51,14 +54,16 @@ function Profile() {
       })
     );
     await dispatch(loadUser());
+    closeUpdateModal();
     navigate('/boards');
   };
 
-  const deleteHandler = async () => {
+  const handleDeleteProfile = async () => {
     await dispatch(deleteUser());
     dispatch(logoutUser());
     setTokenToLS('');
     dispatch(setEmptyUser());
+    closeDeleteModal();
     navigate('/');
   };
 
@@ -68,6 +73,14 @@ function Profile() {
 
   const handleLoginChange = (event: ChangeEvent<HTMLInputElement>) => {
     setLoginValue(event.target.value);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteConfirmModal(false);
+  };
+
+  const closeUpdateModal = () => {
+    setUpdateConfirmModal(false);
   };
 
   return (
@@ -157,11 +170,11 @@ function Profile() {
           </Box>
           <Button
             variant="contained"
-            type="submit"
+            type="button"
             fullWidth
             disabled={!isDirty}
             sx={{ marginBottom: '10px' }}
-            onClick={handleSubmit(formSubmit)}
+            onClick={() => setUpdateConfirmModal(true)}
           >
             {l18n[lang].updateProfile}
           </Button>
@@ -170,10 +183,30 @@ function Profile() {
             type="button"
             fullWidth
             disabled={!isDirty}
-            onClick={deleteHandler}
+            onClick={() => setDeleteConfirmModal(true)}
           >
             {l18n[lang].deleteProfile}
           </Button>
+          {updateConfirmModal && (
+            <ConfirmModal
+              confirm={handleSubmit(formSubmit)}
+              deny={closeUpdateModal}
+              isOpen={updateConfirmModal}
+              type={l18n[lang].profile}
+              title=""
+              action={l18n[lang].updateS}
+            />
+          )}
+          {deleteConfirmModal && (
+            <ConfirmModal
+              confirm={handleDeleteProfile}
+              deny={closeDeleteModal}
+              isOpen={deleteConfirmModal}
+              type={l18n[lang].profile}
+              title=""
+              action={l18n[lang].deleteS}
+            />
+          )}
         </Box>
       </Box>
     </Container>

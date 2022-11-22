@@ -7,7 +7,7 @@ function WelcomePage() {
   return (
     <div className={styles.WelcomePage}>
       <Container sx={{ maxWidth: '1280px' }}>
-        <h1 className={styles.h1}>SOME HEADER</h1>
+        <h1 className={styles.h1}>SOME HEADING</h1>
         <Grid
           container
           spacing={{ xs: 1, md: 4 }}

@@ -1,23 +1,17 @@
 import React from 'react';
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import { Home, Language, Task } from '@mui/icons-material';
-import Menu from './Menu/Menu';
+import Menu from './Menu/Switcher/Switcher';
 import styles from './Header.module.scss';
 import BtnLogIn from './Menu/BtnLogIn';
 import BtnLogOut from './Menu/BtnLogOut';
 import BtnProfile from './Menu/BtnProfile';
 import BtnSignUp from './Menu/BtnSignUp';
 import { NavLink } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { loadUser } from '../../store/user/thunks/loadUser.thunks';
+import { useAppSelector } from '../../store/hooks';
 
 function Header() {
   const { userToken } = useAppSelector((state) => state.auth);
-  /*const dispatch = useAppDispatch();
-
-  if (userToken.length) {
-    dispatch(loadUser());
-  }*/
 
   const mainPageLink = () => {
     if (userToken) {

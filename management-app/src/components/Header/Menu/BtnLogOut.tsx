@@ -2,7 +2,7 @@ import { Logout } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { logoutUser } from '../../../store/authorization/auth.slice';
+import { logoutUser } from '../../../store/authorization/reducers/auth.slice';
 import { useAppDispatch } from '../../../store/hooks';
 import { setEmptyUser } from '../../../store/user/reducers/user.slice';
 import { setTokenToLS } from '../../../utilities/getToken';

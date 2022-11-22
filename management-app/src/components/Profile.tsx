@@ -6,7 +6,7 @@ import typographyStyles from './scss/Typography.module.scss';
 import mainStyles from './scss/MainContainer.module.scss';
 import { deleteUser, loadUser, updateUser } from '../store/user/thunks/loadUser.thunks';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { logoutUser } from '../store/authorization/auth.slice';
+import { logoutUser } from '../store/authorization/reducers/auth.slice';
 import { setTokenToLS } from '../utilities/getToken';
 import { useNavigate } from 'react-router';
 import { RootState } from '../store/store';

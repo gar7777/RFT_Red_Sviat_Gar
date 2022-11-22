@@ -6,18 +6,19 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
-import { useForm } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { updateColumn } from '../../store/columns/thunks/columns.thunks';
 import { createTask, deleteTask } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
-import { ITaskFull } from '../../store/tasks/types/tasks.types';
+import { ITaskCreateData, ITaskFull } from '../../store/tasks/types/tasks.types';
 import { IFormData } from '../../store/columns/types/columns.type';
 import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
 import UpdateTaskModal from './UpdateTaskModal';
 import ConfirmModal from '../ConfirmModal';
 import { setCurrentColumn } from '../../store/columns/reducers/columns.slice';
+import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
 
 interface IProps {
   id: string;
@@ -71,13 +72,21 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
     setAddTaskModal(false);
   };
 
-  const handleAddTask = (): void => {
+  const handleAddTask = async (): Promise<void> => {
     setAddTaskModal(true);
+    await dispatch(loadUsers());
   };
 
-  const addTask = async (data: IFormData) => {
+  const addTask = async (data: FieldValues) => {
     setAddTaskModal(false);
-    const createTasksData = { ...data, boardId, columnId: id };
+    const createTasksData: ITaskCreateData = {
+      boardId: boardId,
+      columnId: id,
+      title: data.title,
+      description: data.description,
+      userId: data.userId,
+    };
+    console.log(createTasksData);
     await dispatch(createTask(createTasksData));
   };
 
@@ -137,12 +146,13 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
           </Stack>
         )}
         <Box className={styles.tasks_wrapper}>
-          {tasks.map(({ id, title, description }) => (
+          {tasks.map(({ id, title, description, order }) => (
             <Task
               key={id}
               title={title}
               description={description}
               id={id}
+              order={order}
               setDeleteTaskModal={setDeleteTaskModal}
               setUpdateTaskModal={setUpdateTaskModal}
             />

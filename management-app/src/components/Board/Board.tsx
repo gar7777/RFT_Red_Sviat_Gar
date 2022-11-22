@@ -17,7 +17,6 @@ import {
   ICreateColumn,
   ILoadedColumn,
 } from '../../store/columns/types/columns.type';
-import DeleteConfirmModal from './DeleteConfirmModal';
 import { l18n } from '../../features/l18n';
 import { Link } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';

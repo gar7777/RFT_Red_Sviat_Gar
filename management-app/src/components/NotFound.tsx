@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { l18n } from '../features/l18n';
 import { useAppSelector } from '../store/hooks';
-import errorPageStyle from './scss/ErrorPage.module.scss';
+import errorPageStyle from '../scss/ErrorPage.module.scss';
 
 export function NotFound() {
   const { lang } = useAppSelector((state) => state.lang);

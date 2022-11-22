@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { RootState } from '../../store/store';
 import { IBoard } from '../../store/boards/types/boards.type';
+import { l18n } from '../../features/l18n';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
@@ -22,6 +23,7 @@ export default function BoardsManagement() {
   const { boards, searchQuery, filteredBoards } = useAppSelector(
     (state: RootState) => state.boards
   );
+  const { lang } = useAppSelector((state) => state.lang);
 
   const dispatch = useAppDispatch();
 
@@ -49,7 +51,7 @@ export default function BoardsManagement() {
             marginTop: '5px',
           }}
         >
-          <h1>Boards</h1>
+          <h1>{l18n[lang].boards}</h1>
           <SearchBoard />
         </Box>
         <Box sx={{ flexGrow: 1 }}>
@@ -76,7 +78,7 @@ export default function BoardsManagement() {
               ))
             ) : (
               <Grid item xs={3}>
-                <h3>Click to add a task</h3>
+                <h3>{l18n[lang].clickToAddATask}</h3>
               </Grid>
             )}
 

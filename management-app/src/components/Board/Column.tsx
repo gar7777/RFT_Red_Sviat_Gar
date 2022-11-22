@@ -16,6 +16,7 @@ import { IFormData } from '../../store/columns/types/columns.type';
 import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
 import UpdateTaskModal from './UpdateTaskModal';
+import { l18n } from '../../features/l18n';
 import ConfirmModal from '../ConfirmModal';
 import { setCurrentColumn } from '../../store/columns/reducers/columns.slice';
 import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
@@ -29,6 +30,7 @@ interface IProps {
 }
 
 function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
+  const { lang } = useAppSelector((state) => state.lang);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
   const [addTaskModal, setAddTaskModal] = useState(false);
@@ -119,9 +121,9 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
               fullWidth
               defaultValue={currentTitle}
               id="title"
-              label="Title"
+              label={l18n[lang].title}
               {...register('title', {
-                minLength: { value: 3, message: 'Title must be more than 3 symbols' },
+                minLength: { value: 3, message: l18n[lang].minLength },
               })}
               autoComplete="Title"
               onChange={handleTitleChange}
@@ -159,7 +161,7 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
           ))}
         </Box>
         <Button onClick={handleAddTask}>
-          <AddCardIcon /> ADD NEW TASK
+          <AddCardIcon /> {l18n[lang].addTask}
         </Button>
         <Button>
           <DeleteForeverIcon

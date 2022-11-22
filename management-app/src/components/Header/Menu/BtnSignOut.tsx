@@ -2,12 +2,14 @@ import { Logout } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { logoutUser } from '../../../store/authorization/auth.slice';
-import { useAppDispatch } from '../../../store/hooks';
+import { l18n } from '../../../features/l18n';
+import { logoutUser } from '../../../store/authorization/reducers/auth.slice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setEmptyUser } from '../../../store/user/reducers/user.slice';
 import { setTokenToLS } from '../../../utilities/getToken';
 
 export default function BtnLogOut() {
+  const { lang } = useAppSelector((state) => state.lang);
   const dispatch = useAppDispatch();
 
   const handleClick = () => {
@@ -25,7 +27,7 @@ export default function BtnLogOut() {
           sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}
           onClick={handleClick}
         >
-          ВЫЙТИ
+          {l18n[lang].signOut}
         </Button>
       </NavLink>
     </>

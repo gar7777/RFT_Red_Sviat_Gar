@@ -1,3 +1,4 @@
+import { l18n } from '../../features/l18n';
 import {
   Box,
   Typography,
@@ -11,13 +12,9 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { IFormData } from '../../store/columns/types/columns.type';
-import overlayStyles from '../../scss/Overlay.module.scss';
 import formStyles from '../../scss/Form.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
-import { IUsersLoad } from '../../store/user/types/user.types';
 import { useAppSelector } from '../../store/hooks';
-import { IAddTaskData } from '../../store/tasks/types/tasks.types';
 import { getTokenFromLS } from '../../utilities/getToken';
 import decodeJwt from '../../utilities/jwtDecode';
 
@@ -37,12 +34,13 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { lang } = useAppSelector((state) => state.lang);
 
   return (
     <Dialog open={addTaskModal} onClose={closeTaskModal}>
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          Add New Task
+          {l18n[lang].addTask}
         </Typography>
         <Box
           component="form"
@@ -55,10 +53,10 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               required
               fullWidth
               id="title"
-              label="Title"
+              label={l18n[lang].title}
               {...register('title', {
-                required: 'Please, enter title',
-                minLength: { value: 3, message: 'Title must be more than 3 symbols' },
+                required: l18n[lang].enterTitle,
+                minLength: { value: 3, message: l18n[lang].minLength },
               })}
               autoComplete="Title"
               className={formStyles.validatedInput}
@@ -81,10 +79,10 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               fullWidth
               type="description"
               id="description"
-              label="Description"
+              label={l18n[lang].description}
               {...register('description', {
-                required: 'Please, enter description',
-                minLength: { value: 8, message: 'Description must be more than 8 symbols' },
+                required: l18n[lang].enterDescription,
+                minLength: { value: 8, message: l18n[lang].minDescrLength },
               })}
               autoComplete="Description"
               className={formStyles.validatedInput}
@@ -120,7 +118,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
             </Select>
           </FormControl>
           <Button variant="contained" type="submit" fullWidth>
-            Add New Task
+            {l18n[lang].add}
           </Button>
         </Box>
       </Box>

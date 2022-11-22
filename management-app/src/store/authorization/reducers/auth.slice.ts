@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getTokenFromLS, setTokenToLS } from '../../utilities/getToken';
-import { signUp, signIn } from './thunks/authorization.thunks';
+import { getTokenFromLS, setTokenToLS } from '../../../utilities/getToken';
+import { signUp, signIn } from '../thunks/authorization.thunks';
 
 interface AuthState {
   userToken: string;

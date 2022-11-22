@@ -1,9 +1,10 @@
 import React from 'react';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deleteBoard, loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { IBoard } from '../../store/boards/types/boards.type';
+import { l18n } from '../../features/l18n';
 
 interface IBoardCardButtons {
   id: string | undefined;
@@ -22,6 +23,7 @@ export const BoardCardButtons = ({
   title,
   description,
 }: IBoardCardButtons) => {
+  const { lang } = useAppSelector((state) => state.lang);
   const dispatch = useAppDispatch();
 
   const deleteHandle = async () => {
@@ -45,10 +47,10 @@ export const BoardCardButtons = ({
   return (
     <CardActions>
       <Button size="small" onClick={editHandle}>
-        Edit
+        {l18n[lang].edit}
       </Button>
       <Button size="small" onClick={deleteHandle}>
-        Delete
+        {l18n[lang].delete}
       </Button>
     </CardActions>
   );

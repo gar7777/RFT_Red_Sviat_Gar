@@ -113,7 +113,7 @@ function Board() {
             confirm={handleDeleteColumn}
             deny={setDeleteConfirmModal}
             isOpen={deleteConfirmModal}
-            type="column"
+            type={l18n[lang].columnS}
             title={currentColumn?.title}
             action={l18n[lang].deleteS}
           />

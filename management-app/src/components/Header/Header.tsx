@@ -3,14 +3,16 @@ import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import { Home, Language, Task } from '@mui/icons-material';
 import Menu from './Menu/Switcher/Switcher';
 import styles from './Header.module.scss';
-import BtnLogIn from './Menu/BtnLogIn';
-import BtnLogOut from './Menu/BtnLogOut';
+import BtnLogIn from './Menu/BtnSignIn';
+import BtnLogOut from './Menu/BtnSignOut';
 import BtnProfile from './Menu/BtnProfile';
 import BtnSignUp from './Menu/BtnSignUp';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../store/hooks';
+import { l18n } from '../../features/l18n';
 
 function Header() {
+  const { lang } = useAppSelector((state) => state.lang);
   const { userToken } = useAppSelector((state) => state.auth);
 
   const mainPageLink = () => {
@@ -20,7 +22,7 @@ function Header() {
           <Home fontSize="large" />
           <NavLink to="/boards">
             <Button variant="text" sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}>
-              ГЛАВНАЯ
+              {l18n[lang].mainPage}
             </Button>
           </NavLink>
         </>
@@ -29,7 +31,7 @@ function Header() {
       return (
         <>
           <Task fontSize="large" />
-          <Typography variant="h5">TASK MANAGER</Typography>
+          <Typography variant="h5">{l18n[lang].taskManager}</Typography>
         </>
       );
     }

@@ -7,6 +7,7 @@ import formStyles from '../scss/Form.module.scss';
 import typographyStyles from '../scss/Typography.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { updateTask } from '../../store/tasks/thunks/tasks.thunks';
+import { l18n } from '../../features/l18n';
 
 interface IProps {
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
@@ -15,6 +16,7 @@ interface IProps {
 }
 
 function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
+  const { lang } = useAppSelector((state) => state.lang);
   const { currentTask } = useAppSelector((state) => state.tasks);
   const {
     register,
@@ -40,7 +42,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
       <div className={overlayStyles.overlay} onClick={() => setUpdateTaskModal(false)}></div>
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          Update Task
+          {l18n[lang].updateTask}
         </Typography>
         <Box
           component="form"
@@ -53,9 +55,9 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
               fullWidth
               defaultValue={currentTask?.title}
               id="title"
-              label="Title"
+              label={l18n[lang].title}
               {...register('title', {
-                minLength: { value: 3, message: 'Title must be more than 3 symbols' },
+                minLength: { value: 3, message: l18n[lang].minLength },
               })}
               autoComplete="Title"
               className={formStyles.validatedInput}
@@ -78,9 +80,9 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
               defaultValue={currentTask?.description}
               type="description"
               id="description"
-              label="Description"
+              label={l18n[lang].description}
               {...register('description', {
-                minLength: { value: 8, message: 'Description must be more than 8 symbols' },
+                minLength: { value: 8, message: l18n[lang].minDescrLength },
               })}
               autoComplete="Description"
               className={formStyles.validatedInput}
@@ -97,7 +99,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId }: IProps) {
             )}
           </Box>
           <Button variant="contained" type="submit" fullWidth>
-            Add New Task
+            {l18n[lang].update}
           </Button>
         </Box>
       </Box>

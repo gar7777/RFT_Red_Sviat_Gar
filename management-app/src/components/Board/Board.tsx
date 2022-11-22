@@ -16,6 +16,7 @@ import {
   ILoadedColumn,
 } from '../../store/columns/types/columns.type';
 import DeleteConfirmModal from './DeleteConfirmModal';
+import { l18n } from '../../features/l18n';
 
 function Board() {
   const params = useParams();
@@ -29,6 +30,7 @@ function Board() {
   const [deletedColumn, setDeletedColumn] = useState('');
   const { columns } = useAppSelector((state: RootState) => state.columns);
   const [currentColumns, setCurrentColumns] = useState<ILoadedColumn[]>([]);
+  const { lang } = useAppSelector((state: RootState) => state.lang);
 
   const handleAddColumn = (): void => {
     setAddColumnModal(true);
@@ -76,7 +78,7 @@ function Board() {
       <Stack className={styles.board_name__wrapper} direction="row">
         <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{boardTitle}</h2>
         <Button onClick={handleAddColumn}>
-          <AddBoxIcon /> ADD NEW COLUMN
+          <AddBoxIcon /> {l18n[lang].addColumn}
         </Button>
       </Stack>
       <Box component="main" maxWidth="xs" className={styles['board__main-container']}>

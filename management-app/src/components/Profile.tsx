@@ -11,8 +11,10 @@ import { setTokenToLS } from '../utilities/getToken';
 import { useNavigate } from 'react-router';
 import { RootState } from '../store/store';
 import { setEmptyUser } from '../store/user/reducers/user.slice';
+import { l18n } from '../features/l18n';
 
 function Profile() {
+  const { lang } = useAppSelector((state: RootState) => state.lang);
   const { user } = useAppSelector((state: RootState) => state.user);
   const { name, login } = user;
   const navigate = useNavigate();
@@ -73,7 +75,7 @@ function Profile() {
       <CssBaseline />
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          Profile
+          {l18n[lang].profile}
         </Typography>
         <Box component="form" sx={{ mt: 1 }}>
           <Box className={formStyles.labelWrapper}>
@@ -82,7 +84,7 @@ function Profile() {
               margin="normal"
               fullWidth
               id="name"
-              label="Name"
+              label={l18n[lang].name}
               value={nameValue}
               {...register('name', {
                 minLength: { value: 2, message: 'Name must be more than 2 symbols' },
@@ -107,7 +109,7 @@ function Profile() {
               margin="normal"
               fullWidth
               id="login"
-              label="Login"
+              label={l18n[lang].login}
               value={loginValue}
               {...register('login', {
                 minLength: { value: 3, message: 'Login must be more than 3 symbols' },
@@ -132,7 +134,7 @@ function Profile() {
               margin="normal"
               fullWidth
               id="password"
-              label="Password"
+              label={l18n[lang].password}
               {...register('password', {
                 pattern: {
                   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
@@ -161,7 +163,7 @@ function Profile() {
             sx={{ marginBottom: '10px' }}
             onClick={handleSubmit(formSubmit)}
           >
-            Update Profile
+            {l18n[lang].updateProfile}
           </Button>
           <Button
             variant="contained"
@@ -170,7 +172,7 @@ function Profile() {
             disabled={!isDirty}
             onClick={deleteHandler}
           >
-            Delete Profile
+            {l18n[lang].deleteProfile}
           </Button>
         </Box>
       </Box>

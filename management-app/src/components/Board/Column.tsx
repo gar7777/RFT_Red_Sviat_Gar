@@ -8,7 +8,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { updateColumn } from '../../store/columns/thunks/columns.thunks';
 import { createTask, deleteTask } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
@@ -17,6 +17,7 @@ import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
 import DeleteTaskModal from './DeleteTaskModal';
 import UpdateTaskModal from './UpdateTaskModal';
+import { l18n } from '../../features/l18n';
 
 interface IProps {
   id: string;
@@ -28,6 +29,7 @@ interface IProps {
 }
 
 function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmModal }: IProps) {
+  const { lang } = useAppSelector((state) => state.lang);
   const [isEditingTitle, setIsEdidingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
   const [addTaskModal, setAddTaskModal] = useState(false);
@@ -111,9 +113,9 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
               fullWidth
               defaultValue={currentTitle}
               id="title"
-              label="Title"
+              label={l18n[lang].title}
               {...register('title', {
-                minLength: { value: 3, message: 'Title must be more than 3 symbols' },
+                minLength: { value: 3, message: l18n[lang].minLength },
               })}
               autoComplete="Title"
               onChange={handleTitleChange}
@@ -151,7 +153,7 @@ function Column({ id, title, boardId, order, setDeletedColumn, setDeleteConfirmM
           ))}
         </Box>
         <Button onClick={handleAddTask}>
-          <AddCardIcon /> ADD NEW TASK
+          <AddCardIcon /> {l18n[lang].addTask}
         </Button>
         <Button>
           <DeleteForeverIcon

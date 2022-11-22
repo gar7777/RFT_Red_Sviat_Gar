@@ -1,6 +1,7 @@
 import { Card } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
-import { useAppDispatch } from '../../store/hooks';
+import { l18n } from '../../features/l18n';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setCurrentTask } from '../../store/tasks/reducers/tasks.slice';
 import taskStyles from './Task.module.scss';
 
@@ -22,6 +23,7 @@ function Task({
   setDeletedTaskId,
 }: IProps) {
   const dispatch = useAppDispatch();
+  const { lang } = useAppSelector((state) => state.lang);
   return (
     <Card className={taskStyles.task__container}>
       <h2>{title}</h2>
@@ -38,7 +40,7 @@ function Task({
           );
         }}
       >
-        Update
+        {l18n[lang].update}
       </button>
       <button
         onClick={() => {
@@ -46,7 +48,7 @@ function Task({
           setDeletedTaskId(id);
         }}
       >
-        Delete
+        {l18n[lang].delete}
       </button>
     </Card>
   );

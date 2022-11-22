@@ -4,10 +4,11 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { createBoard, loadBoards, updateBoard } from '../../store/boards/thunks/loadBoards.thunk';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useForm, FieldValues } from 'react-hook-form';
 import { IBoard, TBoardCreate } from '../../store/boards/types/boards.type';
 import { Typography } from '@mui/material';
+import { l18n } from '../../features/l18n';
 
 const style = {
   position: 'absolute',
@@ -29,6 +30,7 @@ interface IAddBoardModal {
 }
 
 export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }: IAddBoardModal) {
+  const { lang } = useAppSelector((state) => state.lang);
   const dispatch = useAppDispatch();
 
   const {
@@ -84,11 +86,11 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
           >
             <TextField
               id="title"
-              label="title"
+              label={l18n[lang].title}
               variant="standard"
               {...register('title', {
-                required: 'title must be filled',
-                minLength: { value: 3, message: 'at least 3 symbols' },
+                required: l18n[lang].titleMustBeFilled,
+                minLength: { value: 3, message: l18n[lang].minLength },
               })}
             />
             {errors.title && (
@@ -98,11 +100,11 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
             )}
             <TextField
               id="description"
-              label="description"
+              label={l18n[lang].description}
               placeholder="description"
               {...register('description', {
-                required: 'description must be filled',
-                minLength: { value: 3, message: 'at least 3 symbols' },
+                required: l18n[lang].titleMustBeFilled,
+                minLength: { value: 3, message: l18n[lang].minLength },
               })}
               multiline
             />
@@ -112,7 +114,7 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
               </Typography>
             )}
             <Button type="submit" variant="outlined" size="small">
-              {isEditing ? 'Edit' : 'Create'}
+              {isEditing ? l18n[lang].edit : l18n[lang].create}
             </Button>
           </Box>
         </Box>

@@ -7,6 +7,8 @@ import overlayStyles from '../scss/Overlay.module.scss';
 import formStyles from '../scss/Form.module.scss';
 import typographyStyles from '../scss/Typography.module.scss';
 import { IColumn } from '../../store/columns/types/columns.type';
+import { useAppSelector } from '../../store/hooks';
+import { l18n } from '../../features/l18n';
 
 interface IProps {
   addColumn: (data: IColumn) => void;
@@ -19,6 +21,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { lang } = useAppSelector((state) => state.lang);
 
   return (
     <>
@@ -28,7 +31,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
           <CloseIcon />
         </IconButton>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          Add New Column
+          {l18n[lang].addColumn}
         </Typography>
         <Box
           component="form"
@@ -41,10 +44,10 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
               required
               fullWidth
               id="title"
-              label="Title"
+              label={l18n[lang].title}
               {...register('title', {
-                required: 'Please, enter title',
-                minLength: { value: 3, message: 'Title must be more than 3 symbols' },
+                required: l18n[lang].enterTitle,
+                minLength: { value: 3, message: l18n[lang].minLength },
               })}
               autoComplete="Title"
               className={formStyles.validatedInput}
@@ -88,7 +91,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
             )}
           </Box> */}
           <Button variant="contained" type="submit" fullWidth>
-            Add New Column
+            {l18n[lang].add}
           </Button>
         </Box>
       </Box>

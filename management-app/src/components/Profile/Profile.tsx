@@ -45,6 +45,11 @@ function Profile() {
     return () => subscription.unsubscribe();
   }, [watch]);
 
+  useEffect(() => {
+    setNameValue(user.name);
+    setLoginValue(user.login);
+  }, [user]);
+
   const formSubmit = async (data: FieldValues) => {
     await dispatch(
       updateUser({

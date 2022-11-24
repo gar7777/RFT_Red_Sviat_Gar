@@ -49,6 +49,7 @@ export const l18n = {
     task: 'задачу',
     areYouShure: 'Вы уверены, что хотите ',
     columnS: 'колонку',
+    boardS: 'доску',
   },
   [enLang]: {
     signIn: 'Sign In',
@@ -99,5 +100,6 @@ export const l18n = {
     updateS: 'update',
     deleteS: 'delete',
     columnS: 'column',
+    boardS: 'board',
   },
 };

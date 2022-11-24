@@ -44,9 +44,15 @@ function ConfirmModal({ confirm, deny, isOpen, title, type, action }: IProps) {
       >
         <DialogTitle align="center">{'Warning!'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            {l18n[lang].areYouShure} {action} <strong>{title}</strong> {type}?
-          </DialogContentText>
+          {lang === 'EN' ? (
+            <DialogContentText id="alert-dialog-slide-description">
+              {l18n[lang].areYouShure} {action} <strong>{title}</strong> {type}?
+            </DialogContentText>
+          ) : (
+            <DialogContentText id="alert-dialog-slide-description">
+              {l18n[lang].areYouShure} {action} {type} <strong>{title}</strong>?
+            </DialogContentText>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => deny(false)}>{l18n[lang].no}</Button>

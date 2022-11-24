@@ -61,7 +61,7 @@ export const BoardCardButtons = ({
           confirm={deleteHandle}
           deny={setDeleteConfirmModal}
           isOpen={deleteConfirmModal}
-          type={l18n[lang].columnS}
+          type={l18n[lang].boardS}
           title={title}
           action={l18n[lang].deleteS}
         />

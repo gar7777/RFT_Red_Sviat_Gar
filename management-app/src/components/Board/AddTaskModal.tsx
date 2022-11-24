@@ -10,7 +10,7 @@ import {
   InputLabel,
   FormControl,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import formStyles from '../../scss/Form.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
@@ -25,16 +25,21 @@ interface IProps {
 }
 
 function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
+  const { users } = useAppSelector((state) => state.user);
   const token = getTokenFromLS();
   const userId = decodeJwt(token as string);
-  const [newUser, setNewUser] = useState<string>(userId);
-  const { users } = useAppSelector((state) => state.user);
+  const [newUser, setNewUser] = useState<string>('');
+  const [listIsLoaded, setListIsLoaded] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const { lang } = useAppSelector((state) => state.lang);
+
+  useEffect(() => {
+    setNewUser(userId);
+  }, []);
 
   return (
     <Dialog open={addTaskModal} onClose={closeTaskModal}>
@@ -86,6 +91,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               })}
               autoComplete="Description"
               className={formStyles.validatedInput}
+              multiline
             />
             {errors.description && (
               <Typography
@@ -103,7 +109,6 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
             <Select
               labelId="user-select-label"
               id="user-select"
-              defaultValue={userId}
               value={newUser}
               label="Choose user"
               fullWidth

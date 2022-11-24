@@ -20,6 +20,7 @@ import {
 import { l18n } from '../../features/l18n';
 import { Link } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
+import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 
 function Board() {
   const params = useParams();
@@ -34,6 +35,22 @@ function Board() {
   const [currentColumns, setCurrentColumns] = useState<ILoadedColumn[]>([]);
   const { lang } = useAppSelector((state: RootState) => state.lang);
   const currentColumn = useAppSelector((state: RootState) => state.columns.currentColumn);
+
+  // useEffect(() => {
+  //   dispatch(loadBoards());
+  // }, [params]);
+
+  useEffect(() => {
+    setCurrentColumns([...columns]);
+    return () => {
+      localStorage.setItem('currentBoard', boardId);
+      localStorage.setItem('currentBoardTitle', boardTitle);
+    };
+  }, [addColumnModal, deleteConfirmModal, columns]);
+
+  useEffect(() => {
+    dispatch(loadColumns(boardId));
+  }, []);
 
   const handleAddColumn = (): void => {
     setAddColumnModal(true);
@@ -63,18 +80,6 @@ function Board() {
   const closeColumnModal = (): void => {
     setAddColumnModal(false);
   };
-
-  useEffect(() => {
-    setCurrentColumns([...columns]);
-    return () => {
-      localStorage.setItem('currentBoard', boardId);
-      localStorage.setItem('currentBoardTitle', boardTitle);
-    };
-  }, [addColumnModal, deleteConfirmModal, columns]);
-
-  useEffect(() => {
-    dispatch(loadColumns(boardId));
-  }, []);
 
   return (
     <>

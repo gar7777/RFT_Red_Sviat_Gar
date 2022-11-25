@@ -1,15 +1,19 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { setSnackBarIsOpen } from '../../snack/reducers/snack.slice';
 import { createBoard, deleteBoard, updateBoard } from '../thunks/loadBoards.thunk';
+import { i18n } from '../../../features/i18n';
+import { getLangfromLS } from '../../../utilities/getLang';
 
 export const boardlistenerMiddleWare = createListenerMiddleware();
+
+const lang = getLangfromLS();
 
 boardlistenerMiddleWare.startListening({
   actionCreator: createBoard.fulfilled,
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'board is created',
+        message: i18n[lang].snackBoardCreated,
         type: 'success',
       })
     );
@@ -21,7 +25,7 @@ boardlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'something went wrong',
+        message: i18n[lang].snackError,
         type: 'error',
       })
     );
@@ -33,7 +37,7 @@ boardlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'board was deleted',
+        message: i18n[lang].snackBoardDeleted,
         type: 'success',
       })
     );
@@ -45,7 +49,7 @@ boardlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'something went wrong',
+        message: i18n[lang].snackError,
         type: 'error',
       })
     );
@@ -57,7 +61,7 @@ boardlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'board was updated',
+        message: i18n[lang].snackBoardUpdated,
         type: 'success',
       })
     );
@@ -69,7 +73,7 @@ boardlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'something went wrong',
+        message: i18n[lang].snackError,
         type: 'error',
       })
     );

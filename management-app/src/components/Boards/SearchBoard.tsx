@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setSearchQuery, searchByTitle } from '../../store/boards/reducers/boards.slice';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 
 export default function SearchBoard() {
   const { lang } = useAppSelector((state) => state.lang);
@@ -25,7 +25,7 @@ export default function SearchBoard() {
       <Stack spacing={1} direction="row">
         <TextField
           id="search"
-          label={l18n[lang].search}
+          label={i18n[lang].search}
           variant="outlined"
           size="medium"
           {...register('search', {

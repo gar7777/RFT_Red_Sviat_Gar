@@ -8,7 +8,7 @@ import formStyles from '../../scss/Form.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
 import { IColumn } from '../../store/columns/types/columns.type';
 import { useAppSelector } from '../../store/hooks';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 
 interface IProps {
   addColumn: (data: IColumn) => void;
@@ -31,7 +31,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
           <CloseIcon />
         </IconButton>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {l18n[lang].addColumn}
+          {i18n[lang].addColumn}
         </Typography>
         <Box
           component="form"
@@ -44,10 +44,10 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
               required
               fullWidth
               id="title"
-              label={l18n[lang].title}
+              label={i18n[lang].title}
               {...register('title', {
-                required: l18n[lang].enterTitle,
-                minLength: { value: 3, message: l18n[lang].minLength },
+                required: i18n[lang].enterTitle,
+                minLength: { value: 3, message: i18n[lang].minLength },
               })}
               autoComplete="Title"
               className={formStyles.validatedInput}
@@ -65,7 +65,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
             )}
           </Box>
           <Button variant="contained" type="submit" fullWidth>
-            {l18n[lang].add}
+            {i18n[lang].add}
           </Button>
         </Box>
       </Box>

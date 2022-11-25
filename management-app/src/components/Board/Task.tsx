@@ -1,4 +1,4 @@
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Card, Button } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
@@ -38,7 +38,7 @@ function Task({ id, title, description, order, setDeleteTaskModal, setUpdateTask
           dispatch(setCurrentTask(updateCurrentTaskData));
         }}
       >
-        {l18n[lang].update}
+        {i18n[lang].update}
       </Button>
       <Button
         onClick={() => {
@@ -46,7 +46,7 @@ function Task({ id, title, description, order, setDeleteTaskModal, setUpdateTask
           dispatch(setCurrentTask(updateCurrentTaskData));
         }}
       >
-        {l18n[lang].delete}
+        {i18n[lang].delete}
       </Button>
     </Card>
   );

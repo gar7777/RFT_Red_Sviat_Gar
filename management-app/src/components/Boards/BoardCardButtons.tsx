@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deleteBoard, loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { IBoard } from '../../store/boards/types/boards.type';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
+import ConfirmModal from '../ConfirmModal';
 
 interface IBoardCardButtons {
   id: string | undefined;
@@ -25,6 +26,7 @@ export const BoardCardButtons = ({
 }: IBoardCardButtons) => {
   const { lang } = useAppSelector((state) => state.lang);
   const dispatch = useAppDispatch();
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
 
   const deleteHandle = async () => {
     await dispatch(deleteBoard(id));
@@ -45,13 +47,25 @@ export const BoardCardButtons = ({
   };
 
   return (
-    <CardActions>
-      <Button size="small" onClick={editHandle}>
-        {l18n[lang].edit}
-      </Button>
-      <Button size="small" onClick={deleteHandle}>
-        {l18n[lang].delete}
-      </Button>
-    </CardActions>
+    <>
+      <CardActions>
+        <Button size="small" onClick={editHandle}>
+          {i18n[lang].edit}
+        </Button>
+        <Button size="small" onClick={() => setDeleteConfirmModal(true)}>
+          {i18n[lang].delete}
+        </Button>
+      </CardActions>
+      {deleteConfirmModal && (
+        <ConfirmModal
+          confirm={deleteHandle}
+          deny={setDeleteConfirmModal}
+          isOpen={deleteConfirmModal}
+          type={i18n[lang].boardS}
+          title={title}
+          action={i18n[lang].deleteS}
+        />
+      )}
+    </>
   );
 };

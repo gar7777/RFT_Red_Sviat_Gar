@@ -7,7 +7,7 @@ import typographyStyles from '../../scss/Typography.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { updateTask } from '../../store/tasks/thunks/tasks.thunks';
 import { RootState } from '../../store/store';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 
 interface IProps {
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
@@ -42,7 +42,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModa
     <Dialog open={updateTaskModal} onClose={() => setUpdateTaskModal(false)}>
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {l18n[lang].updateTask}
+          {i18n[lang].updateTask}
         </Typography>
         <Box
           component="form"
@@ -53,11 +53,12 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModa
             <TextField
               margin="normal"
               fullWidth
+              autoFocus
               defaultValue={currentTask?.title}
               id="title"
-              label={l18n[lang].title}
+              label={i18n[lang].title}
               {...register('title', {
-                minLength: { value: 3, message: l18n[lang].minLength },
+                minLength: { value: 3, message: i18n[lang].minLength },
               })}
               autoComplete="Title"
               className={formStyles.validatedInput}
@@ -80,9 +81,9 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModa
               defaultValue={currentTask?.description}
               type="description"
               id="description"
-              label={l18n[lang].description}
+              label={i18n[lang].description}
               {...register('description', {
-                minLength: { value: 8, message: l18n[lang].minDescrLength },
+                minLength: { value: 8, message: i18n[lang].minDescrLength },
               })}
               autoComplete="Description"
               className={formStyles.validatedInput}
@@ -99,7 +100,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModa
             )}
           </Box>
           <Button variant="contained" type="submit" fullWidth>
-            {l18n[lang].update}
+            {i18n[lang].update}
           </Button>
         </Box>
       </Box>

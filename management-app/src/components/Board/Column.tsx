@@ -1,4 +1,4 @@
-import { Button, Card, Stack, TextField, Typography, Box } from '@mui/material';
+import { Button, Card, Stack, TextField, Typography, Box, InputAdornment } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Task from './Task';
 import AddCardIcon from '@mui/icons-material/AddCard';
@@ -8,15 +8,14 @@ import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { updateColumn } from '../../store/columns/thunks/columns.thunks';
+import { loadColumns, updateColumn } from '../../store/columns/thunks/columns.thunks';
 import { createTask, deleteTask } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
 import { ITaskCreateData, ITaskFull } from '../../store/tasks/types/tasks.types';
-import { IFormData } from '../../store/columns/types/columns.type';
 import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
 import UpdateTaskModal from './UpdateTaskModal';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 import ConfirmModal from '../ConfirmModal';
 import { setCurrentColumn } from '../../store/columns/reducers/columns.slice';
 import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
@@ -33,6 +32,7 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
   const { lang } = useAppSelector((state) => state.lang);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
+  const [prevTitle, setPrevTitle] = useState('');
   const [addTaskModal, setAddTaskModal] = useState(false);
   const [deleteTaskModal, setDeleteTaskModal] = useState(false);
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
@@ -43,6 +43,10 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
     register,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    dispatch(loadColumns(boardId));
+  }, [isEditingTitle]);
 
   const handleEditTitle = async () => {
     const columnUpdateData = {
@@ -56,7 +60,24 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setCurrentColumn({ title, id, order }));
     setCurrentTitle(e.target.value);
+  };
+
+  const handleTitleOnBlur = () => {
+    setCurrentTitle(prevTitle);
+    setIsEditingTitle(false);
+  };
+
+  const handleTitleOnKeyPress = (e: React.KeyboardEvent) => {
+    if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+      e.preventDefault();
+      console.log(currentTitle);
+      handleEditTitle();
+    }
+    if (e.code === 'Escape') {
+      handleTitleOnBlur();
+    }
   };
 
   const handleDeleteTask = async () => {
@@ -88,7 +109,6 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
       description: data.description,
       userId: data.userId,
     };
-    console.log(createTasksData);
     await dispatch(createTask(createTasksData));
   };
 
@@ -119,16 +139,27 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
             <TextField
               margin="normal"
               fullWidth
-              defaultValue={currentTitle}
+              value={currentTitle}
               id="title"
-              label={l18n[lang].title}
+              label={i18n[lang].title}
               {...register('title', {
-                minLength: { value: 3, message: l18n[lang].minLength },
+                minLength: { value: 3, message: i18n[lang].minLength },
               })}
               autoComplete="Title"
               onChange={handleTitleChange}
+              onBlur={handleTitleOnBlur}
+              onKeyDown={handleTitleOnKeyPress}
+              autoFocus
               // className={formStyles.validatedInput}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <CheckIcon onClick={handleEditTitle} />
+                  </InputAdornment>
+                ),
+              }}
             />
+
             {errors.title && (
               <Typography
                 component="p"
@@ -139,12 +170,16 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
                 {errors.title.message as string}
               </Typography>
             )}
-            <CheckIcon onClick={handleEditTitle} />
           </Stack>
         ) : (
           <Stack direction="row" component="form">
             <h2>{currentTitle}</h2>
-            <ModeEditIcon onClick={() => setIsEditingTitle(true)} />
+            <ModeEditIcon
+              onClick={() => {
+                setIsEditingTitle(true);
+                setPrevTitle(currentTitle);
+              }}
+            />
           </Stack>
         )}
         <Box className={styles.tasks_wrapper}>
@@ -161,7 +196,7 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
           ))}
         </Box>
         <Button onClick={handleAddTask}>
-          <AddCardIcon /> {l18n[lang].addTask}
+          <AddCardIcon /> {i18n[lang].addTask}
         </Button>
         <Button>
           <DeleteForeverIcon
@@ -184,9 +219,9 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
           confirm={handleDeleteTask}
           deny={setDeleteTaskModal}
           isOpen={deleteTaskModal}
-          type={l18n[lang].task}
+          type={i18n[lang].task}
           title={currentTask?.title}
-          action={l18n[lang].deleteS}
+          action={i18n[lang].deleteS}
         />
       )}
       {updateTaskModal && (

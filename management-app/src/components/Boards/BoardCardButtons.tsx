@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deleteBoard, loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { IBoard } from '../../store/boards/types/boards.type';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 import ConfirmModal from '../ConfirmModal';
 
 interface IBoardCardButtons {
@@ -50,10 +50,10 @@ export const BoardCardButtons = ({
     <>
       <CardActions>
         <Button size="small" onClick={editHandle}>
-          {l18n[lang].edit}
+          {i18n[lang].edit}
         </Button>
         <Button size="small" onClick={() => setDeleteConfirmModal(true)}>
-          {l18n[lang].delete}
+          {i18n[lang].delete}
         </Button>
       </CardActions>
       {deleteConfirmModal && (
@@ -61,9 +61,9 @@ export const BoardCardButtons = ({
           confirm={deleteHandle}
           deny={setDeleteConfirmModal}
           isOpen={deleteConfirmModal}
-          type={l18n[lang].boardS}
+          type={i18n[lang].boardS}
           title={title}
-          action={l18n[lang].deleteS}
+          action={i18n[lang].deleteS}
         />
       )}
     </>

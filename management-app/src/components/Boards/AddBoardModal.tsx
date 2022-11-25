@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useForm, FieldValues } from 'react-hook-form';
 import { IBoard, TBoardCreate } from '../../store/boards/types/boards.type';
 import { Typography } from '@mui/material';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 
 const style = {
   position: 'absolute',
@@ -86,11 +86,11 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
           >
             <TextField
               id="title"
-              label={l18n[lang].title}
+              label={i18n[lang].title}
               variant="standard"
               {...register('title', {
-                required: l18n[lang].titleMustBeFilled,
-                minLength: { value: 3, message: l18n[lang].minLength },
+                required: i18n[lang].titleMustBeFilled,
+                minLength: { value: 3, message: i18n[lang].minLength },
               })}
             />
             {errors.title && (
@@ -100,11 +100,11 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
             )}
             <TextField
               id="description"
-              label={l18n[lang].description}
+              label={i18n[lang].description}
               placeholder="description"
               {...register('description', {
-                required: l18n[lang].titleMustBeFilled,
-                minLength: { value: 3, message: l18n[lang].minLength },
+                required: i18n[lang].titleMustBeFilled,
+                minLength: { value: 3, message: i18n[lang].minLength },
               })}
               multiline
             />
@@ -114,7 +114,7 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
               </Typography>
             )}
             <Button type="submit" variant="outlined" size="small">
-              {isEditing ? l18n[lang].edit : l18n[lang].create}
+              {isEditing ? i18n[lang].edit : i18n[lang].create}
             </Button>
           </Box>
         </Box>

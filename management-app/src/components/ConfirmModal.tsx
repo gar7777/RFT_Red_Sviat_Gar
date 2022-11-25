@@ -9,7 +9,7 @@ import {
   Slide,
 } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
-import { l18n } from '../features/l18n';
+import { i18n } from '../features/i18n';
 import { useAppSelector } from '../store/hooks';
 
 interface IProps {
@@ -42,21 +42,21 @@ function ConfirmModal({ confirm, deny, isOpen, title, type, action }: IProps) {
         onClose={() => deny(false)}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle align="center">{'Warning!'}</DialogTitle>
+        <DialogTitle align="center">{i18n[lang].warning}</DialogTitle>
         <DialogContent>
           {lang === 'EN' ? (
             <DialogContentText id="alert-dialog-slide-description">
-              {l18n[lang].areYouShure} {action} <strong>{title}</strong> {type}?
+              {i18n[lang].areYouShure} {action} <strong>{title}</strong> {type}?
             </DialogContentText>
           ) : (
             <DialogContentText id="alert-dialog-slide-description">
-              {l18n[lang].areYouShure} {action} {type} <strong>{title}</strong>?
+              {i18n[lang].areYouShure} {action} {type} <strong>{title}</strong>?
             </DialogContentText>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => deny(false)}>{l18n[lang].no}</Button>
-          <Button onClick={confirm}>{l18n[lang].yes}</Button>
+          <Button onClick={() => deny(false)}>{i18n[lang].no}</Button>
+          <Button onClick={confirm}>{i18n[lang].yes}</Button>
         </DialogActions>
       </Dialog>
     </div>

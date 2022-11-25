@@ -1,15 +1,19 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { setSnackBarIsOpen } from '../../snack/reducers/snack.slice';
 import { createTask, deleteTask, updateTask } from '../thunks/tasks.thunks';
+import { i18n } from '../../../features/i18n';
+import { getLangfromLS } from '../../../utilities/getLang';
 
 export const taskListenerMiddleWare = createListenerMiddleware();
+
+const lang = getLangfromLS();
 
 taskListenerMiddleWare.startListening({
   actionCreator: createTask.fulfilled,
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'task is created',
+        message: i18n[lang].snackTaskCreated,
         type: 'success',
       })
     );
@@ -21,7 +25,7 @@ taskListenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'something went wrong',
+        message: i18n[lang].snackError,
         type: 'error',
       })
     );
@@ -45,7 +49,7 @@ taskListenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'something went wrong',
+        message: i18n[lang].snackError,
         type: 'error',
       })
     );
@@ -69,7 +73,7 @@ taskListenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'something went wrong',
+        message: i18n[lang].snackError,
         type: 'error',
       })
     );

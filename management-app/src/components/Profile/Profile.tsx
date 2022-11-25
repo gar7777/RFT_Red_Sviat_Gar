@@ -11,7 +11,7 @@ import { setTokenToLS } from '../../utilities/getToken';
 import { useNavigate } from 'react-router';
 import { RootState } from '../../store/store';
 import { setEmptyUser } from '../../store/user/reducers/user.slice';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 import ConfirmModal from '../ConfirmModal';
 
 function Profile() {
@@ -93,7 +93,7 @@ function Profile() {
       <CssBaseline />
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {l18n[lang].profile}
+          {i18n[lang].profile}
         </Typography>
         <Box component="form" sx={{ mt: 1 }}>
           <Box className={formStyles.labelWrapper}>
@@ -102,7 +102,7 @@ function Profile() {
               margin="normal"
               fullWidth
               id="name"
-              label={l18n[lang].name}
+              label={i18n[lang].name}
               value={nameValue}
               {...register('name', {
                 minLength: { value: 2, message: 'Name must be more than 2 symbols' },
@@ -127,7 +127,7 @@ function Profile() {
               margin="normal"
               fullWidth
               id="login"
-              label={l18n[lang].login}
+              label={i18n[lang].login}
               value={loginValue}
               {...register('login', {
                 minLength: { value: 3, message: 'Login must be more than 3 symbols' },
@@ -152,7 +152,7 @@ function Profile() {
               margin="normal"
               fullWidth
               id="password"
-              label={l18n[lang].password}
+              label={i18n[lang].password}
               {...register('password', {
                 pattern: {
                   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
@@ -181,7 +181,7 @@ function Profile() {
             sx={{ marginBottom: '10px' }}
             onClick={() => setUpdateConfirmModal(true)}
           >
-            {l18n[lang].updateProfile}
+            {i18n[lang].updateProfile}
           </Button>
           <Button
             variant="contained"
@@ -190,16 +190,16 @@ function Profile() {
             disabled={!isDirty}
             onClick={() => setDeleteConfirmModal(true)}
           >
-            {l18n[lang].deleteProfile}
+            {i18n[lang].deleteProfile}
           </Button>
           {updateConfirmModal && (
             <ConfirmModal
               confirm={handleSubmit(formSubmit)}
               deny={closeUpdateModal}
               isOpen={updateConfirmModal}
-              type={l18n[lang].profile}
+              type={i18n[lang].profile}
               title=""
-              action={l18n[lang].updateS}
+              action={i18n[lang].updateS}
             />
           )}
           {deleteConfirmModal && (
@@ -207,9 +207,9 @@ function Profile() {
               confirm={handleDeleteProfile}
               deny={closeDeleteModal}
               isOpen={deleteConfirmModal}
-              type={l18n[lang].profile}
+              type={i18n[lang].profile}
               title=""
-              action={l18n[lang].deleteS}
+              action={i18n[lang].deleteS}
             />
           )}
         </Box>

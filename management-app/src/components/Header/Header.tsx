@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import { Home, Language, Task } from '@mui/icons-material';
 import Menu from './Menu/Switcher/Switcher';
@@ -9,7 +9,7 @@ import BtnProfile from './Menu/BtnProfile';
 import BtnSignUp from './Menu/BtnSignUp';
 import { NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 import { loadUser } from '../../store/user/thunks/loadUser.thunks';
 
 function Header() {
@@ -31,7 +31,7 @@ function Header() {
           <Home fontSize="large" />
           <NavLink to="/boards">
             <Button variant="text" sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}>
-              {l18n[lang].mainPage}
+              {i18n[lang].mainPage}
             </Button>
           </NavLink>
         </>
@@ -40,7 +40,7 @@ function Header() {
       return (
         <>
           <Task fontSize="large" />
-          <Typography variant="h5">{l18n[lang].taskManager}</Typography>
+          <Typography variant="h5">{i18n[lang].taskManager}</Typography>
         </>
       );
     }

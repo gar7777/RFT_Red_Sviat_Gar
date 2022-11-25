@@ -12,11 +12,10 @@ import { updateColumn } from '../../store/columns/thunks/columns.thunks';
 import { createTask, deleteTask } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
 import { ITaskCreateData, ITaskFull } from '../../store/tasks/types/tasks.types';
-import { IFormData } from '../../store/columns/types/columns.type';
 import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
 import UpdateTaskModal from './UpdateTaskModal';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 import ConfirmModal from '../ConfirmModal';
 import { setCurrentColumn } from '../../store/columns/reducers/columns.slice';
 import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
@@ -121,9 +120,9 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
               fullWidth
               defaultValue={currentTitle}
               id="title"
-              label={l18n[lang].title}
+              label={i18n[lang].title}
               {...register('title', {
-                minLength: { value: 3, message: l18n[lang].minLength },
+                minLength: { value: 3, message: i18n[lang].minLength },
               })}
               autoComplete="Title"
               onChange={handleTitleChange}
@@ -161,7 +160,7 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
           ))}
         </Box>
         <Button onClick={handleAddTask}>
-          <AddCardIcon /> {l18n[lang].addTask}
+          <AddCardIcon /> {i18n[lang].addTask}
         </Button>
         <Button>
           <DeleteForeverIcon
@@ -184,9 +183,9 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
           confirm={handleDeleteTask}
           deny={setDeleteTaskModal}
           isOpen={deleteTaskModal}
-          type={l18n[lang].task}
+          type={i18n[lang].task}
           title={currentTask?.title}
-          action={l18n[lang].deleteS}
+          action={i18n[lang].deleteS}
         />
       )}
       {updateTaskModal && (

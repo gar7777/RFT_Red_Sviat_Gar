@@ -1,7 +1,7 @@
 import { Groups } from '@mui/icons-material';
 import { Box, Container, Divider, Grid, Paper, Typography } from '@mui/material';
 import React from 'react';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 import { useAppSelector } from '../../store/hooks';
 import styles from './WelcomePage.module.scss';
 
@@ -11,7 +11,7 @@ function WelcomePage() {
   return (
     <div className={styles.WelcomePage}>
       <Container sx={{ maxWidth: '1280px' }}>
-        <h1 className={styles.h1}>{l18n[lang].mainHeading}</h1>
+        <h1 className={styles.h1}>{i18n[lang].mainHeading}</h1>
         <Grid
           container
           spacing={{ xs: 1, md: 4 }}
@@ -71,7 +71,7 @@ function WelcomePage() {
             <Box className={styles.memberBox}>
               <Groups fontSize="large" />
               <Typography variant="h5" sx={{ marginLeft: '20px' }}>
-                {l18n[lang].member} 1
+                {i18n[lang].member} 1
               </Typography>
             </Box>
           </Grid>
@@ -79,7 +79,7 @@ function WelcomePage() {
             <Box className={styles.memberBox}>
               <Groups fontSize="large" />
               <Typography variant="h5" sx={{ marginLeft: '20px' }}>
-                {l18n[lang].member} 2
+                {i18n[lang].member} 2
               </Typography>
             </Box>
           </Grid>
@@ -87,7 +87,7 @@ function WelcomePage() {
             <Box className={styles.memberBox}>
               <Groups fontSize="large" />
               <Typography variant="h5" sx={{ marginLeft: '20px' }}>
-                {l18n[lang].member} 3
+                {i18n[lang].member} 3
               </Typography>
             </Box>
           </Grid>

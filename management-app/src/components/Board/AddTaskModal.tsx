@@ -1,4 +1,4 @@
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 import {
   Box,
   Typography,
@@ -37,14 +37,14 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
   const { lang } = useAppSelector((state) => state.lang);
 
   useEffect(() => {
-    setTimeout(() => setNewUser(userId), 0);
+    setTimeout(() => setNewUser(userId), 250);
   }, []);
 
   return (
     <Dialog open={addTaskModal} onClose={closeTaskModal}>
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {l18n[lang].addTask}
+          {i18n[lang].addTask}
         </Typography>
         <Box
           component="form"
@@ -57,10 +57,10 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               required
               fullWidth
               id="title"
-              label={l18n[lang].title}
+              label={i18n[lang].title}
               {...register('title', {
-                required: l18n[lang].enterTitle,
-                minLength: { value: 3, message: l18n[lang].minLength },
+                required: i18n[lang].enterTitle,
+                minLength: { value: 3, message: i18n[lang].minLength },
               })}
               autoComplete="Title"
               className={formStyles.validatedInput}
@@ -83,10 +83,10 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               fullWidth
               type="description"
               id="description"
-              label={l18n[lang].description}
+              label={i18n[lang].description}
               {...register('description', {
-                required: l18n[lang].enterDescription,
-                minLength: { value: 8, message: l18n[lang].minDescrLength },
+                required: i18n[lang].enterDescription,
+                minLength: { value: 8, message: i18n[lang].minDescrLength },
               })}
               autoComplete="Description"
               className={formStyles.validatedInput}
@@ -121,7 +121,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
             </Select>
           </FormControl>
           <Button variant="contained" type="submit" fullWidth>
-            {l18n[lang].add}
+            {i18n[lang].add}
           </Button>
         </Box>
       </Box>

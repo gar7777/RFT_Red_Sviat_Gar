@@ -17,7 +17,7 @@ import {
   ICreateColumn,
   ILoadedColumn,
 } from '../../store/columns/types/columns.type';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 import { Link } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
@@ -92,7 +92,7 @@ function Board() {
         </Link>
         <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{boardTitle}</h2>
         <Button onClick={handleAddColumn}>
-          <AddBoxIcon /> {l18n[lang].addColumn}
+          <AddBoxIcon /> {i18n[lang].addColumn}
         </Button>
       </Stack>
       <Box component="main" maxWidth="xs" className={styles['board__main-container']}>
@@ -118,9 +118,9 @@ function Board() {
             confirm={handleDeleteColumn}
             deny={setDeleteConfirmModal}
             isOpen={deleteConfirmModal}
-            type={l18n[lang].columnS}
+            type={i18n[lang].columnS}
             title={currentColumn?.title}
-            action={l18n[lang].deleteS}
+            action={i18n[lang].deleteS}
           />
         )}
       </Box>

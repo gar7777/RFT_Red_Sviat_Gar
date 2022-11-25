@@ -20,9 +20,11 @@ function Header() {
     await dispatch(loadUser());
   };
 
-  if (userToken) {
-    setUser();
-  }
+  useEffect(() => {
+    if (userToken) {
+      setUser();
+    }
+  }, []);
 
   const mainPageLink = () => {
     if (userToken) {

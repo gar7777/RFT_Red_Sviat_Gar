@@ -29,7 +29,6 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
   const token = getTokenFromLS();
   const userId = decodeJwt(token as string);
   const [newUser, setNewUser] = useState<string>('');
-  const [listIsLoaded, setListIsLoaded] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -38,7 +37,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
   const { lang } = useAppSelector((state) => state.lang);
 
   useEffect(() => {
-    setNewUser(userId);
+    setTimeout(() => setNewUser(userId), 0);
   }, []);
 
   return (
@@ -91,7 +90,6 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               })}
               autoComplete="Description"
               className={formStyles.validatedInput}
-              multiline
             />
             {errors.description && (
               <Typography

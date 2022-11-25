@@ -26,8 +26,8 @@ interface IProps {
 
 function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
   const { users } = useAppSelector((state) => state.user);
-  const token = getTokenFromLS();
-  const userId = decodeJwt(token as string);
+  // const token = getTokenFromLS();
+  // const userId = decodeJwt(token as string);
   const [newUser, setNewUser] = useState<string>('');
   const {
     register,
@@ -36,9 +36,9 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
   } = useForm();
   const { lang } = useAppSelector((state) => state.lang);
 
-  useEffect(() => {
-    setTimeout(() => setNewUser(userId), 250);
-  }, []);
+  // useEffect(() => {
+  //   setNewUser(userId);
+  // }, []);
 
   return (
     <Dialog open={addTaskModal} onClose={closeTaskModal}>
@@ -56,6 +56,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               margin="normal"
               required
               fullWidth
+              autoFocus
               id="title"
               label={i18n[lang].title}
               {...register('title', {
@@ -110,6 +111,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               value={newUser}
               label="Choose user"
               fullWidth
+              required
               {...register('userId')}
               onChange={(e) => setNewUser(e.target.value)}
             >

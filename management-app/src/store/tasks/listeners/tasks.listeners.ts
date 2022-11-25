@@ -37,7 +37,7 @@ taskListenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'task was deleted',
+        message: i18n[lang].snackTaskDeleted,
         type: 'success',
       })
     );
@@ -61,7 +61,7 @@ taskListenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: 'task was updated',
+        message: i18n[lang].snackTaskUpdated,
         type: 'success',
       })
     );

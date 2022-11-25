@@ -126,6 +126,7 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
               })}
               autoComplete="Title"
               onChange={handleTitleChange}
+              autoFocus
               // className={formStyles.validatedInput}
             />
             {errors.title && (

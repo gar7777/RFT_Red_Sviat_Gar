@@ -18,7 +18,7 @@ import {
   ILoadedColumn,
 } from '../../store/columns/types/columns.type';
 import { i18n } from '../../features/i18n';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 
@@ -35,10 +35,13 @@ function Board() {
   const [currentColumns, setCurrentColumns] = useState<ILoadedColumn[]>([]);
   const { lang } = useAppSelector((state: RootState) => state.lang);
   const currentColumn = useAppSelector((state: RootState) => state.columns.currentColumn);
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   dispatch(loadBoards());
-  // }, [params]);
+  useEffect(() => {
+    if (params.board !== boardId) {
+      navigate('/boards');
+    }
+  }, [params]);
 
   useEffect(() => {
     setCurrentColumns([...columns]);

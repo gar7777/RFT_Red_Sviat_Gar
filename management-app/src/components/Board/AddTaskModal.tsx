@@ -26,6 +26,7 @@ interface IProps {
 
 function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
   const { users } = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state.user);
   // const token = getTokenFromLS();
   // const userId = decodeJwt(token as string);
   const [newUser, setNewUser] = useState<string>('');
@@ -37,13 +38,10 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
   } = useForm();
   const { lang } = useAppSelector((state) => state.lang);
 
-  // useEffect(() => {
-  //   setFocus('title');
-  // }, []);
-
-  // useEffect(() => {
-  //   setNewUser(userId);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => setFocus('title'), 0);
+    setTimeout(() => setNewUser(user.id as string), 400);
+  }, []);
 
   return (
     <Dialog open={addTaskModal} onClose={closeTaskModal}>
@@ -53,7 +51,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit((data: FieldValues) => addTask(data))}
+          onSubmit={handleSubmit((data: FieldValues) => addTask({ ...data, userId: newUser }))}
           sx={{ mt: 1 }}
         >
           <Box className={formStyles.labelWrapper}>
@@ -61,7 +59,6 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               margin="normal"
               required
               fullWidth
-              autoFocus
               id="title"
               label={i18n[lang].title}
               {...register('title', {

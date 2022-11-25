@@ -53,6 +53,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModa
             <TextField
               margin="normal"
               fullWidth
+              autoFocus
               defaultValue={currentTask?.title}
               id="title"
               label={i18n[lang].title}

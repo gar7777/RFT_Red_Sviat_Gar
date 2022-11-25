@@ -1,4 +1,4 @@
-import { Button, Card, Stack, TextField, Typography, Box } from '@mui/material';
+import { Button, Card, Stack, TextField, Typography, Box, InputAdornment } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Task from './Task';
 import AddCardIcon from '@mui/icons-material/AddCard';
@@ -8,7 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { updateColumn } from '../../store/columns/thunks/columns.thunks';
+import { loadColumns, updateColumn } from '../../store/columns/thunks/columns.thunks';
 import { createTask, deleteTask } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
 import { ITaskCreateData, ITaskFull } from '../../store/tasks/types/tasks.types';
@@ -32,6 +32,7 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
   const { lang } = useAppSelector((state) => state.lang);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
+  const [prevTitle, setPrevTitle] = useState('');
   const [addTaskModal, setAddTaskModal] = useState(false);
   const [deleteTaskModal, setDeleteTaskModal] = useState(false);
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
@@ -42,6 +43,10 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
     register,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    dispatch(loadColumns(boardId));
+  }, [isEditingTitle]);
 
   const handleEditTitle = async () => {
     const columnUpdateData = {
@@ -55,7 +60,24 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setCurrentColumn({ title, id, order }));
     setCurrentTitle(e.target.value);
+  };
+
+  const handleTitleOnBlur = () => {
+    setCurrentTitle(prevTitle);
+    setIsEditingTitle(false);
+  };
+
+  const handleTitleOnKeyPress = (e: React.KeyboardEvent) => {
+    if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+      e.preventDefault();
+      console.log(currentTitle);
+      handleEditTitle();
+    }
+    if (e.code === 'Escape') {
+      handleTitleOnBlur();
+    }
   };
 
   const handleDeleteTask = async () => {
@@ -87,7 +109,6 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
       description: data.description,
       userId: data.userId,
     };
-    console.log(createTasksData);
     await dispatch(createTask(createTasksData));
   };
 
@@ -118,7 +139,7 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
             <TextField
               margin="normal"
               fullWidth
-              defaultValue={currentTitle}
+              value={currentTitle}
               id="title"
               label={i18n[lang].title}
               {...register('title', {
@@ -126,9 +147,19 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
               })}
               autoComplete="Title"
               onChange={handleTitleChange}
+              onBlur={handleTitleOnBlur}
+              onKeyDown={handleTitleOnKeyPress}
               autoFocus
               // className={formStyles.validatedInput}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <CheckIcon onClick={handleEditTitle} />
+                  </InputAdornment>
+                ),
+              }}
             />
+
             {errors.title && (
               <Typography
                 component="p"
@@ -139,12 +170,16 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
                 {errors.title.message as string}
               </Typography>
             )}
-            <CheckIcon onClick={handleEditTitle} />
           </Stack>
         ) : (
           <Stack direction="row" component="form">
             <h2>{currentTitle}</h2>
-            <ModeEditIcon onClick={() => setIsEditingTitle(true)} />
+            <ModeEditIcon
+              onClick={() => {
+                setIsEditingTitle(true);
+                setPrevTitle(currentTitle);
+              }}
+            />
           </Stack>
         )}
         <Box className={styles.tasks_wrapper}>

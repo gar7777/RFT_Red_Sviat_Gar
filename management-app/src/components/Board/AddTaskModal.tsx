@@ -32,9 +32,14 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors },
   } = useForm();
   const { lang } = useAppSelector((state) => state.lang);
+
+  // useEffect(() => {
+  //   setFocus('title');
+  // }, []);
 
   // useEffect(() => {
   //   setNewUser(userId);
@@ -64,7 +69,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
                 minLength: { value: 3, message: i18n[lang].minLength },
               })}
               autoComplete="Title"
-              className={formStyles.validatedInput}
+              // className={formStyles.validatedInput}
             />
             {errors.title && (
               <Typography

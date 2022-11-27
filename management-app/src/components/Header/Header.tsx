@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { AppBar, Button, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, Grid, Toolbar, Typography } from '@mui/material';
 import { Home, Language, Task } from '@mui/icons-material';
 import Menu from './Menu/Switcher/Switcher';
 import styles from './Header.module.scss';
@@ -7,7 +7,7 @@ import BtnLogIn from './Menu/BtnSignIn';
 import BtnLogOut from './Menu/BtnSignOut';
 import BtnProfile from './Menu/BtnProfile';
 import BtnSignUp from './Menu/BtnSignUp';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { i18n } from '../../features/i18n';
 import { loadUser } from '../../store/user/thunks/loadUser.thunks';
@@ -26,34 +26,50 @@ function Header() {
     }
   }, []);
 
-  const mainPageLink = () => {
-    if (userToken) {
-      return (
-        <>
-          <Home fontSize="large" />
-          <NavLink to="/boards">
-            <Button variant="text" sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}>
-              {i18n[lang].mainPage}
-            </Button>
-          </NavLink>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <Task fontSize="large" />
-          <Typography variant="h5">{i18n[lang].taskManager}</Typography>
-        </>
-      );
-    }
-  };
+  // const mainPageLink = () => {
+  //   if (userToken) {
+  //     return (
+  //       <>
+  //         <Home fontSize="large" />
+  //         <NavLink to="/boards">
+  //           <Button variant="text" sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}>
+  //             {i18n[lang].mainPage}
+  //           </Button>
+  //         </NavLink>
+  //       </>
+  //     );
+  //   } else {
+  //     return (
+  //       <>
+  //         <Task fontSize="large" />
+  //         <Typography variant="h5">{i18n[lang].taskManager}</Typography>
+  //       </>
+  //     );
+  //   }
+  // };
 
   return (
     <AppBar className={styles.appbar} position="sticky">
       <Toolbar className={styles.toolbar}>
-        <div className={styles.toolbarItem}>{mainPageLink()}</div>
-        <div className={styles.toolbarItem} style={{ marginLeft: 'auto' }}>
-          <Language fontSize="large" />
+        <div style={{ marginRight: 'auto' }}>
+          <NavLink to="/">
+            <Button variant="text" sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}>
+              <Home fontSize="large" sx={{ marginRight: '0.5rem' }} /> {i18n[lang].mainPage}
+            </Button>
+          </NavLink>
+        </div>
+        {userToken && (
+          <>
+            <NavLink to="/boards">
+              <Button variant="text" sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}>
+                <Task fontSize="large" sx={{ marginRight: '0.5rem' }} />
+                {i18n[lang].taskManager}
+              </Button>
+            </NavLink>
+          </>
+        )}
+        <div className={styles.toolbarItem}>
+          <Language fontSize="medium" />
           <Menu />
         </div>
         <div className={styles.toolbarItem}>{!userToken ? <BtnLogIn /> : <BtnLogOut />}</div>

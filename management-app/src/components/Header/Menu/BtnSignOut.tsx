@@ -20,13 +20,13 @@ export default function BtnLogOut() {
 
   return (
     <>
-      <Logout fontSize="large" />
       <NavLink to="/">
         <Button
           variant="text"
           sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}
           onClick={handleClick}
         >
+          <Logout fontSize="large" sx={{ marginRight: '0.5rem' }} />
           {i18n[lang].signOut}
         </Button>
       </NavLink>

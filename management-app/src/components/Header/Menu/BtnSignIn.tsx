@@ -10,9 +10,9 @@ function BtnLogIn() {
 
   return (
     <>
-      <Login fontSize="large" />
       <NavLink to="/signin">
         <Button variant="text" sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}>
+          <Login fontSize="large" sx={{ marginRight: '0.5rem' }} />
           {i18n[lang].signIn}
         </Button>
       </NavLink>

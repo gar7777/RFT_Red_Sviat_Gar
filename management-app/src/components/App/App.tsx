@@ -1,23 +1,38 @@
-import Boards from 'components/Boards';
-import CardDetail from 'components/Boards/CardDetail';
-import Footer from 'components/Footer';
-import Header from 'components/Header';
-import NotFound from 'components/NotFound';
-import WelcomePage from 'components/WelcomePage';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
+import { NotFound } from '../NotFound';
+import WelcomePage from '../WelcomePage/WelcomePage';
 import React from 'react';
 import { Routes, Route } from 'react-router';
+import SignIn from '../SignIn';
+import Profile from '../Profile/Profile';
+import BoardsManagement from '../Boards/BoardsManagement';
+import SignUp from '../SignUp';
+import Board from '../Board/Board';
+import { Provider } from 'react-redux';
+import { store } from '../../store/store';
+import SnackBar from '../SnackBar/SnackBar';
+import { StyledEngineProvider } from '@mui/material/styles';
 
 function App() {
   return (
     <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<WelcomePage />} />
-        <Route path="/boards" element={<Boards />} />
-        <Route path="/boards/:board" element={<CardDetail />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
+      <Provider store={store}>
+        <StyledEngineProvider injectFirst>
+          <Header />
+          <Routes>
+            <Route path="/" element={<WelcomePage />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/boards" element={<BoardsManagement />} />
+            <Route path="/boards/:board" element={<Board />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+          <SnackBar />
+        </StyledEngineProvider>
+      </Provider>
     </>
   );
 }

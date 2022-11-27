@@ -1,0 +1,18 @@
+@import '../../scss/variables.scss';
+
+.WelcomePage {
+  height: calc(100vh - 10rem);
+  color: $primary-dark
+}
+
+.h1,
+.h3 {
+  color: $primary-dark;
+  text-align: center;
+}
+
+.memberBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

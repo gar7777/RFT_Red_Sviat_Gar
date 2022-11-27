@@ -1,39 +1,30 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
-import { IElement } from './AddBoardModal';
-
+import { BoardCardButtons } from './BoardCardButtons';
+import { IBoard } from '../../store/boards/types/boards.type';
 interface IBoardCard {
-  title: string;
-  description: string;
-  todos: IElement[];
-  setTodos: React.Dispatch<React.SetStateAction<IElement[]>>;
+  title: string | undefined;
+  description: string | undefined;
+  id: string | undefined;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  todo: IElement;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentBoard: React.Dispatch<React.SetStateAction<IBoard | null>>;
 }
 
 export default function BoardCard({
   title,
   description,
-  todos,
-  setTodos,
-  todo,
+  id,
   setOpen,
+  setIsEditing,
+  setCurrentBoard,
 }: IBoardCard) {
-  const deletHandler = () => {
-    setTodos(todos.filter((el) => el.id !== todo.id));
-  };
-  const editHandler = () => {
-    const selectedCard = todos.find((item) => item.id === todo.id);
-    setOpen(true);
-  };
   return (
     <Card sx={{ maxWidth: 250 }}>
-      <Link to="/boards/:board" style={{ textDecoration: 'none' }}>
+      <Link to={`/boards/${id}`} style={{ textDecoration: 'none' }}>
         <CardContent>
           <Typography gutterBottom variant="h4" component="div">
             {title}
@@ -43,14 +34,14 @@ export default function BoardCard({
           </Typography>
         </CardContent>
       </Link>
-      <CardActions>
-        <Button size="small" onClick={editHandler}>
-          Изменить
-        </Button>
-        <Button size="small" onClick={deletHandler}>
-          Удалить
-        </Button>
-      </CardActions>
+      <BoardCardButtons
+        id={id}
+        setOpen={setOpen}
+        setIsEditing={setIsEditing}
+        setCurrentBoard={setCurrentBoard}
+        title={title}
+        description={description}
+      />
     </Card>
   );
 }

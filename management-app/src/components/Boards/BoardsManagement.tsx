@@ -5,19 +5,45 @@ import BoardCard from './BoardCard';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AddBoard } from './AddBoard';
-import AddBoardModal, { IElement } from './AddBoardModal';
+import AddBoardModal from './AddBoardModal';
+import SearchBoard from './SearchBoard';
+import './style.css';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
+import { RootState } from '../../store/store';
+import { IBoard } from '../../store/boards/types/boards.type';
+import { i18n } from '../../features/i18n';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
-  const [inputText, setInputText] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [todos, setTodos] = React.useState<IElement[]>([]);
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [currentBoard, setCurrentBoard] = React.useState<IBoard | null>(null);
+  const [boardsToShow, setBoardsToShow] = React.useState<IBoard[]>([]);
+
+  const { boards, searchQuery, filteredBoards } = useAppSelector(
+    (state: RootState) => state.boards
+  );
+  const { lang } = useAppSelector((state) => state.lang);
+
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    dispatch(loadBoards());
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    if (searchQuery.length > 0) {
+      setBoardsToShow(filteredBoards);
+    } else {
+      setBoardsToShow(boards);
+    }
+  }, [searchQuery, filteredBoards, boards]);
 
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="xl">
-        <h1
+      <Container maxWidth="xl" className="board-container">
+        <Box
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -25,50 +51,47 @@ export default function BoardsManagement() {
             marginTop: '5px',
           }}
         >
-          План заданий
-        </h1>
+          <h1>{i18n[lang].boards}</h1>
+          <SearchBoard />
+        </Box>
         <Box sx={{ flexGrow: 1 }}>
           <Grid
             container
-            spacing={{ xs: 2, md: 3 }}
+            spacing={{ xs: 1, md: 2 }}
             columns={{ xs: 4, sm: 8, md: 12 }}
             direction="row"
             justifyContent="flex-start"
             alignItems="center"
           >
-            {todos.length !== 0 ? (
-              todos.map((todo) => (
-                <Grid item xs={3} key={todo.id}>
+            {boardsToShow.length !== 0 ? (
+              boardsToShow.map((board) => (
+                <Grid item xs={3} key={board.id}>
                   <BoardCard
-                    title={todo.title}
-                    description={todo.description}
-                    todos={todos}
-                    setTodos={setTodos}
-                    todo={todo}
+                    title={board.title}
+                    description={board.description}
+                    id={board.id}
                     setOpen={setOpen}
+                    setIsEditing={setIsEditing}
+                    setCurrentBoard={setCurrentBoard}
                   />
                 </Grid>
               ))
             ) : (
               <Grid item xs={3}>
-                <h3>Нажмите на крестик, чтобы добавить задание</h3>
+                <h3>{i18n[lang].clickToAddATask}</h3>
               </Grid>
             )}
 
             <Grid item xs={3}>
-              <AddBoard setOpen={setOpen} />
+              <AddBoard setOpen={setOpen} setIsEditing={setIsEditing} />
             </Grid>
           </Grid>
         </Box>
         <AddBoardModal
           open={open}
           setOpen={setOpen}
-          setInputText={setInputText}
-          todos={todos}
-          setTodos={setTodos}
-          inputText={inputText}
-          description={description}
-          setDescription={setDescription}
+          isEditing={isEditing}
+          currentBoard={currentBoard}
         />
       </Container>
     </React.Fragment>

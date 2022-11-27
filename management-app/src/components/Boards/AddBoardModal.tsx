@@ -3,6 +3,12 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { createBoard, loadBoards, updateBoard } from '../../store/boards/thunks/loadBoards.thunk';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useForm, FieldValues } from 'react-hook-form';
+import { IBoard, TBoardCreate } from '../../store/boards/types/boards.type';
+import { Typography } from '@mui/material';
+import { i18n } from '../../features/i18n';
 
 const style = {
   position: 'absolute',
@@ -16,54 +22,48 @@ const style = {
   p: 4,
 };
 
-export interface IElement {
-  title: string;
-  id: number;
-  description: string;
-}
-
 interface IAddBoardModal {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  inputText: string;
-  setInputText: React.Dispatch<React.SetStateAction<string>>;
-  description: string;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
-  todos: IElement[];
-  setTodos: React.Dispatch<React.SetStateAction<IElement[]>>;
+  isEditing: boolean;
+  currentBoard: IBoard | null;
 }
 
-export default function AddBoardModal({
-  open,
-  setOpen,
-  setInputText,
-  todos,
-  setTodos,
-  inputText,
-  description,
-  setDescription,
-}: IAddBoardModal) {
-  const handleClose = () => setOpen(false);
-  const textTitleHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputText(event.target.value);
-  };
-  const descriptionHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(event.target.value);
-  };
+export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }: IAddBoardModal) {
+  const { lang } = useAppSelector((state) => state.lang);
+  const dispatch = useAppDispatch();
 
-  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setTodos([
-      ...todos,
-      {
-        title: inputText,
-        id: Math.random() * 1000,
-        description: description,
-      },
-    ]);
-    setInputText('');
-    setDescription('');
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  React.useEffect(() => {
+    reset({
+      title: currentBoard?.title || '',
+      description: currentBoard?.description || '',
+    });
+  }, [currentBoard]);
+
+  const handleClose = () => setOpen(false);
+
+  const formSubmit = async (data: FieldValues) => {
+    if (isEditing && currentBoard?.id) {
+      await dispatch(
+        updateBoard({
+          title: data.title,
+          id: currentBoard.id,
+          description: data.description,
+        })
+      );
+    } else {
+      await dispatch(createBoard(data as TBoardCreate));
+    }
+    reset();
     handleClose();
+    dispatch(loadBoards());
   };
 
   return (
@@ -77,7 +77,7 @@ export default function AddBoardModal({
         <Box sx={style}>
           <Box
             component="form"
-            onSubmit={submitHandler}
+            onSubmit={handleSubmit(formSubmit)}
             sx={{
               '& > :not(style)': { m: 1, width: '30ch' },
             }}
@@ -85,22 +85,36 @@ export default function AddBoardModal({
             autoComplete="off"
           >
             <TextField
-              id="standard-basic"
-              label="Название"
+              id="title"
+              label={i18n[lang].title}
               variant="standard"
-              onChange={textTitleHandler}
-              value={inputText}
+              {...register('title', {
+                required: i18n[lang].titleMustBeFilled,
+                minLength: { value: 3, message: i18n[lang].minLength },
+              })}
             />
+            {errors.title && (
+              <Typography component="p" align="center" variant="caption" style={{ color: 'red' }}>
+                {errors.title.message as string}
+              </Typography>
+            )}
             <TextField
-              id="outlined-textarea"
-              label="Описание"
-              placeholder="Описание"
-              onChange={descriptionHandler}
-              value={description}
+              id="description"
+              label={i18n[lang].description}
+              placeholder="description"
+              {...register('description', {
+                required: i18n[lang].titleMustBeFilled,
+                minLength: { value: 3, message: i18n[lang].minLength },
+              })}
               multiline
             />
+            {errors.description && (
+              <Typography component="p" align="center" variant="caption" style={{ color: 'red' }}>
+                {errors.description.message as string}
+              </Typography>
+            )}
             <Button type="submit" variant="outlined" size="small">
-              Создать
+              {isEditing ? i18n[lang].edit : i18n[lang].create}
             </Button>
           </Box>
         </Box>

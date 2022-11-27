@@ -1,0 +1,36 @@
+header {
+  
+}
+
+.appbar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+}
+
+.mainPageLink {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 1280px;
+}
+
+.toolbarItem {
+  display: flex;
+  gap: 15px;
+  margin: 0 10px;
+  align-items: center;
+}
+
+.toolbarItemText {
+  margin-top: 50%;
+}

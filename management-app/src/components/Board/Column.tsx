@@ -26,9 +26,10 @@ interface IProps {
   order: number;
   boardId: string;
   setDeleteConfirmModal: Dispatch<SetStateAction<boolean>>;
+  innerRef: (element?: HTMLElement | null | undefined) => void;
 }
 
-function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
+function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ...props }: IProps) {
   const { lang } = useAppSelector((state) => state.lang);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
@@ -133,7 +134,7 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal }: IProps) {
 
   return (
     <>
-      <Card variant="outlined" className={styles.column}>
+      <Card variant="outlined" className={styles.column} ref={innerRef} {...props}>
         {isEditingTitle ? (
           <Stack direction="row" component="form">
             <TextField

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SetStateAction, Dispatch } from 'react';
 import { CssBaseline, Stack, Button, Box } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -20,6 +20,9 @@ import {
 import { i18n } from '../../features/i18n';
 import { Link, useNavigate } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { ComlumnList } from './ColumnListDnd';
+
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 
 function Board() {
@@ -54,6 +57,28 @@ function Board() {
   useEffect(() => {
     dispatch(loadColumns(boardId));
   }, []);
+
+  const reorder = (list: ILoadedColumn[], startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  function onDragEnd(result: any) {
+    if (!result.destination) {
+      return;
+    }
+
+    if (result.destination.index === result.source.index) {
+      return;
+    }
+
+    const columns = reorder(currentColumns, result.source.index, result.destination.index);
+
+    setCurrentColumns(columns);
+  }
 
   const handleAddColumn = (): void => {
     setAddColumnModal(true);
@@ -100,18 +125,20 @@ function Board() {
       </Stack>
       <Box component="main" maxWidth="xs" className={styles['board__main-container']}>
         <Stack direction="row" spacing={2} sx={{ alignItems: 'start' }}>
-          {currentColumns
-            .sort((a, b) => a.order - b.order)
-            .map(({ id, title, order }) => (
-              <Column
-                key={id}
-                id={id}
-                title={title}
-                boardId={boardId}
-                order={order}
-                setDeleteConfirmModal={setDeleteConfirmModal}
-              />
-            ))}
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="columns">
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  <ComlumnList
+                    columns={currentColumns}
+                    boardId={boardId}
+                    setDeleteConfirmModal={setDeleteConfirmModal}
+                  />
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         </Stack>
         {addColumnModal && (
           <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />

@@ -17,11 +17,13 @@ import {
   ICreateColumn,
   ILoadedColumn,
 } from '../../store/columns/types/columns.type';
-import { l18n } from '../../features/l18n';
-import { Link } from 'react-router-dom';
+import { i18n } from '../../features/i18n';
+import { Link, useNavigate } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { ComlumnList } from './ColumnListDnd';
+
+import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 
 function Board() {
   const params = useParams();
@@ -36,6 +38,25 @@ function Board() {
   const [currentColumns, setCurrentColumns] = useState<ILoadedColumn[]>([]);
   const { lang } = useAppSelector((state: RootState) => state.lang);
   const currentColumn = useAppSelector((state: RootState) => state.columns.currentColumn);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (params.board !== boardId) {
+      navigate('/boards');
+    }
+  }, [params]);
+
+  useEffect(() => {
+    setCurrentColumns([...columns]);
+    return () => {
+      localStorage.setItem('currentBoard', boardId);
+      localStorage.setItem('currentBoardTitle', boardTitle);
+    };
+  }, [addColumnModal, deleteConfirmModal, columns]);
+
+  useEffect(() => {
+    dispatch(loadColumns(boardId));
+  }, []);
 
   const reorder = (list: ILoadedColumn[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
@@ -88,18 +109,6 @@ function Board() {
     setAddColumnModal(false);
   };
 
-  useEffect(() => {
-    setCurrentColumns([...columns]);
-    return () => {
-      localStorage.setItem('currentBoard', boardId);
-      localStorage.setItem('currentBoardTitle', boardTitle);
-    };
-  }, [addColumnModal, deleteConfirmModal, columns]);
-
-  useEffect(() => {
-    dispatch(loadColumns(boardId));
-  }, []);
-
   return (
     <>
       <CssBaseline />
@@ -111,7 +120,7 @@ function Board() {
         </Link>
         <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{boardTitle}</h2>
         <Button onClick={handleAddColumn}>
-          <AddBoxIcon /> {l18n[lang].addColumn}
+          <AddBoxIcon /> {i18n[lang].addColumn}
         </Button>
       </Stack>
       <Box component="main" maxWidth="xs" className={styles['board__main-container']}>
@@ -139,9 +148,9 @@ function Board() {
             confirm={handleDeleteColumn}
             deny={setDeleteConfirmModal}
             isOpen={deleteConfirmModal}
-            type={l18n[lang].columnS}
+            type={i18n[lang].columnS}
             title={currentColumn?.title}
-            action={l18n[lang].deleteS}
+            action={i18n[lang].deleteS}
           />
         )}
       </Box>

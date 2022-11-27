@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { RootState } from '../../store/store';
 import { IBoard } from '../../store/boards/types/boards.type';
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
@@ -51,7 +51,7 @@ export default function BoardsManagement() {
             marginTop: '5px',
           }}
         >
-          <h1>{l18n[lang].boards}</h1>
+          <h1>{i18n[lang].boards}</h1>
           <SearchBoard />
         </Box>
         <Box sx={{ flexGrow: 1 }}>
@@ -78,7 +78,7 @@ export default function BoardsManagement() {
               ))
             ) : (
               <Grid item xs={3}>
-                <h3>{l18n[lang].clickToAddATask}</h3>
+                <h3>{i18n[lang].clickToAddATask}</h3>
               </Grid>
             )}
 

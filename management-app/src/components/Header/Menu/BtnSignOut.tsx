@@ -2,7 +2,7 @@ import { Logout } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { l18n } from '../../../features/l18n';
+import { i18n } from '../../../features/i18n';
 import { logoutUser } from '../../../store/authorization/reducers/auth.slice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setEmptyUser } from '../../../store/user/reducers/user.slice';
@@ -27,7 +27,7 @@ export default function BtnLogOut() {
           sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}
           onClick={handleClick}
         >
-          {l18n[lang].signOut}
+          {i18n[lang].signOut}
         </Button>
       </NavLink>
     </>

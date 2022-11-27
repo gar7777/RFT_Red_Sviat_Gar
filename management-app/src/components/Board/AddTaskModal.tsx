@@ -1,4 +1,4 @@
-import { l18n } from '../../features/l18n';
+import { i18n } from '../../features/i18n';
 import {
   Box,
   Typography,
@@ -10,7 +10,7 @@ import {
   InputLabel,
   FormControl,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import formStyles from '../../scss/Form.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
@@ -25,26 +25,33 @@ interface IProps {
 }
 
 function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
-  const token = getTokenFromLS();
-  const userId = decodeJwt(token as string);
-  const [newUser, setNewUser] = useState<string>(userId);
   const { users } = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state.user);
+  // const token = getTokenFromLS();
+  // const userId = decodeJwt(token as string);
+  const [newUser, setNewUser] = useState<string>('');
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors },
   } = useForm();
   const { lang } = useAppSelector((state) => state.lang);
+
+  useEffect(() => {
+    setTimeout(() => setFocus('title'), 0);
+    setTimeout(() => setNewUser(user.id as string), 400);
+  }, []);
 
   return (
     <Dialog open={addTaskModal} onClose={closeTaskModal}>
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {l18n[lang].addTask}
+          {i18n[lang].addTask}
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit((data: FieldValues) => addTask(data))}
+          onSubmit={handleSubmit((data: FieldValues) => addTask({ ...data, userId: newUser }))}
           sx={{ mt: 1 }}
         >
           <Box className={formStyles.labelWrapper}>
@@ -53,13 +60,13 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               required
               fullWidth
               id="title"
-              label={l18n[lang].title}
+              label={i18n[lang].title}
               {...register('title', {
-                required: l18n[lang].enterTitle,
-                minLength: { value: 3, message: l18n[lang].minLength },
+                required: i18n[lang].enterTitle,
+                minLength: { value: 3, message: i18n[lang].minLength },
               })}
               autoComplete="Title"
-              className={formStyles.validatedInput}
+              // className={formStyles.validatedInput}
             />
             {errors.title && (
               <Typography
@@ -79,10 +86,10 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
               fullWidth
               type="description"
               id="description"
-              label={l18n[lang].description}
+              label={i18n[lang].description}
               {...register('description', {
-                required: l18n[lang].enterDescription,
-                minLength: { value: 8, message: l18n[lang].minDescrLength },
+                required: i18n[lang].enterDescription,
+                minLength: { value: 8, message: i18n[lang].minDescrLength },
               })}
               autoComplete="Description"
               className={formStyles.validatedInput}
@@ -103,10 +110,10 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
             <Select
               labelId="user-select-label"
               id="user-select"
-              defaultValue={userId}
               value={newUser}
               label="Choose user"
               fullWidth
+              required
               {...register('userId')}
               onChange={(e) => setNewUser(e.target.value)}
             >
@@ -118,7 +125,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
             </Select>
           </FormControl>
           <Button variant="contained" type="submit" fullWidth>
-            {l18n[lang].add}
+            {i18n[lang].add}
           </Button>
         </Box>
       </Box>

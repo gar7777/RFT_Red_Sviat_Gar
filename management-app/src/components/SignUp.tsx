@@ -7,7 +7,7 @@ import typographyStyles from '../scss/Typography.module.scss';
 import mainStyles from '../scss/MainContainer.module.scss';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { signUp } from '../store/authorization/thunks/authorization.thunks';
-import { l18n } from '../features/l18n';
+import { i18n } from '../features/i18n';
 
 function SignUp() {
   const { lang } = useAppSelector((state) => state.lang);
@@ -32,7 +32,7 @@ function SignUp() {
       <CssBaseline />
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {l18n[lang].signUp}
+          {i18n[lang].signUp}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(formSubmit)} sx={{ mt: 1 }}>
           <Box className={formStyles.labelWrapper}>
@@ -41,7 +41,7 @@ function SignUp() {
               required
               fullWidth
               id="name"
-              label={l18n[lang].name}
+              label={i18n[lang].name}
               {...register('name', {
                 required: 'Please, enter your name',
                 minLength: { value: 2, message: 'Name must be more than 2 symbols' },
@@ -67,7 +67,7 @@ function SignUp() {
               required
               fullWidth
               id="login"
-              label={l18n[lang].login}
+              label={i18n[lang].login}
               {...register('login', {
                 required: 'Please, enter login',
                 minLength: { value: 3, message: 'Login must be more than 3 symbols' },
@@ -92,7 +92,7 @@ function SignUp() {
               required
               fullWidth
               id="password"
-              label={l18n[lang].password}
+              label={i18n[lang].password}
               {...register('password', {
                 required: 'Please, enter password',
                 pattern: {
@@ -115,10 +115,10 @@ function SignUp() {
             )}
           </Box>
           <Typography component="p" align="center">
-            {l18n[lang].haveAccount} <Link to="/signin">{l18n[lang].signIn}</Link>
+            {i18n[lang].haveAccount} <Link to="/signin">{i18n[lang].signIn}</Link>
           </Typography>
           <Button variant="contained" type="submit" fullWidth>
-            {l18n[lang].signUp}
+            {i18n[lang].signUp}
           </Button>
         </Box>
       </Box>

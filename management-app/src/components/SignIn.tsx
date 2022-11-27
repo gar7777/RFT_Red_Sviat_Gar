@@ -8,7 +8,7 @@ import mainStyles from '../scss/MainContainer.module.scss';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { loadUser } from '../store/user/thunks/loadUser.thunks';
 import { signIn } from '../store/authorization/thunks/authorization.thunks';
-import { l18n } from '../features/l18n';
+import { i18n } from '../features/i18n';
 
 function SignIn() {
   const { lang } = useAppSelector((state) => state.lang);
@@ -34,7 +34,7 @@ function SignIn() {
       <CssBaseline />
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {l18n[lang].signIn}
+          {i18n[lang].signIn}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(formSubmit)} sx={{ mt: 1 }}>
           <Box className={formStyles.labelWrapper}>
@@ -43,7 +43,7 @@ function SignIn() {
               required
               fullWidth
               id="login"
-              label={l18n[lang].login}
+              label={i18n[lang].login}
               {...register('login', {
                 required: 'Please, enter login',
                 minLength: { value: 3, message: 'Login must be more than 3 symbols' },
@@ -69,7 +69,7 @@ function SignIn() {
               fullWidth
               type="password"
               id="password"
-              label={l18n[lang].password}
+              label={i18n[lang].password}
               {...register('password', {
                 required: 'Please, enter password',
                 pattern: {
@@ -92,10 +92,10 @@ function SignIn() {
             )}
           </Box>
           <Typography component="p" align="center">
-            {l18n[lang].haveNoAccount} <Link to="/signup">{l18n[lang].signUp}</Link>
+            {i18n[lang].haveNoAccount} <Link to="/signup">{i18n[lang].signUp}</Link>
           </Typography>
           <Button variant="contained" type="submit" fullWidth>
-            {l18n[lang].signIn}
+            {i18n[lang].signIn}
           </Button>
         </Box>
       </Box>

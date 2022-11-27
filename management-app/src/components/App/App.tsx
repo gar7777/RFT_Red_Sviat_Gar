@@ -13,25 +13,30 @@ import { Provider } from 'react-redux';
 import { store } from '../../store/store';
 import SnackBar from '../SnackBar/SnackBar';
 import { StyledEngineProvider } from '@mui/material/styles';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import VideoInstruction from '../VideoInstruction';
 
 function App() {
   return (
     <>
       <Provider store={store}>
-        <StyledEngineProvider injectFirst>
-          <Header />
-          <Routes>
-            <Route path="/" element={<WelcomePage />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/boards" element={<BoardsManagement />} />
-            <Route path="/boards/:board" element={<Board />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Footer />
-          <SnackBar />
-        </StyledEngineProvider>
+        <ErrorBoundary>
+          <StyledEngineProvider injectFirst>
+            <Header />
+            <Routes>
+              <Route path="/" element={<WelcomePage />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/boards" element={<BoardsManagement />} />
+              <Route path="/boards/:board" element={<Board />} />
+              <Route path="/video-instruction" element={<VideoInstruction />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Footer />
+            <SnackBar />
+          </StyledEngineProvider>
+        </ErrorBoundary>
       </Provider>
     </>
   );

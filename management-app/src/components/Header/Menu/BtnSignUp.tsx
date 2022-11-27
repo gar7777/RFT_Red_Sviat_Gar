@@ -10,9 +10,9 @@ function BtnSignUp() {
 
   return (
     <>
-      <Airplay fontSize="large" />
       <NavLink to="/signup">
         <Button variant="text" sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}>
+          <Airplay fontSize="large" sx={{ marginRight: '0.5rem' }} />
           {i18n[lang].signUp}
         </Button>
       </NavLink>

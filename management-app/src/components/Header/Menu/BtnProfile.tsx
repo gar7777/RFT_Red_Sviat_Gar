@@ -10,9 +10,9 @@ function BtnProfile() {
 
   return (
     <>
-      <AccountCircle fontSize="large" />
       <NavLink to="/profile">
         <Button variant="text" sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}>
+          <AccountCircle fontSize="large" sx={{ marginRight: '0.5rem' }} />
           {i18n[lang].profile}
         </Button>
       </NavLink>

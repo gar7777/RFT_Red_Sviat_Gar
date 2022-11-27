@@ -1,0 +1,9 @@
+@import './variables.scss';
+
+.mainContainer {
+  height: calc(100vh - 10rem);
+  color: $primary-dark;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -14,3 +14,10 @@
   padding: 1rem;
   height: 5rem;
 }
+
+.columnList {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: start;
+  gap: 1rem;
+}

@@ -22,6 +22,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { ComlumnList } from './ColumnListDnd';
+import type { DropResult } from 'react-beautiful-dnd';
 
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 
@@ -66,7 +67,7 @@ function Board() {
     return result;
   };
 
-  function onDragEnd(result: any) {
+  function onDragEnd(result: DropResult) {
     if (!result.destination) {
       return;
     }
@@ -124,22 +125,24 @@ function Board() {
         </Button>
       </Stack>
       <Box component="main" maxWidth="xs" className={styles['board__main-container']}>
-        <Stack direction="row" spacing={2} sx={{ alignItems: 'start' }}>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="columns">
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
-                  <ComlumnList
-                    columns={currentColumns}
-                    boardId={boardId}
-                    setDeleteConfirmModal={setDeleteConfirmModal}
-                  />
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </Stack>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="columns" direction="horizontal" type="column">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className={styles.columnList}
+              >
+                <ComlumnList
+                  columns={currentColumns}
+                  boardId={boardId}
+                  setDeleteConfirmModal={setDeleteConfirmModal}
+                />
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
         {addColumnModal && (
           <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />
         )}

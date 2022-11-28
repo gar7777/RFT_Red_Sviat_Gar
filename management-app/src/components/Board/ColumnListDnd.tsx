@@ -43,19 +43,23 @@ function ColumnDND({
   );
 }
 
-export const ComlumnList = React.memo(function ColumnDndList({
+export const ComlumnList = React.memo<IColumnList>(function ColumnDndList({
   columns,
   boardId,
   setDeleteConfirmModal,
 }: IColumnList) {
   console.log(columns);
-  return columns.map((column: ILoadedColumn, index: number) => (
-    <ColumnDND
-      {...column}
-      boardId={boardId}
-      setDeleteConfirmModal={setDeleteConfirmModal}
-      index={index}
-      key={column.id}
-    />
-  ));
+  return (
+    <>
+      {columns.map((column: ILoadedColumn, index: number) => (
+        <ColumnDND
+          {...column}
+          boardId={boardId}
+          setDeleteConfirmModal={setDeleteConfirmModal}
+          index={index}
+          key={column.id}
+        />
+      ))}
+    </>
+  );
 });

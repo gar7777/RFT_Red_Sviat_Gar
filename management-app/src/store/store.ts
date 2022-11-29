@@ -9,6 +9,8 @@ import tasksSlice from './tasks/reducers/tasks.slice';
 import snackSlice from './snack/reducers/snack.slice';
 import userSlice from './user/reducers/user.slice';
 import langSlice from './i18n/reducers/lang.slice';
+import { authlistenerMiddleWare } from './authorization/listeners/authorization.listeners';
+import { userlistenerMiddleWare } from './user/listeners/user.listener';
 
 export const store = configureStore({
   reducer: {
@@ -24,7 +26,9 @@ export const store = configureStore({
     getDefaultMiddleware().prepend(
       boardlistenerMiddleWare.middleware,
       columnListenerMiddleWare.middleware,
-      taskListenerMiddleWare.middleware
+      taskListenerMiddleWare.middleware,
+      authlistenerMiddleWare.middleware,
+      userlistenerMiddleWare.middleware
     ),
 });
 

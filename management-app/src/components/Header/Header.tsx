@@ -49,7 +49,7 @@ function Header() {
   // };
 
   return (
-    <AppBar className={styles.appbar} position="sticky">
+    <AppBar className={styles.appbar}>
       <Toolbar className={styles.toolbar}>
         <div style={{ marginRight: 'auto' }}>
           <NavLink to="/">

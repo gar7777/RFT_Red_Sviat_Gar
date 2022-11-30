@@ -1,21 +1,50 @@
 @import '../../scss/variables.scss';
 
-.welcomePageMainContainer {
-  max-width: 1280px;
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  row-gap: 4vh;
+  width: 100%;
+  min-height: calc(100vh - 10rem);
+  height: 100%;
+  padding: 3%;
 }
 
 .welcomePageTextContainer {
-  width: 35vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  text-align: justify;
+  width: 45%;
 }
 
 .welcomePageText{
-  font-size: 1.25rem;
+  font-size: $medium;
   color: $gray-dark;
 }
 
+.buttonsContainer {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  padding-top: 0.6rem;
+  gap: 3vw;
+  row-gap: 0.5rem;
+  height: 100%;
+}
+
+.gridContainer {
+  display: flex;
+  justify-content: center;
+  gap: 3vw;
+  min-height: 400px;
+}
+
 .welcomePageImage {
-  width: 35vw;
-  height: 24vw; 
+  display: flex;
+  width: 45%;
+  min-height: 100%; 
   border-radius: 5px;
   background-image: url("../../../public/assets/images/wood-texture-background.jpg");
   background-repeat: no-repeat;
@@ -27,4 +56,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.btn {
+  width: 200px;
+  font-size: $extraSmall;
 }

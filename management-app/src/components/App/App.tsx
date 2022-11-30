@@ -15,6 +15,8 @@ import SnackBar from '../SnackBar/SnackBar';
 import { StyledEngineProvider } from '@mui/material/styles';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import VideoInstruction from '../VideoInstruction';
+import Layout from '../Main/Main';
+import Main from '../Main/Main';
 
 function App() {
   return (
@@ -24,14 +26,16 @@ function App() {
           <StyledEngineProvider injectFirst>
             <Header />
             <Routes>
-              <Route path="/" element={<WelcomePage />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/boards" element={<BoardsManagement />} />
-              <Route path="/boards/:board" element={<Board />} />
-              <Route path="/video-instruction" element={<VideoInstruction />} />
-              <Route path="*" element={<NotFound />} />
+              <Route path="/" element={<Main />}>
+                <Route index element={<WelcomePage />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/boards" element={<BoardsManagement />} />
+                <Route path="/boards/:board" element={<Board />} />
+                <Route path="/video-instruction" element={<VideoInstruction />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
             </Routes>
             <Footer />
             <SnackBar />

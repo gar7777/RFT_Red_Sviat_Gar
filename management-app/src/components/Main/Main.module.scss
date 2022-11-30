@@ -1,0 +1,10 @@
+.Main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  max-width: 1280px;
+  min-height: calc(100vh - 10rem);
+  height: 100%;
+  margin: 0 auto;
+}

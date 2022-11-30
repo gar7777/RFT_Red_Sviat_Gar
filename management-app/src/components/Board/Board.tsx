@@ -116,7 +116,7 @@ function Board() {
       <Stack className={styles.board_name__wrapper} direction="row">
         <Link to="/boards">
           <Button>
-            <ArrowBackIcon /> BACK TO ALL BOARDS
+            <ArrowBackIcon /> {i18n[lang].backToBoards}
           </Button>
         </Link>
         <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{boardTitle}</h2>

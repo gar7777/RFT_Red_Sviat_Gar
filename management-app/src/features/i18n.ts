@@ -69,6 +69,8 @@ export const i18n = {
     snackSignIn: 'Вход выполнен',
     snackProfileUpdated: 'Профиль обновлен',
     snackProfileDeleted: 'Профиль удален',
+    backToBoards: 'НАЗАД К ДОСКАМ',
+    chooseUser: 'Выберите пользователя',
   },
   [enLang]: {
     signIn: 'Sign In',
@@ -139,5 +141,7 @@ export const i18n = {
     snackSignIn: "You're logged in",
     snackProfileUpdated: 'Profile was updated',
     snackProfileDeleted: 'Profile was deleted',
+    backToBoards: 'BACK TO ALL BOARDS',
+    chooseUser: 'Choose user',
   },
 };

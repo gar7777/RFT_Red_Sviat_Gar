@@ -106,12 +106,12 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
             )}
           </Box>
           <FormControl fullWidth>
-            <InputLabel id="user-select-label">Choose user</InputLabel>
+            <InputLabel id="user-select-label">{i18n[lang].chooseUser} *</InputLabel>
             <Select
               labelId="user-select-label"
               id="user-select"
               value={newUser}
-              label="Choose user"
+              label={i18n[lang].chooseUser}
               fullWidth
               required
               {...register('userId')}

@@ -10,12 +10,18 @@ import { useParams } from 'react-router';
 import { IBoard } from '../../store/boards/types/boards.type';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { RootState } from '../../store/store';
-import { createColumn, loadColumns, deleteColumn } from '../../store/columns/thunks/columns.thunks';
+import {
+  createColumn,
+  loadColumns,
+  deleteColumn,
+  updateColumn,
+} from '../../store/columns/thunks/columns.thunks';
 import {
   IColumn,
   IDeleteColumn,
   ICreateColumn,
   ILoadedColumn,
+  IUpdateColumn,
 } from '../../store/columns/types/columns.type';
 import { i18n } from '../../features/i18n';
 import { Link, useNavigate } from 'react-router-dom';
@@ -78,7 +84,18 @@ function Board() {
 
     const columns = reorder(currentColumns, result.source.index, result.destination.index);
 
-    setCurrentColumns(columns);
+    const orderedColumns = columns.map((column, index) => {
+      const updateBody: IUpdateColumn = {
+        boardId,
+        title: column.title,
+        columnId: column.id,
+        order: index + 1,
+      };
+      dispatch(updateColumn(updateBody));
+      return { ...column, order: index + 1 };
+    });
+
+    setCurrentColumns(orderedColumns);
   }
 
   const handleAddColumn = (): void => {

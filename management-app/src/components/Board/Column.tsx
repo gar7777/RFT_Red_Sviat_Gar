@@ -74,7 +74,6 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ..
           },
         });
         const json = await data.json();
-        console.log(json);
         setTasks(json);
         return json;
       } catch (error) {

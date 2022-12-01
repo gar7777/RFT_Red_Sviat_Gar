@@ -9,21 +9,16 @@ interface IColumnList {
   setDeleteConfirmModal: Dispatch<SetStateAction<boolean>>;
 }
 
-function ColumnDND({
-  id,
-  title,
-  boardId,
-  order,
-  setDeleteConfirmModal,
-  index,
-}: {
+interface IProps {
   id: string;
   title: string;
   boardId: string;
   order: number;
   setDeleteConfirmModal: Dispatch<SetStateAction<boolean>>;
   index: number;
-}) {
+}
+
+function ColumnDND({ id, title, boardId, order, setDeleteConfirmModal, index }: IProps) {
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (

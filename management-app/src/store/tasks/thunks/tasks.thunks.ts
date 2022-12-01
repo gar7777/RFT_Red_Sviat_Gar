@@ -68,8 +68,6 @@ export const updateTask = createAsyncThunk(
       boardId,
       columnId,
     };
-    console.log(JSON.stringify(body));
-    console.log(url);
     const data = await fetch(url, {
       method: 'PUT',
       headers: {

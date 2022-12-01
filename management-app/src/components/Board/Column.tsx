@@ -76,6 +76,7 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ..
         const json = await data.json();
         console.log(json);
         setTasks(json);
+        return json;
       } catch (error) {
         console.log(error);
       }
@@ -136,7 +137,6 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ..
   };
 
   const addTask = async (data: FieldValues) => {
-    setAddTaskModal(false);
     const createTasksData: ITaskCreateData = {
       boardId: boardId,
       columnId: id,
@@ -145,6 +145,7 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ..
       userId: data.userId,
     };
     await dispatch(createTask(createTasksData));
+    setAddTaskModal(false);
   };
 
   return (

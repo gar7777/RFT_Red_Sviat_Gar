@@ -58,13 +58,13 @@ export const deleteTask = createAsyncThunk(
 
 export const updateTask = createAsyncThunk(
   UPDATE_TASK,
-  async ({ title, description, boardId, columnId, id }: IUpdateTask) => {
+  async ({ title, description, boardId, columnId, id, userId }: IUpdateTask) => {
     const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks/${id}`;
     const body = {
       title,
       description,
       order: 1,
-      userId: 'eecbc190-e7b6-4605-8626-939f490c47f4',
+      userId,
       boardId,
       columnId,
     };

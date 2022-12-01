@@ -53,11 +53,11 @@ function Board() {
       localStorage.setItem('currentBoard', boardId);
       localStorage.setItem('currentBoardTitle', boardTitle);
     };
-  }, [addColumnModal, deleteConfirmModal, columns]);
+  }, [columns]);
 
   useEffect(() => {
     dispatch(loadColumns(boardId));
-  }, []);
+  }, [addColumnModal, deleteConfirmModal]);
 
   const reorder = (list: ILoadedColumn[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
@@ -111,7 +111,7 @@ function Board() {
   };
 
   return (
-    <>
+    <div className={styles.board__wrapper}>
       <CssBaseline />
       <Stack className={styles.board_name__wrapper} direction="row">
         <Link to="/boards">
@@ -157,7 +157,7 @@ function Board() {
           />
         )}
       </Box>
-    </>
+    </div>
   );
 }
 

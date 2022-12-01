@@ -19,6 +19,7 @@ interface IProps {
 function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModal }: IProps) {
   const { lang } = useAppSelector((state) => state.lang);
   const { currentTask } = useAppSelector((state: RootState) => state.tasks);
+  const { user } = useAppSelector((state: RootState) => state.user);
   const {
     register,
     handleSubmit,
@@ -32,6 +33,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModa
       ...data,
       boardId,
       columnId,
+      userId: user.id as string,
       id: currentTask?.id as string,
     };
     await dispatch(updateTask(updateData));

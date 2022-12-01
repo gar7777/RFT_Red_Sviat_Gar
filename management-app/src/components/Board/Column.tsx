@@ -8,7 +8,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { loadColumns, updateColumn } from '../../store/columns/thunks/columns.thunks';
+import {
+  getColumnTasks,
+  loadColumns,
+  updateColumn,
+} from '../../store/columns/thunks/columns.thunks';
 import { createTask, deleteTask } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
 import { ITaskCreateData, ITaskFull } from '../../store/tasks/types/tasks.types';
@@ -33,13 +37,15 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ..
   const { lang } = useAppSelector((state) => state.lang);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
+  const [tasks, setTasks] = useState<ITaskFull[]>([]);
   const [prevTitle, setPrevTitle] = useState('');
   const [addTaskModal, setAddTaskModal] = useState(false);
   const [deleteTaskModal, setDeleteTaskModal] = useState(false);
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
-  const [tasks, setTasks] = useState<ITaskFull[]>([]);
+  // const currentTasks = useAppSelector((state) => state.columns.currentTasks);
   const currentTask = useAppSelector((state) => state.tasks.currentTask);
   const dispatch = useAppDispatch();
+
   const {
     register,
     formState: { errors },
@@ -48,6 +54,34 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ..
   useEffect(() => {
     dispatch(loadColumns(boardId));
   }, [isEditingTitle]);
+
+  // useEffect(() => {
+  //   const columnTaskData = {
+  //     boardId,
+  //     columnId: id,
+  //   };
+  //   dispatch(getColumnTasks(columnTaskData));
+  // }, []);
+
+  useEffect(() => {
+    const getTasks = async (boardId: string, columnId: string) => {
+      const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
+      try {
+        const data = await fetch(url, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${getTokenFromLS()}`,
+          },
+        });
+        const json = await data.json();
+        console.log(json);
+        setTasks(json);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTasks(boardId, id);
+  }, [addTaskModal, deleteTaskModal, updateTaskModal]);
 
   const handleEditTitle = async () => {
     const columnUpdateData = {
@@ -112,25 +146,6 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ..
     };
     await dispatch(createTask(createTasksData));
   };
-
-  useEffect(() => {
-    const getTasks = async (boardId: string, columnId: string) => {
-      const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
-      try {
-        const data = await fetch(url, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${getTokenFromLS()}`,
-          },
-        });
-        const json = await data.json();
-        setTasks(json);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getTasks(boardId, id);
-  }, [addTaskModal, deleteTaskModal, updateTaskModal]);
 
   return (
     <>

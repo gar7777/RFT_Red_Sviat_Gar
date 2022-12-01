@@ -48,7 +48,6 @@ export const ComlumnList = React.memo<IColumnList>(function ColumnDndList({
   boardId,
   setDeleteConfirmModal,
 }: IColumnList) {
-  console.log(columns);
   return (
     <>
       {columns.map((column: ILoadedColumn, index: number) => (

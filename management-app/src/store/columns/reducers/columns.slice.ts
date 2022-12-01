@@ -4,7 +4,7 @@ import { ILoadedColumnTasks } from '../../tasks/types/tasks.types';
 import {
   createColumn,
   deleteColumn,
-  // getColumnTasks,
+  getColumnTasks,
   loadColumns,
   updateColumn,
 } from '../thunks/columns.thunks';
@@ -22,7 +22,7 @@ interface IColumnsState {
   error: string;
   isEditing: boolean;
   currentColumn: ILoadedColumn | null;
-  // currentTasks: ILoadedColumnTasks[];
+  currentTasks: ILoadedColumnTasks[];
 }
 
 const initialState: IColumnsState = {
@@ -31,7 +31,7 @@ const initialState: IColumnsState = {
   error: '',
   isEditing: false,
   currentColumn: null,
-  // currentTasks: [],
+  currentTasks: [],
 };
 
 const columnsSlice = createSlice({
@@ -51,19 +51,19 @@ const columnsSlice = createSlice({
       state.columns = action.payload;
       state.error = '';
     });
-    // builder.addCase(getColumnTasks.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   state.columns = [];
-    //   state.error = action.error.message || 'Some error ocurred';
-    // });
-    // builder.addCase(getColumnTasks.pending, (state) => {
-    //   state.isLoading = true;
-    // });
-    // builder.addCase(getColumnTasks.fulfilled, (state, action) => {
-    //   state.isLoading = false;
-    //   state.columns = action.payload;
-    //   state.error = '';
-    // });
+    builder.addCase(getColumnTasks.rejected, (state, action) => {
+      state.isLoading = false;
+      state.columns = [];
+      state.error = action.error.message || 'Some error ocurred';
+    });
+    builder.addCase(getColumnTasks.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getColumnTasks.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentTasks = action.payload;
+      state.error = '';
+    });
     builder.addCase(loadColumns.rejected, (state, action) => {
       state.isLoading = false;
       state.columns = [];

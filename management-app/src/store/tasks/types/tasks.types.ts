@@ -32,6 +32,7 @@ export interface IUpdateTask {
   description: string;
   boardId: string;
   columnId: string;
+  userId: string;
 }
 
 export interface IUpdatetaskData {

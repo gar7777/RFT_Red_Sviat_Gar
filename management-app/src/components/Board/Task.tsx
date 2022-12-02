@@ -6,6 +6,7 @@ import { setCurrentTask } from '../../store/tasks/reducers/tasks.slice';
 import { IUpdatetaskData } from '../../store/tasks/types/tasks.types';
 import { IUsersLoad } from '../../store/user/types/user.types';
 import taskStyles from './Task.module.scss';
+import { Draggable } from 'react-beautiful-dnd';
 
 interface IProps {
   title: string;
@@ -29,26 +30,35 @@ function Task({ id, title, description, order, setDeleteTaskModal, setUpdateTask
   };
 
   return (
-    <Card className={taskStyles.task__container}>
-      <h2>{title}</h2>
-      <p>{description}</p>
-      <Button
-        onClick={() => {
-          setUpdateTaskModal(true);
-          dispatch(setCurrentTask(updateCurrentTaskData));
-        }}
-      >
-        {i18n[lang].update}
-      </Button>
-      <Button
-        onClick={() => {
-          setDeleteTaskModal(true);
-          dispatch(setCurrentTask(updateCurrentTaskData));
-        }}
-      >
-        {i18n[lang].delete}
-      </Button>
-    </Card>
+    <Draggable draggableId={id} index={order}>
+      {(provided) => (
+        <Card
+          className={taskStyles.task__container}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        >
+          <h2>{title}</h2>
+          <p>{description}</p>
+          <Button
+            onClick={() => {
+              setUpdateTaskModal(true);
+              dispatch(setCurrentTask(updateCurrentTaskData));
+            }}
+          >
+            {i18n[lang].update}
+          </Button>
+          <Button
+            onClick={() => {
+              setDeleteTaskModal(true);
+              dispatch(setCurrentTask(updateCurrentTaskData));
+            }}
+          >
+            {i18n[lang].delete}
+          </Button>
+        </Card>
+      )}
+    </Draggable>
   );
 }
 

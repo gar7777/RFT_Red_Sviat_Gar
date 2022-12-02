@@ -35,6 +35,7 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModa
       columnId,
       userId: user.id as string,
       id: currentTask?.id as string,
+      order: currentTask?.order as number,
     };
     await dispatch(updateTask(updateData));
     setUpdateTaskModal(false);

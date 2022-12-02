@@ -26,6 +26,13 @@ export interface IDeleteTask {
   taskId: string;
 }
 
+export interface IUpdateTaskData {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+}
+
 export interface IUpdateTask {
   id: string;
   title: string;
@@ -33,6 +40,7 @@ export interface IUpdateTask {
   boardId: string;
   columnId: string;
   userId: string;
+  order: number;
 }
 
 export interface IUpdatetaskData {

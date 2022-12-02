@@ -1,22 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createTask, deleteTask, loadTasks, updateTask } from '../thunks/tasks.thunks';
+import { ITaskFull, IUpdateTaskData } from '../types/tasks.types';
 
-interface ILoadTask {
-  id: string;
-  title: string;
-  order: number;
-  description: string;
-  userId: string;
-  boardId: string;
-  columnId: string;
-  files?: [];
-}
+// interface ILoadTask {
+//   id: string;
+//   title: string;
+//   order: number;
+//   description: string;
+//   userId: string;
+//   boardId: string;
+//   columnId: string;
+//   files?: [];
+// }
 
-interface IUpdateTask {
-  id: string;
-  title: string;
-  description: string;
-}
+// interface IUpdateTaskData {
+//   id: string;
+//   title: string;
+//   description: string;
+//   order: number;
+// }
 
 // interface IStateTask {
 //   columnId: string;
@@ -24,11 +26,11 @@ interface IUpdateTask {
 // }
 
 interface ITasksState {
-  tasks: ILoadTask[];
+  tasks: ITaskFull[];
   isLoading: boolean;
   error: string;
   isEditing: boolean;
-  currentTask: IUpdateTask | null;
+  currentTask: IUpdateTaskData | null;
 }
 
 const initialState: ITasksState = {
@@ -85,7 +87,6 @@ const tasksSlice = createSlice({
     });
     builder.addCase(updateTask.pending, (state) => {
       state.isLoading = true;
-      console.log('pending');
     });
     builder.addCase(updateTask.fulfilled, (state) => {
       state.isLoading = false;

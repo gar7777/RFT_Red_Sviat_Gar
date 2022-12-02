@@ -23,6 +23,8 @@ import { i18n } from '../../features/i18n';
 import ConfirmModal from '../ConfirmModal';
 import { setCurrentColumn } from '../../store/columns/reducers/columns.slice';
 import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
+import { DraggableProvided, Droppable } from 'react-beautiful-dnd';
+import { getTasks } from '../../utilities/getTasks';
 
 interface IProps {
   id: string;
@@ -31,9 +33,19 @@ interface IProps {
   boardId: string;
   setDeleteConfirmModal: Dispatch<SetStateAction<boolean>>;
   innerRef: (element?: HTMLElement | null | undefined) => void;
+  provided: DraggableProvided;
 }
 
-function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ...props }: IProps) {
+function Column({
+  id,
+  title,
+  boardId,
+  order,
+  setDeleteConfirmModal,
+  innerRef,
+  provided,
+  ...props
+}: IProps) {
   const { lang } = useAppSelector((state) => state.lang);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
@@ -64,23 +76,26 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ..
   // }, []);
 
   useEffect(() => {
-    const getTasks = async (boardId: string, columnId: string) => {
-      const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
-      try {
-        const data = await fetch(url, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${getTokenFromLS()}`,
-          },
-        });
-        const json = await data.json();
-        setTasks(json);
-        return json;
-      } catch (error) {
-        console.log(error);
-      }
+    // const getTasks = async (boardId: string, columnId: string) => {
+    //   const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
+    //   try {
+    //     const data = await fetch(url, {
+    //       method: 'GET',
+    //       headers: {
+    //         Authorization: `Bearer ${getTokenFromLS()}`,
+    //       },
+    //     });
+    //     const json = await data.json();
+    //     setTasks(json);
+    //     return json;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    const getAndSetTasks = async () => {
+      setTasks(await getTasks(boardId, id));
     };
-    getTasks(boardId, id);
+    getAndSetTasks();
   }, [addTaskModal, deleteTaskModal, updateTaskModal]);
 
   const handleEditTitle = async () => {
@@ -150,67 +165,81 @@ function Column({ id, title, boardId, order, setDeleteConfirmModal, innerRef, ..
   return (
     <>
       <Card variant="outlined" className={styles.column} ref={innerRef} {...props}>
-        {isEditingTitle ? (
-          <Stack direction="row" component="form">
-            <TextField
-              margin="normal"
-              fullWidth
-              value={currentTitle}
-              id="title"
-              label={i18n[lang].title}
-              {...register('title', {
-                minLength: { value: 3, message: i18n[lang].minLength },
-              })}
-              autoComplete="Title"
-              onChange={handleTitleChange}
-              onBlur={handleTitleOnBlur}
-              onKeyDown={handleTitleOnKeyPress}
-              autoFocus
-              // className={formStyles.validatedInput}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <CheckIcon onClick={handleEditTitle} />
-                  </InputAdornment>
-                ),
-              }}
-            />
+        <Box {...provided.dragHandleProps}>
+          {isEditingTitle ? (
+            <Stack direction="row" component="form">
+              <TextField
+                margin="normal"
+                fullWidth
+                value={currentTitle}
+                id="title"
+                label={i18n[lang].title}
+                {...register('title', {
+                  minLength: { value: 3, message: i18n[lang].minLength },
+                })}
+                autoComplete="Title"
+                onChange={handleTitleChange}
+                onBlur={handleTitleOnBlur}
+                onKeyDown={handleTitleOnKeyPress}
+                autoFocus
+                // className={formStyles.validatedInput}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <CheckIcon onClick={handleEditTitle} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
-            {errors.title && (
-              <Typography
-                component="p"
-                align="center"
-                variant="caption"
-                // className={formStyles.validationAlert}
-              >
-                {errors.title.message as string}
-              </Typography>
-            )}
-          </Stack>
-        ) : (
-          <Stack direction="row" component="form">
-            <h2>{currentTitle}</h2>
-            <ModeEditIcon
-              onClick={() => {
-                setIsEditingTitle(true);
-                setPrevTitle(currentTitle);
-              }}
-            />
-          </Stack>
-        )}
-        <Box className={styles.tasks_wrapper}>
-          {tasks.map(({ id, title, description, order }) => (
-            <Task
-              key={id}
-              title={title}
-              description={description}
-              id={id}
-              order={order}
-              setDeleteTaskModal={setDeleteTaskModal}
-              setUpdateTaskModal={setUpdateTaskModal}
-            />
-          ))}
+              {errors.title && (
+                <Typography
+                  component="p"
+                  align="center"
+                  variant="caption"
+                  // className={formStyles.validationAlert}
+                >
+                  {errors.title.message as string}
+                </Typography>
+              )}
+            </Stack>
+          ) : (
+            <Stack direction="row" component="form">
+              <h2>{currentTitle}</h2>
+              <ModeEditIcon
+                onClick={() => {
+                  setIsEditingTitle(true);
+                  setPrevTitle(currentTitle);
+                }}
+              />
+            </Stack>
+          )}
         </Box>
+        <Droppable droppableId={id} type="tasks">
+          {(provided) => (
+            <Box
+              className={styles.tasks_wrapper}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {tasks
+                .sort((a, b) => a.order - b.order)
+                .map(({ id, title, description, order }) => (
+                  <Task
+                    key={id}
+                    title={title}
+                    description={description}
+                    id={id}
+                    order={order}
+                    setDeleteTaskModal={setDeleteTaskModal}
+                    setUpdateTaskModal={setUpdateTaskModal}
+                  />
+                ))}
+              {provided.placeholder}
+            </Box>
+          )}
+        </Droppable>
+
         <Button onClick={handleAddTask}>
           <AddCardIcon /> {i18n[lang].addTask}
         </Button>

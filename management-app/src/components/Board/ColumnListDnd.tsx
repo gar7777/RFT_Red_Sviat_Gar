@@ -25,13 +25,14 @@ function ColumnDND({ id, title, boardId, order, setDeleteConfirmModal, index }: 
         <Column
           innerRef={provided.innerRef}
           {...provided.draggableProps}
-          {...provided.dragHandleProps}
+          // {...provided.dragHandleProps}
           key={id}
           id={id}
           title={title}
           boardId={boardId}
           order={order}
           setDeleteConfirmModal={setDeleteConfirmModal}
+          provided={provided}
         />
       )}
     </Draggable>
@@ -45,15 +46,17 @@ export const ComlumnList = React.memo<IColumnList>(function ColumnDndList({
 }: IColumnList) {
   return (
     <>
-      {columns.map((column: ILoadedColumn, index: number) => (
-        <ColumnDND
-          {...column}
-          boardId={boardId}
-          setDeleteConfirmModal={setDeleteConfirmModal}
-          index={index}
-          key={column.id}
-        />
-      ))}
+      {columns
+        .sort((a, b) => a.order - b.order)
+        .map((column: ILoadedColumn, index: number) => (
+          <ColumnDND
+            {...column}
+            boardId={boardId}
+            setDeleteConfirmModal={setDeleteConfirmModal}
+            index={index}
+            key={column.id}
+          />
+        ))}
     </>
   );
 });

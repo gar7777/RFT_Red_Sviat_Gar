@@ -28,13 +28,18 @@ function SignUp() {
   };
 
   return (
-    <Container component="main" maxWidth="xs" className={mainStyles.mainContainer}>
+    <>
       <CssBaseline />
       <Box className={formStyles.formContainer}>
         <Typography component="h2" variant="h4" className={typographyStyles.h2}>
           {i18n[lang].signUp}
         </Typography>
-        <Box component="form" onSubmit={handleSubmit(formSubmit)} sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(formSubmit)}
+          sx={{ mt: 1 }}
+          className={formStyles.form}
+        >
           <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
@@ -122,7 +127,7 @@ function SignUp() {
           </Button>
         </Box>
       </Box>
-    </Container>
+    </>
   );
 }
 

@@ -23,7 +23,7 @@ export default function BtnLogOut() {
     <>
       <NavLink to="/">
         <Button variant="text" className={styles.btn} onClick={handleClick}>
-          <Logout fontSize="large" sx={{ marginRight: '0.5rem' }} />
+          <Logout fontSize="large" className={styles.icon} />
           {i18n[lang].signOut}
         </Button>
       </NavLink>

@@ -4,6 +4,7 @@ Footer {
   width: 100%;
   margin-top: auto;
   background-color: $primary-dark;
+  min-height: 3rem;
 
   @media(max-width: 768px) {
     background-color: rgba($primary-dark, 0.8);
@@ -15,7 +16,6 @@ Footer {
   justify-content: space-between;
   align-items: center;
   max-width: 1280px;
-  min-height: 5rem;
   height: 100%;
   padding: 0 20px;
   margin: 0 auto;
@@ -76,6 +76,7 @@ Footer {
 
 .linkGithub {
   display: inline-block;
+  font-size: 1.2rem;
 
   @media(max-width: 768px) {
     font-size: 1.1rem;
@@ -84,17 +85,17 @@ Footer {
 
 .itemContainer {
   display: flex;
-
-  display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 5px;
 
   @media(max-width: 768px) {
     order: 2;
-    gap: 5px;
   }
 }
 
 .year {
+  font-size: 1.1rem;
+
   @media(max-width: 768px) {
     font-size: 1rem;
     order: 3;

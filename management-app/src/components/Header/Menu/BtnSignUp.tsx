@@ -13,7 +13,7 @@ function BtnSignUp() {
     <>
       <NavLink to="/signup">
         <Button variant="text" className={styles.btn}>
-          <Airplay fontSize="large" sx={{ marginRight: '0.5rem' }} />
+          <Airplay fontSize="large" className={styles.icon} />
           {i18n[lang].signUp}
         </Button>
       </NavLink>

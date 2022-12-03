@@ -74,7 +74,7 @@ export const deleteTask = createAsyncThunk(
         'Access-Control-Allow-Origin': '*',
       },
     });
-    return 'OK';
+    return { columnId };
   }
 );
 

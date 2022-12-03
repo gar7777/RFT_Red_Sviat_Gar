@@ -80,9 +80,15 @@ const tasksSlice = createSlice({
     builder.addCase(deleteTask.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(deleteTask.fulfilled, (state) => {
+    builder.addCase(deleteTask.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.tasks = [];
+      const newState = [...state.tasks];
+      const { columnId } = action.payload;
+      const [deletedColumn] = newState.filter((column) => column.id === columnId);
+      const deletedColumnIndex = newState.indexOf(deletedColumn);
+      console.log(deletedColumn);
+      newState.splice(deletedColumnIndex, 1);
+      state.tasks = newState;
       state.error = '';
     });
     builder.addCase(deleteTask.rejected, (state, action) => {
@@ -92,9 +98,16 @@ const tasksSlice = createSlice({
     builder.addCase(updateTask.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(updateTask.fulfilled, (state) => {
+    builder.addCase(updateTask.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.tasks = [];
+      const newState = [...state.tasks];
+      console.log(newState);
+      const { columnId, id } = action.payload;
+      const [updatedColumn] = newState.filter((column) => column.id === columnId);
+      const [updatedTask] = updatedColumn.tasks.filter((task) => task.id === id);
+      const updatedTaskIndex = updatedColumn.tasks.indexOf(updatedTask);
+      updatedColumn.tasks.splice(updatedTaskIndex, 1, action.payload);
+      state.tasks = newState;
       state.error = '';
     });
     builder.addCase(updateTask.rejected, (state, action) => {

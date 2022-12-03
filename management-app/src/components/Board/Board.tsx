@@ -32,8 +32,13 @@ import type { DropResult } from 'react-beautiful-dnd';
 
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { getTasks } from '../../utilities/getTasks';
-import { ITaskFull, IUpdateTask, IUpdateTaskData } from '../../store/tasks/types/tasks.types';
-import { loadTasks, updateTask } from '../../store/tasks/thunks/tasks.thunks';
+import {
+  ILoadedColumnTasks,
+  ITaskFull,
+  IUpdateTask,
+  IUpdateTaskData,
+} from '../../store/tasks/types/tasks.types';
+import { getAllTasks, loadTasks, updateTask } from '../../store/tasks/thunks/tasks.thunks';
 
 function Board() {
   const params = useParams();
@@ -48,6 +53,7 @@ function Board() {
   const [currentColumns, setCurrentColumns] = useState<ILoadedColumn[]>([]);
   const { lang } = useAppSelector((state: RootState) => state.lang);
   const currentColumn = useAppSelector((state: RootState) => state.columns.currentColumn);
+  const currentTasks = useAppSelector((state: RootState) => state.tasks.tasks);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,7 +82,7 @@ function Board() {
     return result;
   };
 
-  function onDragEnd(result: DropResult) {
+  async function onDragEnd(result: DropResult) {
     if (!result.destination) {
       return;
     }
@@ -106,30 +112,23 @@ function Board() {
     const finish = result.destination.droppableId;
 
     if (start === finish && result.type === 'tasks') {
-      getTasks(boardId, result.source.droppableId).then((tasks) => {
-        // console.log(result.source.index);
-        // console.log(result!.destination!.index);
-        console.log(tasks);
-        tasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
-        console.log(tasks);
-        const [removed] = tasks.splice(result.source.index, 1);
-        tasks.splice(result!.destination!.index, 0, removed);
-        console.log(tasks);
+      const [columnTasks] = currentTasks.filter((task) => task.id === start);
+      const tasks = [...columnTasks.tasks];
+      tasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
+      const [removed] = tasks.splice(result.source.index, 1);
+      tasks.splice(result!.destination!.index, 0, removed);
 
-        tasks.forEach((task: ITaskFull, index: number) => {
-          const updateBody: IUpdateTask = {
-            title: task.title,
-            description: task.description,
-            boardId,
-            columnId: result.source.droppableId,
-            id: task.id,
-            userId: task.userId,
-            order: index + 1,
-          };
-          // console.log(updateBody);
-          dispatch(updateTask(updateBody));
-          // dispatch(loadColumns(boardId));
-        });
+      tasks.forEach(async (task: ITaskFull, index: number) => {
+        const updateBody: IUpdateTask = {
+          title: task.title,
+          description: task.description,
+          boardId,
+          columnId: result.source.droppableId,
+          id: task.id,
+          userId: task.userId,
+          order: index + 1,
+        };
+        await dispatch(updateTask(updateBody));
       });
     }
   }

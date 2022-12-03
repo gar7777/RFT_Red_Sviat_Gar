@@ -10,12 +10,18 @@ import { useParams } from 'react-router';
 import { IBoard } from '../../store/boards/types/boards.type';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { RootState } from '../../store/store';
-import { createColumn, loadColumns, deleteColumn } from '../../store/columns/thunks/columns.thunks';
+import {
+  createColumn,
+  loadColumns,
+  deleteColumn,
+  updateColumn,
+} from '../../store/columns/thunks/columns.thunks';
 import {
   IColumn,
   IDeleteColumn,
   ICreateColumn,
   ILoadedColumn,
+  IUpdateColumn,
 } from '../../store/columns/types/columns.type';
 import { i18n } from '../../features/i18n';
 import { Link, useNavigate } from 'react-router-dom';
@@ -25,6 +31,9 @@ import { ComlumnList } from './ColumnListDnd';
 import type { DropResult } from 'react-beautiful-dnd';
 
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
+import { getTasks } from '../../utilities/getTasks';
+import { ITaskFull, IUpdateTask, IUpdateTaskData } from '../../store/tasks/types/tasks.types';
+import { loadTasks, updateTask } from '../../store/tasks/thunks/tasks.thunks';
 
 function Board() {
   const params = useParams();
@@ -53,11 +62,11 @@ function Board() {
       localStorage.setItem('currentBoard', boardId);
       localStorage.setItem('currentBoardTitle', boardTitle);
     };
-  }, [addColumnModal, deleteConfirmModal, columns]);
+  }, [columns]);
 
   useEffect(() => {
     dispatch(loadColumns(boardId));
-  }, []);
+  }, [addColumnModal, deleteConfirmModal]);
 
   const reorder = (list: ILoadedColumn[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
@@ -76,9 +85,46 @@ function Board() {
       return;
     }
 
-    const columns = reorder(currentColumns, result.source.index, result.destination.index);
+    if (result.type === 'columns') {
+      const columns = reorder(currentColumns, result.source.index, result.destination.index);
 
-    setCurrentColumns(columns);
+      const orderedColumns = columns.map((column, index) => {
+        const updateBody: IUpdateColumn = {
+          boardId,
+          title: column.title,
+          columnId: column.id,
+          order: index + 1,
+        };
+        dispatch(updateColumn(updateBody));
+        return { ...column, order: index + 1 };
+      });
+
+      setCurrentColumns(orderedColumns);
+    }
+
+    const start = result.source.droppableId;
+    const finish = result.destination.droppableId;
+
+    if (start === finish && result.type === 'tasks') {
+      getTasks(boardId, result.source.droppableId).then((tasks) => {
+        const [removed] = tasks.splice(result.source.index - 1, 1);
+        tasks.splice(result!.destination!.index! - 1, 0, removed);
+        console.log(tasks);
+
+        tasks.forEach((task: ITaskFull, index: number) => {
+          const updateBody: IUpdateTask = {
+            title: task.title,
+            description: task.description,
+            boardId,
+            columnId: result.source.droppableId,
+            id: task.id,
+            userId: task.userId,
+            order: index + 1,
+          };
+          dispatch(updateTask(updateBody));
+        });
+      });
+    }
   }
 
   const handleAddColumn = (): void => {
@@ -111,7 +157,7 @@ function Board() {
   };
 
   return (
-    <>
+    <div className={styles.board__wrapper}>
       <CssBaseline />
       <Stack className={styles.board_name__wrapper} direction="row">
         <Link to="/boards">
@@ -126,7 +172,7 @@ function Board() {
       </Stack>
       <Box component="main" maxWidth="xs" className={styles['board__main-container']}>
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="columns" direction="horizontal" type="column">
+          <Droppable droppableId="columns" direction="horizontal" type="columns">
             {(provided) => (
               <div
                 ref={provided.innerRef}
@@ -157,7 +203,7 @@ function Board() {
           />
         )}
       </Box>
-    </>
+    </div>
   );
 }
 

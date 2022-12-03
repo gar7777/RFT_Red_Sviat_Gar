@@ -1,13 +1,19 @@
+.board__wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+
 .board__main-container {
   height: calc(100vh - 15rem);
-  width: auto;
+  width: 100vw;
   padding: 1rem;
   display: flex;
   flex-grow: 1;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: flex-start;
-  overflow-x: auto;
+  // overflow-y: auto;
 }
 
 .board_name__wrapper {

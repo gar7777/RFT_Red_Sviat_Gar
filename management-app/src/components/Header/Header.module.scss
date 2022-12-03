@@ -2,6 +2,7 @@
 
 header {
   position: sticky;
+  padding: 0 20px;
 }
 
 .appbar{
@@ -9,7 +10,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 5rem;
+  height: 4rem;
 
   @media(max-width: 768px) {
     height: 3rem;
@@ -31,6 +32,7 @@ header {
   gap: 15px;
   width: 100%;
   max-width: 1280px;
+  padding: 0;
 
   @media(max-width: 768px) {
     flex-direction: column;
@@ -44,10 +46,12 @@ header {
 
 .toolbarItem {
   display: flex;
+  width: fit-content;
   height: 100%;
   gap: 15px;
   margin: 0;
   align-items: center;
+
 
   @media(max-width: 768px) {
     height: 2rem;
@@ -59,11 +63,14 @@ header {
 }
 
 .btn {
-  width: 150px;
   color: white;
   font-size: 1.1rem;
   font-weight: 400;
   padding: 0;
   padding-right: 3px;
   border-radius: 0;
+}
+
+.icon {
+  margin-right: 0.5rem;
 }

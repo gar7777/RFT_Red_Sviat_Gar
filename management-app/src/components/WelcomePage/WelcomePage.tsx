@@ -13,30 +13,32 @@ function WelcomePage() {
   const { lang } = useAppSelector((state) => state.lang);
 
   return (
-    <div className={stylesLayout.mainContainer}>
-      <div className={styles.contentWrapper}>
-        <Typography variant="h1" className={typographyStyles.h1}>
-          {i18n[lang].mainHeading}
-        </Typography>
-        <Grid direction="row" container className={styles.gridContainer}>
-          <Box component="div" className={styles.welcomePageTextContainer}>
-            <Typography className={styles.welcomePageText}>{i18n[lang].mainPageText}</Typography>
-            <Grid container className={styles.buttonsContainer}>
-              <Link to="/video-instruction">
-                <Button variant="contained" className={styles.btn}>
-                  <PlayCircleIcon sx={{ marginRight: '0.5rem' }} />
-                  {i18n[lang].videoTutorial}
-                </Button>
-              </Link>
+    <div className={styles.contentWrapper}>
+      <Typography variant="h1" className={typographyStyles.h1}>
+        {i18n[lang].mainHeading}
+      </Typography>
+      <Grid container className={styles.gridContainer} lg={12}>
+        <Box component="div" className={styles.welcomePageTextContainer}>
+          <Typography className={styles.welcomePageText}>{i18n[lang].mainPageText}</Typography>
+          <Box className={styles.buttonsContainer}>
+            <Link to="/video-instruction" className={styles.link}>
+              <Button variant="contained" className={styles.btn}>
+                <PlayCircleIcon sx={{ marginRight: '0.5rem' }} />
+                {i18n[lang].videoTutorial}
+              </Button>
+            </Link>
+            <Link to="/team" className={styles.link}>
               <Button variant="contained" className={styles.btn}>
                 <PeopleAltIcon sx={{ marginRight: '0.5rem' }} />
                 {i18n[lang].teamMembers}
               </Button>
-            </Grid>
+            </Link>
           </Box>
+        </Box>
+        <Box className={styles.paperBox}>
           <Paper className={styles.welcomePageImage}></Paper>
-        </Grid>
-      </div>
+        </Box>
+      </Grid>
     </div>
   );
 }

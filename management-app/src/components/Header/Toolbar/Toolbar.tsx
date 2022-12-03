@@ -18,17 +18,17 @@ const UserToolbar = () => {
   return (
     <Toolbar className={styles.toolbar}>
       <div style={{ marginRight: 'auto' }}>
-        <NavLink to="/">
+        <NavLink to="/" className={styles.toolbarItem}>
           <Button variant="text" className={styles.btn}>
-            <Home fontSize="large" sx={{ marginRight: '0.5rem' }} /> {i18n[lang].mainPage}
+            <Home fontSize="large" className={styles.icon} /> {i18n[lang].mainPage}
           </Button>
         </NavLink>
       </div>
       {userToken && (
         <>
-          <NavLink to="/boards">
+          <NavLink to="/boards" className={styles.toolbarItem}>
             <Button variant="text" className={styles.btn}>
-              <Task fontSize="large" sx={{ marginRight: '0.5rem' }} />
+              <Task fontSize="large" className={styles.icon} />
               {i18n[lang].boards}
             </Button>
           </NavLink>

@@ -13,7 +13,7 @@ function BtnProfile() {
     <>
       <NavLink to="/profile">
         <Button variant="text" className={styles.btn}>
-          <AccountCircle fontSize="large" sx={{ marginRight: '0.5rem' }} />
+          <AccountCircle fontSize="large" className={styles.icon} />
           {i18n[lang].profile}
         </Button>
       </NavLink>

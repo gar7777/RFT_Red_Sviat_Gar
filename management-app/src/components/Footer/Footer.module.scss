@@ -1,8 +1,13 @@
 @import '../../scss/variables.scss';
 
 Footer {
-  margin: 0 auto;
+  width: 100%;
+  margin-top: auto;
   background-color: $primary-dark;
+
+  @media(max-width: 768px) {
+    background-color: rgba($primary-dark, 0.8);
+  }
 }
 
 .container {
@@ -10,11 +15,18 @@ Footer {
   justify-content: space-between;
   align-items: center;
   max-width: 1280px;
-  height: 5rem;
+  min-height: 5rem;
+  height: 100%;
   padding: 0 20px;
   margin: 0 auto;
   color: white;
   font-size: 1.4rem;
+
+  @media(max-width: 768px) {
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .linksContainer {
@@ -22,15 +34,30 @@ Footer {
   justify-content: center;
   gap: 5%;
   flex-grow: 1;
+
+  @media(max-width: 768px) {
+    order: 1;
+  }
+
+  @media(max-width: 500px) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .iconRss {
-  width: 100px;
+  width: 80px;
   height: 60px;
   background-image: url(../../../public/assets/svg/rs-school.svg);
   background-size: 100%;
   background-position: center;
   background-repeat: no-repeat;
+
+  @media(max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5px;
+  }
 }
 
 .iconGithub {
@@ -40,14 +67,37 @@ Footer {
   background-size: 100%;
   background-position: center;
   background-repeat: no-repeat;
+
+  @media(max-width: 768px) {
+    width: 25px;
+    height: 25px;
+  }
 }
 
 .linkGithub {
   display: inline-block;
+
+  @media(max-width: 768px) {
+    font-size: 1.1rem;
+  }
 }
 
 .itemContainer {
   display: flex;
+
+  display: flex;
   gap: 10px;
+
+  @media(max-width: 768px) {
+    order: 2;
+    gap: 5px;
+  }
+}
+
+.year {
+  @media(max-width: 768px) {
+    font-size: 1rem;
+    order: 3;
+  }
 }
 

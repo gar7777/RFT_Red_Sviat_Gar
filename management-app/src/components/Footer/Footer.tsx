@@ -14,13 +14,23 @@ function Footer() {
         <Box className={styles.linksContainer}>
           <Box className={styles.itemContainer}>
             <Box className={styles.iconGithub}></Box>
-            <Link sx={{ color: 'white' }} href="https://github.com/gar7777" target="blank">
+            <Link
+              sx={{ color: 'white' }}
+              href="https://github.com/gar7777"
+              target="blank"
+              className={styles.linkGithub}
+            >
               Gar7777
             </Link>
           </Box>
           <Box className={styles.itemContainer}>
             <Box className={styles.iconGithub}></Box>
-            <Link sx={{ color: 'white' }} href="https://github.com/MatsurSviat" target="blank">
+            <Link
+              sx={{ color: 'white' }}
+              href="https://github.com/MatsurSviat"
+              target="blank"
+              className={styles.linkGithub}
+            >
               MatsurSviat
             </Link>
           </Box>
@@ -30,12 +40,13 @@ function Footer() {
               sx={{ color: 'white' }}
               href="https://github.com/Kseniya-Korolchuk"
               target="blank"
+              className={styles.linkGithub}
             >
               Redwood
             </Link>
           </Box>
         </Box>
-        <Box>&copy; 2022</Box>
+        <Box className={styles.year}>&copy; 2022</Box>
       </Box>
     </footer>
   );

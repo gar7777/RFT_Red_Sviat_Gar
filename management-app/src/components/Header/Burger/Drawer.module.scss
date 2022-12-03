@@ -1,0 +1,15 @@
+@import '../../../scss/variables.scss';
+
+.iconMenu {
+  position: fixed;
+  margin-left: 2rem;
+  margin-right: auto;
+  color: white;
+  font-size: calc($large * 3);
+  z-index: 10000;
+}
+
+.drawer {
+  top: 5rem;
+}
+

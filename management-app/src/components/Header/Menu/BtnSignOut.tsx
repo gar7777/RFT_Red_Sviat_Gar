@@ -7,6 +7,7 @@ import { logoutUser } from '../../../store/authorization/reducers/auth.slice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setEmptyUser } from '../../../store/user/reducers/user.slice';
 import { setTokenToLS } from '../../../utilities/getToken';
+import styles from '../Header.module.scss';
 
 export default function BtnLogOut() {
   const { lang } = useAppSelector((state) => state.lang);
@@ -21,11 +22,7 @@ export default function BtnLogOut() {
   return (
     <>
       <NavLink to="/">
-        <Button
-          variant="text"
-          sx={{ color: 'white', fontSize: '1.3rem', fontWeight: '400' }}
-          onClick={handleClick}
-        >
+        <Button variant="text" className={styles.btn} onClick={handleClick}>
           <Logout fontSize="large" sx={{ marginRight: '0.5rem' }} />
           {i18n[lang].signOut}
         </Button>

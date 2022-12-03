@@ -17,6 +17,7 @@ import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import VideoInstruction from '../VideoInstruction';
 import Layout from '../Main/Main';
 import Main from '../Main/Main';
+import TemporaryDrawer from '../Header/Burger/Drawer';
 
 function App() {
   return (

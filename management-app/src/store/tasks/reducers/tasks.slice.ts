@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createTask, deleteTask, loadTasks, updateTask } from '../thunks/tasks.thunks';
-import { ITaskFull, IUpdateTaskData } from '../types/tasks.types';
+import { createTask, deleteTask, getAllTasks, loadTasks, updateTask } from '../thunks/tasks.thunks';
+import { ILoadedColumnTasks, ITaskFull, IUpdateTaskData } from '../types/tasks.types';
 
 // interface ILoadTask {
 //   id: string;
@@ -26,14 +26,16 @@ import { ITaskFull, IUpdateTaskData } from '../types/tasks.types';
 // }
 
 interface ITasksState {
-  tasks: ITaskFull[];
+  // tasks: ITaskFull[];
   isLoading: boolean;
   error: string;
   isEditing: boolean;
   currentTask: IUpdateTaskData | null;
+  tasks: ILoadedColumnTasks[];
 }
 
 const initialState: ITasksState = {
+  // tasks: [],
   tasks: [],
   isLoading: false,
   error: '',
@@ -68,6 +70,7 @@ const tasksSlice = createSlice({
     });
     builder.addCase(createTask.fulfilled, (state) => {
       state.isLoading = false;
+      state.tasks = [];
       state.error = '';
     });
     builder.addCase(createTask.rejected, (state, action) => {
@@ -79,6 +82,7 @@ const tasksSlice = createSlice({
     });
     builder.addCase(deleteTask.fulfilled, (state) => {
       state.isLoading = false;
+      state.tasks = [];
       state.error = '';
     });
     builder.addCase(deleteTask.rejected, (state, action) => {
@@ -90,11 +94,25 @@ const tasksSlice = createSlice({
     });
     builder.addCase(updateTask.fulfilled, (state) => {
       state.isLoading = false;
+      state.tasks = [];
       state.error = '';
     });
     builder.addCase(updateTask.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error.message || 'Some error ocurred';
+    });
+    builder.addCase(getAllTasks.rejected, (state, action) => {
+      state.isLoading = false;
+      state.tasks = [];
+      state.error = action.error.message || 'Some error ocurred';
+    });
+    builder.addCase(getAllTasks.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getAllTasks.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.tasks = [...state.tasks, action.payload];
+      state.error = '';
     });
   },
 });

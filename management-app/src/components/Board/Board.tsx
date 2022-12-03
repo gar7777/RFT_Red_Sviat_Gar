@@ -107,8 +107,13 @@ function Board() {
 
     if (start === finish && result.type === 'tasks') {
       getTasks(boardId, result.source.droppableId).then((tasks) => {
-        const [removed] = tasks.splice(result.source.index - 1, 1);
-        tasks.splice(result!.destination!.index! - 1, 0, removed);
+        // console.log(result.source.index);
+        // console.log(result!.destination!.index);
+        console.log(tasks);
+        tasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
+        console.log(tasks);
+        const [removed] = tasks.splice(result.source.index, 1);
+        tasks.splice(result!.destination!.index, 0, removed);
         console.log(tasks);
 
         tasks.forEach((task: ITaskFull, index: number) => {
@@ -121,7 +126,9 @@ function Board() {
             userId: task.userId,
             order: index + 1,
           };
+          // console.log(updateBody);
           dispatch(updateTask(updateBody));
+          // dispatch(loadColumns(boardId));
         });
       });
     }

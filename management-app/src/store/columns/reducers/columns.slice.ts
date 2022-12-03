@@ -61,7 +61,7 @@ const columnsSlice = createSlice({
     });
     builder.addCase(getColumnTasks.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.currentTasks = action.payload;
+      state.currentTasks = [...state.currentTasks, action.payload];
       state.error = '';
     });
     builder.addCase(loadColumns.rejected, (state, action) => {

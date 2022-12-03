@@ -13,9 +13,13 @@ import {
   loadColumns,
   updateColumn,
 } from '../../store/columns/thunks/columns.thunks';
-import { createTask, deleteTask } from '../../store/tasks/thunks/tasks.thunks';
+import { createTask, deleteTask, getAllTasks } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
-import { ITaskCreateData, ITaskFull } from '../../store/tasks/types/tasks.types';
+import {
+  ILoadedColumnTasks,
+  ITaskCreateData,
+  ITaskFull,
+} from '../../store/tasks/types/tasks.types';
 import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
 import UpdateTaskModal from './UpdateTaskModal';
@@ -25,6 +29,8 @@ import { setCurrentColumn } from '../../store/columns/reducers/columns.slice';
 import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
 import { DraggableProvided, Droppable } from 'react-beautiful-dnd';
 import { getTasks } from '../../utilities/getTasks';
+import { ILoadedColumn } from '../../store/columns/types/columns.type';
+import { RootState } from '../../store/store';
 
 interface IProps {
   id: string;
@@ -46,17 +52,23 @@ function Column({
   provided,
   ...props
 }: IProps) {
-  const { lang } = useAppSelector((state) => state.lang);
+  const { lang } = useAppSelector((state: RootState) => state.lang);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(title);
-  const [tasks, setTasks] = useState<ITaskFull[]>([]);
   const [prevTitle, setPrevTitle] = useState('');
   const [addTaskModal, setAddTaskModal] = useState(false);
   const [deleteTaskModal, setDeleteTaskModal] = useState(false);
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
-  // const currentTasks = useAppSelector((state) => state.columns.currentTasks);
-  const currentTask = useAppSelector((state) => state.tasks.currentTask);
+  const currentTasks = useAppSelector((state: RootState) => state.tasks.tasks);
+  const [tasksArray] = currentTasks.filter((task) => task.id === id);
+  const [tasks, setTasks] = useState<ITaskFull[]>([]);
+  const currentTask = useAppSelector((state: RootState) => state.tasks.currentTask);
   const dispatch = useAppDispatch();
+
+  const columnTaskData = {
+    boardId,
+    columnId: id,
+  };
 
   const {
     register,
@@ -67,36 +79,39 @@ function Column({
     dispatch(loadColumns(boardId));
   }, [isEditingTitle]);
 
-  // useEffect(() => {
-  //   const columnTaskData = {
-  //     boardId,
-  //     columnId: id,
-  //   };
-  //   dispatch(getColumnTasks(columnTaskData));
-  // }, []);
+  useEffect(() => {
+    if (tasksArray) {
+      const sortedTasks: ITaskFull[] = [...tasksArray.tasks];
+      setTasks(sortedTasks.sort((a, b) => a.order - b.order));
+    }
+  }, [currentTasks]);
 
   useEffect(() => {
-    // const getTasks = async (boardId: string, columnId: string) => {
-    //   const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
-    //   try {
-    //     const data = await fetch(url, {
-    //       method: 'GET',
-    //       headers: {
-    //         Authorization: `Bearer ${getTokenFromLS()}`,
-    //       },
-    //     });
-    //     const json = await data.json();
-    //     setTasks(json);
-    //     return json;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    const getAndSetTasks = async () => {
-      setTasks(await getTasks(boardId, id));
-    };
-    getAndSetTasks();
+    dispatch(getAllTasks(columnTaskData));
   }, [addTaskModal, deleteTaskModal, updateTaskModal]);
+
+  // useEffect(() => {
+  //   // const getTasks = async (boardId: string, columnId: string) => {
+  //   //   const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
+  //   //   try {
+  //   //     const data = await fetch(url, {
+  //   //       method: 'GET',
+  //   //       headers: {
+  //   //         Authorization: `Bearer ${getTokenFromLS()}`,
+  //   //       },
+  //   //     });
+  //   //     const json = await data.json();
+  //   //     setTasks(json);
+  //   //     return json;
+  //   //   } catch (error) {
+  //   //     console.log(error);
+  //   //   }
+  //   // };
+  //   const getAndSetTasks = async () => {
+  //     setTasks(await getTasks(boardId, id));
+  //   };
+  //   getAndSetTasks();
+  // }, [addTaskModal, deleteTaskModal, updateTaskModal]);
 
   const handleEditTitle = async () => {
     const columnUpdateData = {
@@ -223,8 +238,8 @@ function Column({
               ref={provided.innerRef}
             >
               {tasks
-                .sort((a, b) => a.order - b.order)
-                .map(({ id, title, description, order }) => (
+                // .sort((a, b) => a.order - b.order)
+                .map(({ id, title, description, order }, index) => (
                   <Task
                     key={id}
                     title={title}
@@ -233,6 +248,7 @@ function Column({
                     order={order}
                     setDeleteTaskModal={setDeleteTaskModal}
                     setUpdateTaskModal={setUpdateTaskModal}
+                    index={index}
                   />
                 ))}
               {provided.placeholder}

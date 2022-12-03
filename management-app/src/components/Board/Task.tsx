@@ -13,11 +13,20 @@ interface IProps {
   description: string;
   id: string;
   order: number;
+  index: number;
   setDeleteTaskModal: Dispatch<SetStateAction<boolean>>;
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
 }
 
-function Task({ id, title, description, order, setDeleteTaskModal, setUpdateTaskModal }: IProps) {
+function Task({
+  id,
+  title,
+  description,
+  order,
+  setDeleteTaskModal,
+  setUpdateTaskModal,
+  index,
+}: IProps) {
   const dispatch = useAppDispatch();
   const { lang } = useAppSelector((state) => state.lang);
   const [currentUser, setCurrentUser] = useState<IUsersLoad | null>(null);
@@ -30,7 +39,7 @@ function Task({ id, title, description, order, setDeleteTaskModal, setUpdateTask
   };
 
   return (
-    <Draggable draggableId={id} index={order}>
+    <Draggable draggableId={id} index={index}>
       {(provided) => (
         <Card
           className={taskStyles.task__container}

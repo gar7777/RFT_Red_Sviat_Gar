@@ -1,10 +1,9 @@
-import React, { useState, useEffect, SetStateAction, Dispatch } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CssBaseline, Stack, Button, Box } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import AddColumnModal from './AddColumnModal';
-import Column from './Column';
 import styles from './Board.module.scss';
 import { useParams } from 'react-router';
 import { IBoard } from '../../store/boards/types/boards.type';
@@ -17,7 +16,7 @@ import {
   updateColumn,
 } from '../../store/columns/thunks/columns.thunks';
 import {
-  IColumn,
+  IColumnTitle,
   IDeleteColumn,
   ICreateColumn,
   ILoadedColumn,
@@ -26,25 +25,11 @@ import {
 import { i18n } from '../../features/i18n';
 import { Link, useNavigate } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { ComlumnList } from './ColumnListDnd';
 import type { DropResult } from 'react-beautiful-dnd';
-
-import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
-import { getTasks } from '../../utilities/getTasks';
-import {
-  ILoadedColumnTasks,
-  ITaskFull,
-  IUpdateTask,
-  IUpdateTaskData,
-} from '../../store/tasks/types/tasks.types';
-import {
-  createTask,
-  deleteTask,
-  getAllTasks,
-  loadTasks,
-  updateTask,
-} from '../../store/tasks/thunks/tasks.thunks';
+import { ITaskFull, IUpdateTask } from '../../store/tasks/types/tasks.types';
+import { createTask, deleteTask, updateTask } from '../../store/tasks/thunks/tasks.thunks';
 import { resetTasks } from '../../store/tasks/reducers/tasks.slice';
 
 function Board() {
@@ -184,7 +169,7 @@ function Board() {
     setAddColumnModal(true);
   };
 
-  const addColumn = async ({ title }: IColumn) => {
+  const addColumn = async ({ title }: IColumnTitle) => {
     const columnData: ICreateColumn = {
       title: title,
       boardId: boardId,

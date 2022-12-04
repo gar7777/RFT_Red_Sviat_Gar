@@ -1,4 +1,10 @@
-export interface IColumn {
+export interface IColumnState {
+  id: string;
+  title: string;
+  order: number;
+}
+
+export interface IColumnTitle {
   title: string;
 }
 

@@ -8,11 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {
-  getColumnTasks,
-  loadColumns,
-  updateColumn,
-} from '../../store/columns/thunks/columns.thunks';
+import { loadColumns, updateColumn } from '../../store/columns/thunks/columns.thunks';
 import { createTask, deleteTask, getAllTasks } from '../../store/tasks/thunks/tasks.thunks';
 import AddTaskModal from './AddTaskModal';
 import {
@@ -20,16 +16,12 @@ import {
   ITaskCreateData,
   ITaskFull,
 } from '../../store/tasks/types/tasks.types';
-import { API_URL } from '../../constants/api';
-import { getTokenFromLS } from '../../utilities/getToken';
 import UpdateTaskModal from './UpdateTaskModal';
 import { i18n } from '../../features/i18n';
 import ConfirmModal from '../ConfirmModal';
 import { setCurrentColumn } from '../../store/columns/reducers/columns.slice';
 import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
 import { DraggableProvided, Droppable } from 'react-beautiful-dnd';
-import { getTasks } from '../../utilities/getTasks';
-import { ILoadedColumn } from '../../store/columns/types/columns.type';
 import { RootState } from '../../store/store';
 
 interface IProps {

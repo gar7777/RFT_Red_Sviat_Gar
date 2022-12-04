@@ -6,12 +6,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import overlayStyles from '../../scss/Overlay.module.scss';
 import formStyles from '../../scss/Form.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
-import { IColumn } from '../../store/columns/types/columns.type';
+import { IColumnTitle } from '../../store/columns/types/columns.type';
 import { useAppSelector } from '../../store/hooks';
 import { i18n } from '../../features/i18n';
 
 interface IProps {
-  addColumn: (data: IColumn) => void;
+  addColumn: (data: IColumnTitle) => void;
   closeColumnModal: () => void;
 }
 

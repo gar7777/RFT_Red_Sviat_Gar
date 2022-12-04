@@ -8,16 +8,10 @@ import {
   loadColumns,
   updateColumn,
 } from '../thunks/columns.thunks';
-import { ILoadedColumn } from '../types/columns.type';
-
-interface IColumn {
-  id: string;
-  title: string;
-  order: number;
-}
+import { IColumnState, ILoadedColumn } from '../types/columns.type';
 
 interface IColumnsState {
-  columns: IColumn[];
+  columns: IColumnState[];
   isLoading: boolean;
   error: string;
   isEditing: boolean;
@@ -41,6 +35,9 @@ const columnsSlice = createSlice({
     setCurrentColumn(state, action) {
       state.currentColumn = action.payload;
     },
+    resetColumns(state) {
+      state.columns = [];
+    },
   },
   extraReducers(builder) {
     builder.addCase(loadColumns.pending, (state) => {
@@ -61,7 +58,7 @@ const columnsSlice = createSlice({
     });
     builder.addCase(getColumnTasks.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.currentTasks = action.payload;
+      state.currentTasks = [...state.currentTasks, action.payload];
       state.error = '';
     });
     builder.addCase(loadColumns.rejected, (state, action) => {
@@ -105,5 +102,5 @@ const columnsSlice = createSlice({
   },
 });
 
-export const { setCurrentColumn } = columnsSlice.actions;
+export const { setCurrentColumn, resetColumns } = columnsSlice.actions;
 export default columnsSlice.reducer;

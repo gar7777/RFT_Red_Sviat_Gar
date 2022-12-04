@@ -1,4 +1,10 @@
-export interface IColumn {
+export interface IColumnState {
+  id: string;
+  title: string;
+  order: number;
+}
+
+export interface IColumnTitle {
   title: string;
 }
 
@@ -33,4 +39,5 @@ export interface IGetColumnTask {
 export interface IFormData {
   title: string;
   description: string;
+  userId: string;
 }

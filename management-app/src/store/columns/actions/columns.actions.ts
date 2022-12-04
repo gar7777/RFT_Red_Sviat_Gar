@@ -5,3 +5,4 @@ export const UPDATE_COLUMN = 'columns/update';
 export const GET_COLUMN_TASKS = 'columns/getColumnTasks';
 // export const SET_CURRENT_BOARD = 'columns/setCurrentBoard';
 export const SET_CURRENT_COLUMN = 'columns/setCurrentColumn';
+export const RESET_COLUMN = 'columns/resetColumns';

@@ -1,6 +1,6 @@
 import { i18n } from '../../features/i18n';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { Card, Button } from '@mui/material';
+import { Card, Button, Typography } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { setCurrentTask } from '../../store/tasks/reducers/tasks.slice';
 import { IUpdatetaskData } from '../../store/tasks/types/tasks.types';
@@ -13,11 +13,20 @@ interface IProps {
   description: string;
   id: string;
   order: number;
+  index: number;
   setDeleteTaskModal: Dispatch<SetStateAction<boolean>>;
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
 }
 
-function Task({ id, title, description, order, setDeleteTaskModal, setUpdateTaskModal }: IProps) {
+function Task({
+  id,
+  title,
+  description,
+  order,
+  setDeleteTaskModal,
+  setUpdateTaskModal,
+  index,
+}: IProps) {
   const dispatch = useAppDispatch();
   const { lang } = useAppSelector((state) => state.lang);
   const [currentUser, setCurrentUser] = useState<IUsersLoad | null>(null);
@@ -30,7 +39,7 @@ function Task({ id, title, description, order, setDeleteTaskModal, setUpdateTask
   };
 
   return (
-    <Draggable draggableId={id} index={order}>
+    <Draggable draggableId={id} index={index}>
       {(provided) => (
         <Card
           className={taskStyles.task__container}
@@ -38,7 +47,7 @@ function Task({ id, title, description, order, setDeleteTaskModal, setUpdateTask
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          <h2>{title}</h2>
+          <Typography className={taskStyles.task__h2}>{title}</Typography>
           <p>{description}</p>
           <Button
             onClick={() => {

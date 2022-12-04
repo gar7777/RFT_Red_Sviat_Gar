@@ -1,13 +1,35 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { API_URL } from '../../../constants/api';
 import { getTokenFromLS } from '../../../utilities/getToken';
-import { CREATE_TASK, DELETE_TASK, LOAD_TASKS, UPDATE_TASK } from '../actions/tasks.actions';
+import { IGetColumnTask } from '../../columns/types/columns.type';
+import {
+  CREATE_TASK,
+  DELETE_TASK,
+  GET_ALL_TASKS,
+  LOAD_TASKS,
+  UPDATE_TASK,
+} from '../actions/tasks.actions';
 import { IDeleteTask, ITaskCreateData, ITaskLoadData, IUpdateTask } from '../types/tasks.types';
 
 export const loadTasks = createAsyncThunk(
   LOAD_TASKS,
   async ({ boardId, columnId }: ITaskLoadData) => {
     const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
+    const data = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${getTokenFromLS()}`,
+      },
+    });
+    const json = await data.json();
+    return json;
+  }
+);
+
+export const getAllTasks = createAsyncThunk(
+  GET_ALL_TASKS,
+  async ({ boardId, columnId }: IGetColumnTask) => {
+    const url = `${API_URL}/boards/${boardId}/columns/${columnId}`;
     const data = await fetch(url, {
       method: 'GET',
       headers: {
@@ -52,7 +74,7 @@ export const deleteTask = createAsyncThunk(
         'Access-Control-Allow-Origin': '*',
       },
     });
-    return 'OK';
+    return { columnId };
   }
 );
 

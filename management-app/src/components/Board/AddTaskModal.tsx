@@ -15,8 +15,6 @@ import { FieldValues, useForm } from 'react-hook-form';
 import formStyles from '../../scss/Form.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
 import { useAppSelector } from '../../store/hooks';
-import { getTokenFromLS } from '../../utilities/getToken';
-import decodeJwt from '../../utilities/jwtDecode';
 
 interface IProps {
   addTask: (data: FieldValues) => void;
@@ -25,10 +23,9 @@ interface IProps {
 }
 
 function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
+  const { lang } = useAppSelector((state) => state.lang);
   const { users } = useAppSelector((state) => state.user);
   const { user } = useAppSelector((state) => state.user);
-  // const token = getTokenFromLS();
-  // const userId = decodeJwt(token as string);
   const [newUser, setNewUser] = useState<string>('');
   const {
     register,
@@ -36,7 +33,6 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
     setFocus,
     formState: { errors },
   } = useForm();
-  const { lang } = useAppSelector((state) => state.lang);
 
   useEffect(() => {
     setTimeout(() => setFocus('title'), 0);

@@ -26,7 +26,6 @@ import { ILoadedColumnTasks, ITaskFull, IUpdateTaskData } from '../types/tasks.t
 // }
 
 interface ITasksState {
-  // tasks: ITaskFull[];
   isLoading: boolean;
   error: string;
   isEditing: boolean;
@@ -50,6 +49,9 @@ const tasksSlice = createSlice({
     setCurrentTask(state, action) {
       state.currentTask = action.payload;
     },
+    resetTasks(state) {
+      state.tasks = [];
+    },
   },
   extraReducers(builder) {
     builder.addCase(loadTasks.pending, (state) => {
@@ -68,9 +70,14 @@ const tasksSlice = createSlice({
     builder.addCase(createTask.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(createTask.fulfilled, (state) => {
+    builder.addCase(createTask.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.tasks = [];
+      const newState = [...state.tasks];
+      const { columnId } = action.payload;
+      const [deletedColumn] = newState.filter((column) => column.id === columnId);
+      const deletedColumnIndex = newState.indexOf(deletedColumn);
+      newState.splice(deletedColumnIndex, 1);
+      state.tasks = newState;
       state.error = '';
     });
     builder.addCase(createTask.rejected, (state, action) => {
@@ -86,7 +93,6 @@ const tasksSlice = createSlice({
       const { columnId } = action.payload;
       const [deletedColumn] = newState.filter((column) => column.id === columnId);
       const deletedColumnIndex = newState.indexOf(deletedColumn);
-      console.log(deletedColumn);
       newState.splice(deletedColumnIndex, 1);
       state.tasks = newState;
       state.error = '';
@@ -101,7 +107,6 @@ const tasksSlice = createSlice({
     builder.addCase(updateTask.fulfilled, (state, action) => {
       state.isLoading = false;
       const newState = [...state.tasks];
-      console.log(newState);
       const { columnId, id } = action.payload;
       const [updatedColumn] = newState.filter((column) => column.id === columnId);
       const [updatedTask] = updatedColumn.tasks.filter((task) => task.id === id);
@@ -130,5 +135,5 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { setCurrentTask } = tasksSlice.actions;
+export const { setCurrentTask, resetTasks } = tasksSlice.actions;
 export default tasksSlice.reducer;

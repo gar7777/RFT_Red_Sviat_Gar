@@ -38,7 +38,14 @@ import {
   IUpdateTask,
   IUpdateTaskData,
 } from '../../store/tasks/types/tasks.types';
-import { getAllTasks, loadTasks, updateTask } from '../../store/tasks/thunks/tasks.thunks';
+import {
+  createTask,
+  deleteTask,
+  getAllTasks,
+  loadTasks,
+  updateTask,
+} from '../../store/tasks/thunks/tasks.thunks';
+import { resetTasks } from '../../store/tasks/reducers/tasks.slice';
 
 function Board() {
   const params = useParams();
@@ -63,11 +70,15 @@ function Board() {
   }, [params]);
 
   useEffect(() => {
-    setCurrentColumns([...columns]);
     return () => {
+      dispatch(resetTasks());
       localStorage.setItem('currentBoard', boardId);
       localStorage.setItem('currentBoardTitle', boardTitle);
     };
+  }, []);
+
+  useEffect(() => {
+    setCurrentColumns([...columns]);
   }, [columns]);
 
   useEffect(() => {
@@ -106,14 +117,18 @@ function Board() {
       });
 
       setCurrentColumns(orderedColumns);
+      return;
     }
 
     const start = result.source.droppableId;
     const finish = result.destination.droppableId;
+    const [startColumn] = currentTasks.filter((column) => column.id === start);
+    const [finishColumn] = currentTasks.filter((column) => column.id === finish);
+    const startTasks = [...startColumn.tasks];
+    const finishTasks = [...finishColumn.tasks];
 
     if (start === finish && result.type === 'tasks') {
-      const [columnTasks] = currentTasks.filter((task) => task.id === start);
-      const tasks = [...columnTasks.tasks];
+      const tasks = [...startColumn.tasks];
       tasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
       const [removed] = tasks.splice(result.source.index, 1);
       tasks.splice(result!.destination!.index, 0, removed);
@@ -130,7 +145,39 @@ function Board() {
         };
         await dispatch(updateTask(updateBody));
       });
+      return;
     }
+
+    startTasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
+    const removed = startTasks[result.source.index];
+    dispatch(deleteTask({ boardId, columnId: start, taskId: removed.id }));
+    console.log(removed);
+
+    finishTasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
+    finishTasks.splice(result!.destination!.index, 0, removed);
+    dispatch(
+      createTask({
+        boardId,
+        columnId: finish,
+        title: removed.title,
+        description: removed.description,
+        userId: removed.userId,
+      })
+    );
+    // finishTasks.forEach(async (task: ITaskFull, index: number) => {
+    //   const updateBody: IUpdateTask = {
+    //     title: task.title,
+    //     description: task.description,
+    //     boardId,
+    //     columnId: result.source.droppableId,
+    //     id: task.id,
+    //     userId: task.userId,
+    //     order: index + 1,
+    //   };
+    //   await dispatch(updateTask(updateBody));
+    // });
+
+    return;
   }
 
   const handleAddColumn = (): void => {

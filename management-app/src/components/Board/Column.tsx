@@ -60,7 +60,7 @@ function Column({
   const [deleteTaskModal, setDeleteTaskModal] = useState(false);
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
   const currentTasks = useAppSelector((state: RootState) => state.tasks.tasks);
-  const [tasksArray] = currentTasks.filter((task) => task.id === id);
+  const [tasksArray] = currentTasks.filter((task: ILoadedColumnTasks) => task.id === id);
   const [tasks, setTasks] = useState<ITaskFull[]>([]);
   const currentTask = useAppSelector((state: RootState) => state.tasks.currentTask);
   const dispatch = useAppDispatch();
@@ -88,7 +88,7 @@ function Column({
 
   useEffect(() => {
     dispatch(getAllTasks(columnTaskData));
-  }, [addTaskModal, deleteTaskModal, updateTaskModal]);
+  }, [updateTaskModal]);
 
   // useEffect(() => {
   //   // const getTasks = async (boardId: string, columnId: string) => {
@@ -153,6 +153,7 @@ function Column({
       taskId: currentTask.id,
     };
     await dispatch(deleteTask(deleteData));
+    dispatch(getAllTasks(columnTaskData));
     setDeleteTaskModal(false);
   };
 
@@ -174,6 +175,7 @@ function Column({
       userId: data.userId,
     };
     await dispatch(createTask(createTasksData));
+    dispatch(getAllTasks(columnTaskData));
     setAddTaskModal(false);
   };
 
@@ -236,9 +238,10 @@ function Column({
               className={styles.tasks_wrapper}
               {...provided.droppableProps}
               ref={provided.innerRef}
+              style={{ minHeight: '10px' }}
             >
               {tasks
-                // .sort((a, b) => a.order - b.order)
+                .sort((a, b) => a.order - b.order)
                 .map(({ id, title, description, order }, index) => (
                   <Task
                     key={id}

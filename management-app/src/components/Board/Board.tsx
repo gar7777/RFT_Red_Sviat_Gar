@@ -30,7 +30,8 @@ import { ComlumnList } from './ColumnListDnd';
 import type { DropResult } from 'react-beautiful-dnd';
 import { ITaskFull, IUpdateTask } from '../../store/tasks/types/tasks.types';
 import { createTask, deleteTask, updateTask } from '../../store/tasks/thunks/tasks.thunks';
-import { resetTasks } from '../../store/tasks/reducers/tasks.slice';
+import { resetTasks, updateColumnTasks } from '../../store/tasks/reducers/tasks.slice';
+import { resetColumns } from '../../store/columns/reducers/columns.slice';
 
 function Board() {
   const params = useParams();
@@ -57,6 +58,7 @@ function Board() {
   useEffect(() => {
     return () => {
       dispatch(resetTasks());
+      dispatch(resetColumns());
       localStorage.setItem('currentBoard', boardId);
       localStorage.setItem('currentBoardTitle', boardTitle);
     };
@@ -134,13 +136,32 @@ function Board() {
     }
 
     startTasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
-    const removed = startTasks[result.source.index];
-    dispatch(deleteTask({ boardId, columnId: start, taskId: removed.id }));
-    console.log(removed);
+    const [removed] = startTasks.splice(result.source.index, 1);
+    await dispatch(deleteTask({ boardId, columnId: start, taskId: removed.id }));
+    const updatedStartTasks = startTasks.map((task, index) => {
+      return {
+        ...task,
+        order: index + 1,
+      };
+    });
+    console.log(updatedStartTasks);
+    dispatch(updateColumnTasks({ tasks: updatedStartTasks, columnId: start }));
+    // startTasks.forEach(async (task: ITaskFull, index: number) => {
+    //   const updateBody: IUpdateTask = {
+    //     title: task.title,
+    //     description: task.description,
+    //     boardId,
+    //     columnId: result.source.droppableId,
+    //     id: task.id,
+    //     userId: task.userId,
+    //     order: index + 1,
+    //   };
+    //   await dispatch(updateTask(updateBody));
+    // });
 
     finishTasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
     finishTasks.splice(result!.destination!.index, 0, removed);
-    dispatch(
+    await dispatch(
       createTask({
         boardId,
         columnId: finish,
@@ -149,6 +170,13 @@ function Board() {
         userId: removed.userId,
       })
     );
+    const updatedFinishTasks = finishTasks.map((task, index) => {
+      return {
+        ...task,
+        order: index + 1,
+      };
+    });
+    dispatch(updateColumnTasks({ tasks: updatedFinishTasks, columnId: finish }));
     // finishTasks.forEach(async (task: ITaskFull, index: number) => {
     //   const updateBody: IUpdateTask = {
     //     title: task.title,

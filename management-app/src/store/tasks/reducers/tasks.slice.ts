@@ -34,7 +34,6 @@ interface ITasksState {
 }
 
 const initialState: ITasksState = {
-  // tasks: [],
   tasks: [],
   isLoading: false,
   error: '',
@@ -51,6 +50,16 @@ const tasksSlice = createSlice({
     },
     resetTasks(state) {
       state.tasks = [];
+    },
+    updateColumnTasks(state, action) {
+      const newState = [...state.tasks];
+      const { columnId, tasks } = action.payload;
+      console.log(tasks);
+      const [updatedColumn] = newState.filter((column) => column.id === columnId);
+      const updatedColumnIndex = newState.indexOf(updatedColumn);
+      newState[updatedColumnIndex].tasks = tasks;
+      // newState.splice(updatedColumnIndex, 1, tasks);
+      state.tasks = newState;
     },
   },
   extraReducers(builder) {
@@ -135,5 +144,5 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { setCurrentTask, resetTasks } = tasksSlice.actions;
+export const { setCurrentTask, resetTasks, updateColumnTasks } = tasksSlice.actions;
 export default tasksSlice.reducer;

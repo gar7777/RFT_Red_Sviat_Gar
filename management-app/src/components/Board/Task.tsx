@@ -1,6 +1,6 @@
 import { i18n } from '../../features/i18n';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { Card, Button } from '@mui/material';
+import { Card, Button, Typography } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { setCurrentTask } from '../../store/tasks/reducers/tasks.slice';
 import { IUpdatetaskData } from '../../store/tasks/types/tasks.types';
@@ -47,7 +47,7 @@ function Task({
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          <h2>{title}</h2>
+          <Typography className={taskStyles.task__h2}>{title}</Typography>
           <p>{description}</p>
           <Button
             onClick={() => {

@@ -39,4 +39,5 @@ export interface IGetColumnTask {
 export interface IFormData {
   title: string;
   description: string;
+  userId: string;
 }

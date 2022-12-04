@@ -28,10 +28,17 @@ import ConfirmModal from '../ConfirmModal';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { ComlumnList } from './ColumnListDnd';
 import type { DropResult } from 'react-beautiful-dnd';
-import { ITaskFull, IUpdateTask } from '../../store/tasks/types/tasks.types';
-import { createTask, deleteTask, updateTask } from '../../store/tasks/thunks/tasks.thunks';
-import { resetTasks, updateColumnTasks } from '../../store/tasks/reducers/tasks.slice';
+import {
+  ILoadedColumnTasks,
+  ITaskCreateData,
+  ITaskFull,
+  IUpdateTask,
+} from '../../store/tasks/types/tasks.types';
+import { deleteTask, getAllTasks, updateTask } from '../../store/tasks/thunks/tasks.thunks';
+import { resetTasks } from '../../store/tasks/reducers/tasks.slice';
 import { resetColumns } from '../../store/columns/reducers/columns.slice';
+import { API_URL } from '../../constants/api';
+import { getTokenFromLS } from '../../utilities/getToken';
 
 function Board() {
   const params = useParams();
@@ -109,8 +116,10 @@ function Board() {
 
     const start = result.source.droppableId;
     const finish = result.destination.droppableId;
-    const [startColumn] = currentTasks.filter((column) => column.id === start);
-    const [finishColumn] = currentTasks.filter((column) => column.id === finish);
+    const [startColumn] = currentTasks.filter((column: ILoadedColumnTasks) => column.id === start);
+    const [finishColumn] = currentTasks.filter(
+      (column: ILoadedColumnTasks) => column.id === finish
+    );
     const startTasks = [...startColumn.tasks];
     const finishTasks = [...finishColumn.tasks];
 
@@ -138,57 +147,71 @@ function Board() {
     startTasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
     const [removed] = startTasks.splice(result.source.index, 1);
     await dispatch(deleteTask({ boardId, columnId: start, taskId: removed.id }));
-    const updatedStartTasks = startTasks.map((task, index) => {
-      return {
-        ...task,
-        order: index + 1,
-      };
-    });
-    console.log(updatedStartTasks);
-    dispatch(updateColumnTasks({ tasks: updatedStartTasks, columnId: start }));
-    // startTasks.forEach(async (task: ITaskFull, index: number) => {
-    //   const updateBody: IUpdateTask = {
-    //     title: task.title,
-    //     description: task.description,
-    //     boardId,
-    //     columnId: result.source.droppableId,
-    //     id: task.id,
-    //     userId: task.userId,
-    //     order: index + 1,
-    //   };
-    //   await dispatch(updateTask(updateBody));
-    // });
+    await dispatch(getAllTasks({ boardId, columnId: start }));
 
+    // await dispatch(
+    //   createTask({
+    //     boardId,
+    //     columnId: finish,
+    //     title: removed.title,
+    //     description: removed.description,
+    //     userId: removed.userId,
+    //   })
+    // );
+
+    const taskCreateData = {
+      boardId,
+      columnId: finish,
+      title: removed.title,
+      description: removed.description,
+      userId: removed.userId,
+    };
+    const addNewTaskInColumn = async (taskCreateData: ITaskCreateData) => {
+      const { boardId, columnId, title, description, userId } = taskCreateData;
+      const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
+      const body = {
+        title: title,
+        description: description,
+        userId: userId,
+      };
+      const data = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${getTokenFromLS()}`,
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify(body),
+      });
+      const json = await data.json();
+
+      return json;
+    };
+    const newTask = await addNewTaskInColumn(taskCreateData);
     finishTasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
-    finishTasks.splice(result!.destination!.index, 0, removed);
-    await dispatch(
-      createTask({
-        boardId,
-        columnId: finish,
-        title: removed.title,
-        description: removed.description,
-        userId: removed.userId,
-      })
-    );
+    finishTasks.splice(result!.destination!.index, 0, newTask);
+    console.log(finishTasks);
+
     const updatedFinishTasks = finishTasks.map((task, index) => {
       return {
         ...task,
         order: index + 1,
       };
     });
-    dispatch(updateColumnTasks({ tasks: updatedFinishTasks, columnId: finish }));
-    // finishTasks.forEach(async (task: ITaskFull, index: number) => {
-    //   const updateBody: IUpdateTask = {
-    //     title: task.title,
-    //     description: task.description,
-    //     boardId,
-    //     columnId: result.source.droppableId,
-    //     id: task.id,
-    //     userId: task.userId,
-    //     order: index + 1,
-    //   };
-    //   await dispatch(updateTask(updateBody));
-    // });
+    console.log(updatedFinishTasks);
+
+    updatedFinishTasks.forEach(async (task: ITaskFull, index: number) => {
+      const updateBody: IUpdateTask = {
+        title: task.title,
+        description: task.description,
+        boardId,
+        columnId: result!.destination!.droppableId,
+        id: task.id,
+        userId: task.userId,
+        order: index + 1,
+      };
+      await dispatch(updateTask(updateBody));
+    });
 
     return;
   }

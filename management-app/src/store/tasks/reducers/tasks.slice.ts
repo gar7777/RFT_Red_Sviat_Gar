@@ -2,34 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createTask, deleteTask, getAllTasks, loadTasks, updateTask } from '../thunks/tasks.thunks';
 import { ILoadedColumnTasks, ITaskFull, IUpdateTaskData } from '../types/tasks.types';
 
-// interface ILoadTask {
-//   id: string;
-//   title: string;
-//   order: number;
-//   description: string;
-//   userId: string;
-//   boardId: string;
-//   columnId: string;
-//   files?: [];
-// }
-
-// interface IUpdateTaskData {
-//   id: string;
-//   title: string;
-//   description: string;
-//   order: number;
-// }
-
-// interface IStateTask {
-//   columnId: string;
-//   tasks: ILoadTask[];
-// }
-
 interface ITasksState {
   isLoading: boolean;
   error: string;
   isEditing: boolean;
   currentTask: IUpdateTaskData | null;
+  createdTask: ITaskFull | null;
   tasks: ILoadedColumnTasks[];
 }
 
@@ -39,6 +17,7 @@ const initialState: ITasksState = {
   error: '',
   isEditing: false,
   currentTask: null,
+  createdTask: null,
 };
 
 const tasksSlice = createSlice({
@@ -50,16 +29,6 @@ const tasksSlice = createSlice({
     },
     resetTasks(state) {
       state.tasks = [];
-    },
-    updateColumnTasks(state, action) {
-      const newState = [...state.tasks];
-      const { columnId, tasks } = action.payload;
-      console.log(tasks);
-      const [updatedColumn] = newState.filter((column) => column.id === columnId);
-      const updatedColumnIndex = newState.indexOf(updatedColumn);
-      newState[updatedColumnIndex].tasks = tasks;
-      // newState.splice(updatedColumnIndex, 1, tasks);
-      state.tasks = newState;
     },
   },
   extraReducers(builder) {
@@ -87,6 +56,7 @@ const tasksSlice = createSlice({
       const deletedColumnIndex = newState.indexOf(deletedColumn);
       newState.splice(deletedColumnIndex, 1);
       state.tasks = newState;
+      state.createdTask = action.payload;
       state.error = '';
     });
     builder.addCase(createTask.rejected, (state, action) => {
@@ -144,5 +114,5 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { setCurrentTask, resetTasks, updateColumnTasks } = tasksSlice.actions;
+export const { setCurrentTask, resetTasks } = tasksSlice.actions;
 export default tasksSlice.reducer;

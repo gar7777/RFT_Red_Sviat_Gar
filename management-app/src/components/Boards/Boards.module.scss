@@ -1,0 +1,92 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 2rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 3%;
+    min-height: calc(100vh - 7rem);
+}
+
+.boardsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    min-width: 200px;
+    max-width: 200px;
+
+    @media(max-width: 499px) {
+        min-width: 250px;
+    }
+}
+
+.gridContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    row-gap: 15px;
+    width: 100%;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media(max-width: 499px) {
+        flex-direction: column;
+    }
+}
+
+.inputContainer {
+    margin-left: 1rem;
+
+    @media(max-width: 499px) {
+        margin-left: 0;
+    }
+}
+
+.addBoardModal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    @media(max-width: 499px) {
+        max-width: 300px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+}
+
+.modalInput {
+    @media(max-width: 499px) {
+        width: 250px;
+    }
+}
+
+.modalButton {
+    width: 100%;
+}
+
+.modalForm {
+    padding: 1rem;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+    
+    @media(max-width: 499px) {
+        width: 280px;
+    }
+}

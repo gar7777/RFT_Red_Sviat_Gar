@@ -17,7 +17,7 @@ function WelcomePage() {
       <Typography variant="h1" className={typographyStyles.h1}>
         {i18n[lang].mainHeading}
       </Typography>
-      <Grid container className={styles.gridContainer} lg={12}>
+      <Grid container className={styles.gridContainer}>
         <Box component="div" className={styles.welcomePageTextContainer}>
           <Typography className={styles.welcomePageText}>{i18n[lang].mainPageText}</Typography>
           <Box className={styles.buttonsContainer}>

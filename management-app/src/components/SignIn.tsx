@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { loadUser } from '../store/user/thunks/loadUser.thunks';
 import { signIn } from '../store/authorization/thunks/authorization.thunks';
 import { i18n } from '../features/i18n';
+import { getTokenFromLS } from '../utilities/getToken';
 
 function SignIn() {
   const { lang } = useAppSelector((state) => state.lang);
@@ -25,8 +26,10 @@ function SignIn() {
     const { login, password } = data;
     await dispatch(signIn({ login, password }));
     reset();
-    navigate('/boards');
-    dispatch(loadUser());
+    if (getTokenFromLS()) {
+      navigate('/boards');
+      await dispatch(loadUser());
+    }
   };
 
   return (

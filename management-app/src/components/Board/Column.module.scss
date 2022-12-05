@@ -1,11 +1,80 @@
+@import '../../scss/variables.scss';
+
 .column {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
   padding: 10px;
-  display: inline-block;
-  min-width: 20rem;
-  max-height: 72vh;
+  width: 300px;
+
+  @media(max-width: 768px) {
+    width: 280px;
+  }
 }
 
 .tasks_wrapper {
-  max-height: 50vh;
-  overflow-x: auto;
+  max-height: 60vh;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.headingWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 1rem;
+  background-color: $primary-main;
+  border-radius: 5px;
+}
+
+.formWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.addColumnModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+
+  @media(max-width: 499px) {
+      max-width: 300px;
+      padding: 5px;
+      border-radius: 5px;
+  }
+}
+
+.modalForm {
+  padding: 1rem;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+  
+  @media(max-width: 499px) {
+      width: 280px;
+  }
 }

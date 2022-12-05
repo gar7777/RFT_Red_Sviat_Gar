@@ -8,6 +8,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Modal,
 } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -19,6 +20,7 @@ import { updateTask } from '../../store/tasks/thunks/tasks.thunks';
 import { RootState } from '../../store/store';
 import { i18n } from '../../features/i18n';
 import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
+import styles from './Task.module.scss';
 
 interface IProps {
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
@@ -68,16 +70,16 @@ function UpdateTaskModal({
   };
 
   return (
-    <Dialog open={updateTaskModal} onClose={() => setUpdateTaskModal(false)}>
-      <Box className={formStyles.formContainer}>
-        <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {i18n[lang].updateTask}
-        </Typography>
+    <Modal open={updateTaskModal} onClose={() => setUpdateTaskModal(false)}>
+      <Box>
         <Box
           component="form"
           onSubmit={handleSubmit((data) => handleUpdateTask(data as IFormData))}
-          sx={{ mt: 1 }}
+          className={styles.addTaskContainer}
         >
+          <Typography component="h3" className={typographyStyles.h3}>
+            {i18n[lang].updateTask}
+          </Typography>
           <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
@@ -105,7 +107,7 @@ function UpdateTaskModal({
           </Box>
           <Box className={formStyles.labelWrapper}>
             <TextField
-              margin="normal"
+              margin="none"
               fullWidth
               defaultValue={currentTask?.description}
               type="description"
@@ -146,18 +148,12 @@ function UpdateTaskModal({
               ))}
             </Select>
           </FormControl>
-          <Button
-            variant="contained"
-            type="submit"
-            size="large"
-            fullWidth
-            sx={{ marginTop: '2rem' }}
-          >
+          <Button variant="contained" type="submit" fullWidth sx={{ marginTop: '1rem' }}>
             {i18n[lang].update}
           </Button>
         </Box>
       </Box>
-    </Dialog>
+    </Modal>
   );
 }
 

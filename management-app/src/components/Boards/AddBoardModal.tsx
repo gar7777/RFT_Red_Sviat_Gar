@@ -12,19 +12,6 @@ import { i18n } from '../../features/i18n';
 import styles from './Boards.module.scss';
 import formStyles from '../../scss/Form.module.scss';
 
-const style = {
-  display: 'flex',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 350,
-  //bgcolor: 'background.paper',
-  //border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
 interface IAddBoardModal {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;

@@ -17,7 +17,7 @@ const UserToolbar = () => {
 
   return (
     <Toolbar className={styles.toolbar}>
-      <div style={{ marginRight: 'auto' }}>
+      <div className={styles.linkMain}>
         <NavLink to="/" className={styles.toolbarItem}>
           <Button variant="text" className={styles.btn}>
             <Home fontSize="large" className={styles.icon} /> {i18n[lang].mainPage}

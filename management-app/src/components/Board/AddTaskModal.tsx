@@ -9,10 +9,12 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  Modal,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import formStyles from '../../scss/Form.module.scss';
+import styles from './Task.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
@@ -44,16 +46,16 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal, userId }: IProps)
   }, []);
 
   return (
-    <Dialog open={addTaskModal} onClose={closeTaskModal}>
-      <Box className={formStyles.formContainer}>
-        <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {i18n[lang].addTask}
-        </Typography>
+    <Modal open={addTaskModal} onClose={closeTaskModal}>
+      <Box>
         <Box
           component="form"
           onSubmit={handleSubmit((data: FieldValues) => addTask({ ...data, userId: newUser }))}
-          sx={{ mt: 1 }}
+          className={styles.addTaskContainer}
         >
+          <Typography component="h3" className={typographyStyles.h3}>
+            {i18n[lang].addTask}
+          </Typography>
           <Box className={formStyles.labelWrapper}>
             <TextField
               margin="normal"
@@ -81,7 +83,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal, userId }: IProps)
           </Box>
           <Box className={formStyles.labelWrapper}>
             <TextField
-              margin="normal"
+              margin="none"
               required
               fullWidth
               type="description"
@@ -124,12 +126,12 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal, userId }: IProps)
               ))}
             </Select>
           </FormControl>
-          <Button variant="contained" type="submit" fullWidth>
+          <Button variant="contained" type="submit" fullWidth sx={{ marginTop: '1rem' }}>
             {i18n[lang].add}
           </Button>
         </Box>
       </Box>
-    </Dialog>
+    </Modal>
   );
 }
 

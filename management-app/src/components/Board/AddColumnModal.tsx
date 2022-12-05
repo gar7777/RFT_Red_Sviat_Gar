@@ -5,6 +5,7 @@ import { IFormData } from '../../store/columns/types/columns.type';
 import CloseIcon from '@mui/icons-material/Close';
 import overlayStyles from '../../scss/Overlay.module.scss';
 import formStyles from '../../scss/Form.module.scss';
+import styles from './Column.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
 import { IColumnTitle } from '../../store/columns/types/columns.type';
 import { useAppSelector } from '../../store/hooks';
@@ -26,47 +27,46 @@ function AddColumnModal({ addColumn, setAddColumnModal, addColumnModal }: IProps
 
   return (
     <Dialog open={addColumnModal} onClose={() => setAddColumnModal(false)}>
-      <Box className={formStyles.formContainer}>
-        <IconButton sx={{ alignSelf: 'end' }} onClick={() => setAddColumnModal(false)}>
-          <CloseIcon />
-        </IconButton>
-        <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {i18n[lang].addColumn}
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={handleSubmit((data) => addColumn(data as IFormData))}
-          sx={{ mt: 1 }}
-        >
-          <Box className={formStyles.labelWrapper}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="title"
-              label={i18n[lang].title}
-              {...register('title', {
-                required: i18n[lang].enterTitle,
-                minLength: { value: 3, message: i18n[lang].minLength },
-              })}
-              autoComplete="Title"
-              className={formStyles.validatedInput}
-              autoFocus
-            />
-            {errors.title && (
-              <Typography
-                component="p"
-                align="center"
-                variant="caption"
-                className={formStyles.validationAlert}
-              >
-                {errors.title.message as string}
-              </Typography>
-            )}
+      <Box className={styles.addColumnModal}>
+        <Box>
+          <Box
+            component="form"
+            onSubmit={handleSubmit((data) => addColumn(data as IFormData))}
+            className={styles.modalForm}
+          >
+            <Typography component="h3" className={typographyStyles.h3}>
+              {i18n[lang].addColumn}
+            </Typography>
+            <Box className={formStyles.labelWrapper}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="title"
+                label={i18n[lang].title}
+                {...register('title', {
+                  required: i18n[lang].enterTitle,
+                  minLength: { value: 3, message: i18n[lang].minLength },
+                })}
+                autoComplete="Title"
+                className={formStyles.validatedInput}
+                autoFocus
+              />
+              {errors.title && (
+                <Typography
+                  component="p"
+                  align="center"
+                  variant="caption"
+                  className={formStyles.validationAlert}
+                >
+                  {errors.title.message as string}
+                </Typography>
+              )}
+            </Box>
+            <Button variant="contained" type="submit" fullWidth>
+              {i18n[lang].add}
+            </Button>
           </Box>
-          <Button variant="contained" type="submit" fullWidth>
-            {i18n[lang].add}
-          </Button>
         </Box>
       </Box>
     </Dialog>

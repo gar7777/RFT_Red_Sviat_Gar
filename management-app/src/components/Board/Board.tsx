@@ -32,6 +32,10 @@ import { ILoadedColumnTasks, ITaskFull, IUpdateTask } from '../../store/tasks/ty
 import { deleteTask, getAllTasks, updateTask } from '../../store/tasks/thunks/tasks.thunks';
 import { resetTasks } from '../../store/tasks/reducers/tasks.slice';
 import { resetColumns } from '../../store/columns/reducers/columns.slice';
+import { API_URL } from '../../constants/api';
+import { getTokenFromLS } from '../../utilities/getToken';
+import mainStyles from '../Main/Main.module.scss';
+import typographyStyles from '../../scss/Typography.module.scss';
 import { addNewTaskInColumn, getTaskById } from '../../api/tasksApi';
 
 function Board() {
@@ -226,55 +230,56 @@ function Board() {
   };
 
   return (
-    <div className={styles.board__wrapper}>
+    <div className={mainStyles.mainContainer}>
       <CssBaseline />
-      <Stack className={styles.board_name__wrapper} direction="row">
-        <Button onClick={handleBackToBoards} sx={{ marginRight: '1.5rem' }}>
-          <ArrowBackIcon />
-          {i18n[lang].backToBoards}
-        </Button>
-        <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{boardTitle}</h2>
-        <Button onClick={handleAddColumn}>
-          <AddBoxIcon /> {i18n[lang].addColumn}
-        </Button>
-      </Stack>
-      <Box component="main" maxWidth="xs" className={styles['board__main-container']}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="columns" direction="horizontal" type="columns">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className={styles.columnList}
-              >
-                <ComlumnList
-                  columns={currentColumns}
-                  boardId={boardId}
-                  setDeleteConfirmModal={setDeleteConfirmModal}
-                />
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        {addColumnModal && (
-          <AddColumnModal
-            addColumn={addColumn}
-            addColumnModal={addColumnModal}
-            setAddColumnModal={setAddColumnModal}
-          />
-        )}
-        {deleteConfirmModal && (
-          <ConfirmModal
-            confirm={handleDeleteColumn}
-            deny={setDeleteConfirmModal}
-            isOpen={deleteConfirmModal}
-            type={i18n[lang].columnS}
-            title={currentColumn?.title}
-            action={i18n[lang].deleteS}
-          />
-        )}
-      </Box>
+      <div className={styles.wrapper}>
+        <Stack className={styles.nameWrapper} direction="row">
+          <Button onClick={handleBackToBoards}>
+            <ArrowBackIcon /> <span className={styles.btnName}>{i18n[lang].backToBoards}</span>
+          </Button>
+          <h2 className={typographyStyles.h2}>{boardTitle}</h2>
+          <Button onClick={handleAddColumn}>
+            <AddBoxIcon /> <span className={styles.btnName}>{i18n[lang].addColumn}</span>
+          </Button>
+        </Stack>
+        <Box className={styles.boardsContainer}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="columns" direction="horizontal" type="columns">
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={styles.columnList}
+                >
+                  <ComlumnList
+                    columns={currentColumns}
+                    boardId={boardId}
+                    setDeleteConfirmModal={setDeleteConfirmModal}
+                  />
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          {addColumnModal && (
+            <AddColumnModal
+              addColumn={addColumn}
+              addColumnModal={addColumnModal}
+              setAddColumnModal={setAddColumnModal}
+            />
+          )}
+          {deleteConfirmModal && (
+            <ConfirmModal
+              confirm={handleDeleteColumn}
+              deny={setDeleteConfirmModal}
+              isOpen={deleteConfirmModal}
+              type={i18n[lang].columnS}
+              title={currentColumn?.title}
+              action={i18n[lang].deleteS}
+            />
+          )}
+        </Box>
+      </div>
     </div>
   );
 }

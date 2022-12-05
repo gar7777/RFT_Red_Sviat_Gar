@@ -25,14 +25,22 @@ interface IProps {
   updateTaskModal: boolean;
   boardId: string;
   columnId: string;
+  userId: string;
 }
 
-function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModal }: IProps) {
+function UpdateTaskModal({
+  setUpdateTaskModal,
+  boardId,
+  columnId,
+  updateTaskModal,
+  userId,
+}: IProps) {
   const { lang } = useAppSelector((state) => state.lang);
   const { currentTask } = useAppSelector((state: RootState) => state.tasks);
   const { users } = useAppSelector((state) => state.user);
-  const { user } = useAppSelector((state: RootState) => state.user);
   const [newUser, setNewUser] = useState<string | undefined>('');
+  const dispatch = useAppDispatch();
+
   const {
     register,
     setFocus,
@@ -43,15 +51,13 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModa
   useEffect(() => {
     dispatch(loadUsers());
     setTimeout(() => setFocus('title'), 0);
-    setTimeout(() => setNewUser(user.id as string), 400);
+    setTimeout(() => setNewUser(userId as string), 400);
   }, []);
-
-  const dispatch = useAppDispatch();
 
   const handleUpdateTask = async (data: IFormData) => {
     const updateData = {
       ...data,
-      userId: data.userId || (user.id as string),
+      userId: data.userId || (newUser as string),
       boardId,
       columnId,
       id: currentTask?.id as string,

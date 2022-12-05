@@ -25,7 +25,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
 
   return (
     <>
-      <div className={overlayStyles.overlay} onClick={closeColumnModal}></div>
+      {/* <div className={overlayStyles.overlay} onClick={closeColumnModal}></div> */}
       <Box className={formStyles.formContainer}>
         <IconButton sx={{ alignSelf: 'end' }} onClick={closeColumnModal}>
           <CloseIcon />

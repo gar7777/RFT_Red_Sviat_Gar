@@ -54,6 +54,7 @@ function Column({
   const currentTasks = useAppSelector((state: RootState) => state.tasks.tasks);
   const [tasksArray] = currentTasks.filter((task: ILoadedColumnTasks) => task.id === id);
   const [tasks, setTasks] = useState<ITaskFull[]>([]);
+  const { user } = useAppSelector((state) => state.user);
   const currentTask = useAppSelector((state: RootState) => state.tasks.currentTask);
   const dispatch = useAppDispatch();
 
@@ -214,12 +215,13 @@ function Column({
             >
               {tasks
                 .sort((a, b) => a.order - b.order)
-                .map(({ id, title, description, order }, index) => (
+                .map(({ id, title, description, order, userId }, index) => (
                   <Task
                     key={id}
                     title={title}
                     description={description}
                     id={id}
+                    userId={userId}
                     order={order}
                     setDeleteTaskModal={setDeleteTaskModal}
                     setUpdateTaskModal={setUpdateTaskModal}
@@ -248,6 +250,7 @@ function Column({
           addTask={addTask}
           closeTaskModal={closeTaskModal}
           addTaskModal={addTaskModal}
+          userId={user.id as string}
         />
       )}
       {deleteTaskModal && (
@@ -266,6 +269,7 @@ function Column({
           boardId={boardId}
           columnId={id}
           updateTaskModal={updateTaskModal}
+          userId={user.id as string}
         />
       )}
     </>

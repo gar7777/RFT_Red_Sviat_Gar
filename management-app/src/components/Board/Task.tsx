@@ -1,12 +1,13 @@
 import { i18n } from '../../features/i18n';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Card, Button, Typography } from '@mui/material';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, SyntheticEvent, useState } from 'react';
 import { setCurrentTask } from '../../store/tasks/reducers/tasks.slice';
 import { IUpdatetaskData } from '../../store/tasks/types/tasks.types';
-import { IUsersLoad } from '../../store/user/types/user.types';
+// import { IUsersLoad } from '../../store/user/types/user.types';
 import taskStyles from './Task.module.scss';
 import { Draggable } from 'react-beautiful-dnd';
+import TaskDetailed from './TaskDetailed';
 
 interface IProps {
   title: string;
@@ -14,6 +15,7 @@ interface IProps {
   id: string;
   order: number;
   index: number;
+  userId: string;
   setDeleteTaskModal: Dispatch<SetStateAction<boolean>>;
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
 }
@@ -23,51 +25,68 @@ function Task({
   title,
   description,
   order,
+  userId,
   setDeleteTaskModal,
   setUpdateTaskModal,
   index,
 }: IProps) {
   const dispatch = useAppDispatch();
   const { lang } = useAppSelector((state) => state.lang);
-  const [currentUser, setCurrentUser] = useState<IUsersLoad | null>(null);
+  const { user } = useAppSelector((state) => state.user);
+  const [taskDetailedOpen, setTaskDetailedOpen] = useState(false);
+
   const updateCurrentTaskData: IUpdatetaskData = {
     id,
     title,
     description,
     order: order,
-    userId: currentUser?.id,
+    userId: userId,
+  };
+
+  const handleUpdateTask = (e: SyntheticEvent) => {
+    e.stopPropagation();
+    setUpdateTaskModal(true);
+    dispatch(setCurrentTask(updateCurrentTaskData));
+  };
+
+  const handleDeleteTask = (e: SyntheticEvent) => {
+    e.stopPropagation();
+    setDeleteTaskModal(true);
+    dispatch(setCurrentTask(updateCurrentTaskData));
+  };
+
+  const handleDetailedTask = () => {
+    setTaskDetailedOpen(true);
   };
 
   return (
-    <Draggable draggableId={id} index={index}>
-      {(provided) => (
-        <Card
-          className={taskStyles.task__container}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-        >
-          <Typography className={taskStyles.task__h2}>{title}</Typography>
-          <p>{description}</p>
-          <Button
-            onClick={() => {
-              setUpdateTaskModal(true);
-              dispatch(setCurrentTask(updateCurrentTaskData));
-            }}
+    <>
+      <Draggable draggableId={id} index={index}>
+        {(provided) => (
+          <Card
+            className={taskStyles.task__container}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            onClick={handleDetailedTask}
           >
-            {i18n[lang].update}
-          </Button>
-          <Button
-            onClick={() => {
-              setDeleteTaskModal(true);
-              dispatch(setCurrentTask(updateCurrentTaskData));
-            }}
-          >
-            {i18n[lang].delete}
-          </Button>
-        </Card>
+            <Typography className={taskStyles.task__h2}>{title}</Typography>
+            <p>{description}</p>
+            <Button onClick={handleUpdateTask}>{i18n[lang].update}</Button>
+            <Button onClick={handleDeleteTask}>{i18n[lang].delete}</Button>
+          </Card>
+        )}
+      </Draggable>
+      {taskDetailedOpen && (
+        <TaskDetailed
+          setTaskDetailedOpen={setTaskDetailedOpen}
+          title={title}
+          description={description}
+          userId={userId}
+          taskDetailedOpen={taskDetailedOpen}
+        />
       )}
-    </Draggable>
+    </>
   );
 }
 

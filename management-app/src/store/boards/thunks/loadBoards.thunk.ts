@@ -50,8 +50,9 @@ export const updateBoard = createAsyncThunk(UPDATE_BOARD, async (boardUpdate: IB
   const data = await fetch(url, {
     method: 'PUT',
     headers: {
-      // 'Content-type': 'application/json',
+      'Content-type': 'application/json',
       Authorization: `Bearer ${getTokenFromLS()}`,
+      'Access-Control-Allow-Origin': '*',
     },
     body: JSON.stringify({ title, description }),
   });

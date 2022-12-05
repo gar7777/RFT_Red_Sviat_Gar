@@ -64,6 +64,8 @@ function Column({
   const currentTasks = useAppSelector((state: RootState) => state.tasks.tasks);
   const [tasksArray] = currentTasks.filter((task: ILoadedColumnTasks) => task.id === id);
   const [tasks, setTasks] = useState<ITaskFull[]>([]);
+  const { user } = useAppSelector((state) => state.user);
+  const [updatedUser, setUpdatedUser] = useState(user.name);
   const currentTask = useAppSelector((state: RootState) => state.tasks.currentTask);
   const dispatch = useAppDispatch();
 
@@ -219,25 +221,30 @@ function Column({
         </Box>
         <Divider />
         <Droppable droppableId={id} type="tasks">
-          {(provided) => (
+          {(provided, snapshot) => (
             <Box
               className={styles.tasks_wrapper}
               {...provided.droppableProps}
               ref={provided.innerRef}
-              style={{ minHeight: '10px' }}
+              style={{
+                minHeight: '10px',
+                backgroundColor: `${snapshot.isDraggingOver ? '#d1e6f9' : 'white'}`,
+              }}
             >
               {tasks
                 .sort((a, b) => a.order - b.order)
-                .map(({ id, title, description, order }, index) => (
+                .map(({ id, title, description, order, userId }, index) => (
                   <Task
                     key={id}
                     title={title}
                     description={description}
                     id={id}
+                    userId={userId}
                     order={order}
                     setDeleteTaskModal={setDeleteTaskModal}
                     setUpdateTaskModal={setUpdateTaskModal}
                     index={index}
+                    setUpdatedUser={setUpdatedUser}
                   />
                 ))}
               {provided.placeholder}
@@ -263,6 +270,7 @@ function Column({
           addTask={addTask}
           closeTaskModal={closeTaskModal}
           addTaskModal={addTaskModal}
+          userId={user.id as string}
         />
       )}
       {deleteTaskModal && (
@@ -281,6 +289,7 @@ function Column({
           boardId={boardId}
           columnId={id}
           updateTaskModal={updateTaskModal}
+          userId={updatedUser as string}
         />
       )}
     </>

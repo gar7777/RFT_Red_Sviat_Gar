@@ -16,19 +16,22 @@ import { FieldValues, useForm } from 'react-hook-form';
 import formStyles from '../../scss/Form.module.scss';
 import styles from './Task.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
 
 interface IProps {
   addTask: (data: FieldValues) => void;
   closeTaskModal: () => void;
   addTaskModal: boolean;
+  userId: string;
 }
 
-function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
+function AddTaskModal({ addTask, closeTaskModal, addTaskModal, userId }: IProps) {
   const { lang } = useAppSelector((state) => state.lang);
   const { users } = useAppSelector((state) => state.user);
-  const { user } = useAppSelector((state) => state.user);
   const [newUser, setNewUser] = useState<string>('');
+  const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
@@ -37,8 +40,9 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal }: IProps) {
   } = useForm();
 
   useEffect(() => {
+    dispatch(loadUsers());
     setTimeout(() => setFocus('title'), 0);
-    setTimeout(() => setNewUser(user.id as string), 400);
+    setTimeout(() => setNewUser(userId), 200);
   }, []);
 
   return (

@@ -1,0 +1,10 @@
+.board__container {
+  min-height: calc(100vh - 10rem);
+}
+
+.board__container_inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+}

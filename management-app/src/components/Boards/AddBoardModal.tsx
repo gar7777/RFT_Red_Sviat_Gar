@@ -107,7 +107,7 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
               </Typography>
             )}
             <Button type="submit" variant="contained" size="small" className={styles.modalButton}>
-              {isEditing ? i18n[lang].edit : i18n[lang].create}
+              {isEditing ? i18n[lang].update : i18n[lang].create}
             </Button>
           </Box>
         </Box>

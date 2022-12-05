@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { addNewTaskInColumn } from '../../../api/tasksApi';
 import { API_URL } from '../../../constants/api';
 import { getTokenFromLS } from '../../../utilities/getToken';
 import { IGetColumnTask } from '../../columns/types/columns.type';
@@ -19,6 +20,7 @@ export const loadTasks = createAsyncThunk(
       method: 'GET',
       headers: {
         Authorization: `Bearer ${getTokenFromLS()}`,
+        'Access-Control-Allow-Origin': '*',
       },
     });
     const json = await data.json();
@@ -34,6 +36,7 @@ export const getAllTasks = createAsyncThunk(
       method: 'GET',
       headers: {
         Authorization: `Bearer ${getTokenFromLS()}`,
+        'Access-Control-Allow-Origin': '*',
       },
     });
     const json = await data.json();
@@ -41,27 +44,7 @@ export const getAllTasks = createAsyncThunk(
   }
 );
 
-export const createTask = createAsyncThunk(CREATE_TASK, async (taskCreateData: ITaskCreateData) => {
-  const { boardId, columnId, title, description, userId } = taskCreateData;
-  const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
-  const body = {
-    title: title,
-    description: description,
-    userId: userId,
-  };
-  const data = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
-      Authorization: `Bearer ${getTokenFromLS()}`,
-      'Access-Control-Allow-Origin': '*',
-    },
-    body: JSON.stringify(body),
-  });
-  const json = await data.json();
-
-  return json;
-});
+export const createTask = createAsyncThunk(CREATE_TASK, addNewTaskInColumn);
 
 export const deleteTask = createAsyncThunk(
   DELETE_TASK,

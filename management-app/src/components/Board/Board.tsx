@@ -23,17 +23,12 @@ import {
   IUpdateColumn,
 } from '../../store/columns/types/columns.type';
 import { i18n } from '../../features/i18n';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { ComlumnList } from './ColumnListDnd';
 import type { DropResult } from 'react-beautiful-dnd';
-import {
-  ILoadedColumnTasks,
-  ITaskCreateData,
-  ITaskFull,
-  IUpdateTask,
-} from '../../store/tasks/types/tasks.types';
+import { ILoadedColumnTasks, ITaskFull, IUpdateTask } from '../../store/tasks/types/tasks.types';
 import { deleteTask, getAllTasks, updateTask } from '../../store/tasks/thunks/tasks.thunks';
 import { resetTasks } from '../../store/tasks/reducers/tasks.slice';
 import { resetColumns } from '../../store/columns/reducers/columns.slice';
@@ -41,6 +36,7 @@ import { API_URL } from '../../constants/api';
 import { getTokenFromLS } from '../../utilities/getToken';
 import mainStyles from '../Main/Main.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
+import { addNewTaskInColumn, getTaskById } from '../../api/tasksApi';
 
 function Board() {
   const params = useParams();
@@ -65,11 +61,11 @@ function Board() {
   }, [params]);
 
   useEffect(() => {
+    localStorage.setItem('currentBoard', boardId);
+    localStorage.setItem('currentBoardTitle', boardTitle);
     return () => {
       dispatch(resetTasks());
       dispatch(resetColumns());
-      localStorage.setItem('currentBoard', boardId);
-      localStorage.setItem('currentBoardTitle', boardTitle);
     };
   }, []);
 
@@ -94,7 +90,10 @@ function Board() {
       return;
     }
 
-    if (result.destination.index === result.source.index) {
+    if (
+      result.destination.droppableId === result.source.droppableId &&
+      result.destination.index === result.source.index
+    ) {
       return;
     }
 
@@ -151,16 +150,6 @@ function Board() {
     await dispatch(deleteTask({ boardId, columnId: start, taskId: removed.id }));
     await dispatch(getAllTasks({ boardId, columnId: start }));
 
-    // await dispatch(
-    //   createTask({
-    //     boardId,
-    //     columnId: finish,
-    //     title: removed.title,
-    //     description: removed.description,
-    //     userId: removed.userId,
-    //   })
-    // );
-
     const taskCreateData = {
       boardId,
       columnId: finish,
@@ -168,31 +157,19 @@ function Board() {
       description: removed.description,
       userId: removed.userId,
     };
-    const addNewTaskInColumn = async (taskCreateData: ITaskCreateData) => {
-      const { boardId, columnId, title, description, userId } = taskCreateData;
-      const url = `${API_URL}/boards/${boardId}/columns/${columnId}/tasks`;
-      const body = {
-        title: title,
-        description: description,
-        userId: userId,
-      };
-      const data = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${getTokenFromLS()}`,
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify(body),
-      });
-      const json = await data.json();
 
-      return json;
+    const { id } = await addNewTaskInColumn(taskCreateData);
+    const loadedTask = await getTaskById({ boardId, columnId: finish, taskId: id });
+    const newTask = {
+      id: loadedTask.id,
+      title: loadedTask.title,
+      order: loadedTask.order,
+      description: loadedTask.description,
+      userId: loadedTask.userId,
+      files: loadedTask.files,
     };
-    const newTask = await addNewTaskInColumn(taskCreateData);
     finishTasks.sort((a: ITaskFull, b: ITaskFull) => (a.order > b.order ? 1 : -1));
     finishTasks.splice(result!.destination!.index, 0, newTask);
-    console.log(finishTasks);
 
     const updatedFinishTasks = finishTasks.map((task, index) => {
       return {
@@ -200,7 +177,6 @@ function Board() {
         order: index + 1,
       };
     });
-    console.log(updatedFinishTasks);
 
     updatedFinishTasks.forEach(async (task: ITaskFull, index: number) => {
       const updateBody: IUpdateTask = {
@@ -214,6 +190,8 @@ function Board() {
       };
       await dispatch(updateTask(updateBody));
     });
+
+    await dispatch(getAllTasks({ boardId, columnId: finish }));
 
     return;
   }
@@ -247,16 +225,18 @@ function Board() {
     setAddColumnModal(false);
   };
 
+  const handleBackToBoards = () => {
+    navigate('/boards');
+  };
+
   return (
     <div className={mainStyles.mainContainer}>
       <CssBaseline />
       <div className={styles.wrapper}>
         <Stack className={styles.nameWrapper} direction="row">
-          <Link to="/boards">
-            <Button>
-              <ArrowBackIcon /> <span className={styles.btnName}>{i18n[lang].backToBoards}</span>
-            </Button>
-          </Link>
+          <Button onClick={handleBackToBoards}>
+            <ArrowBackIcon /> <span className={styles.btnName}>{i18n[lang].backToBoards}</span>
+          </Button>
           <h2 className={typographyStyles.h2}>{boardTitle}</h2>
           <Button onClick={handleAddColumn}>
             <AddBoxIcon /> <span className={styles.btnName}>{i18n[lang].addColumn}</span>
@@ -282,7 +262,11 @@ function Board() {
             </Droppable>
           </DragDropContext>
           {addColumnModal && (
-            <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />
+            <AddColumnModal
+              addColumn={addColumn}
+              addColumnModal={addColumnModal}
+              setAddColumnModal={setAddColumnModal}
+            />
           )}
           {deleteConfirmModal && (
             <ConfirmModal

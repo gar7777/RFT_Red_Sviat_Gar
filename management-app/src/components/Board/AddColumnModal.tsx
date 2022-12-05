@@ -1,5 +1,5 @@
-import { Box, Typography, TextField, Button, IconButton } from '@mui/material';
-import React from 'react';
+import { Box, Typography, TextField, Button, IconButton, Dialog } from '@mui/material';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { IFormData } from '../../store/columns/types/columns.type';
 import CloseIcon from '@mui/icons-material/Close';
@@ -13,10 +13,11 @@ import { i18n } from '../../features/i18n';
 
 interface IProps {
   addColumn: (data: IColumnTitle) => void;
-  closeColumnModal: () => void;
+  setAddColumnModal: Dispatch<SetStateAction<boolean>>;
+  addColumnModal: boolean;
 }
 
-function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
+function AddColumnModal({ addColumn, setAddColumnModal, addColumnModal }: IProps) {
   const {
     register,
     handleSubmit,
@@ -25,8 +26,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
   const { lang } = useAppSelector((state) => state.lang);
 
   return (
-    <>
-      <div className={overlayStyles.overlay} onClick={closeColumnModal}></div>
+    <Dialog open={addColumnModal} onClose={() => setAddColumnModal(false)}>
       <Box className={styles.addColumnModal}>
         <Box>
           <Box
@@ -69,7 +69,7 @@ function AddColumnModal({ addColumn, closeColumnModal }: IProps) {
           </Box>
         </Box>
       </Box>
-    </>
+    </Dialog>
   );
 }
 

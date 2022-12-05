@@ -37,6 +37,7 @@ export const i18n = {
     minDescrLength: 'Минимум 8 символов',
     titleMustBeFilled: 'Поле должно быть заполнено',
     boards: 'Доски',
+    clickToAddABoard: 'Нажмите, чтобы добавить доску',
     clickToAddATask: 'Нажмите, чтоы добавить задачу',
     search: 'поиск',
     addColumn: 'Добавить новую колонку',
@@ -71,6 +72,7 @@ export const i18n = {
     snackProfileDeleted: 'Профиль удален',
     backToBoards: 'НАЗАД К ДОСКАМ',
     chooseUser: 'Выберите пользователя',
+    responcablePerson: 'Исполнитель',
   },
   [enLang]: {
     signIn: 'Sign In',
@@ -106,6 +108,7 @@ export const i18n = {
     minDescrLength: 'At least 8 symbols',
     titleMustBeFilled: 'Title must be filled',
     boards: 'Boards',
+    clickToAddABoard: 'Click to add a board',
     clickToAddATask: 'Click to add a task',
     search: 'Search',
     addColumn: 'Add new column',
@@ -143,5 +146,6 @@ export const i18n = {
     snackProfileDeleted: 'Profile was deleted',
     backToBoards: 'BACK TO ALL BOARDS',
     chooseUser: 'Choose user',
+    responcablePerson: 'Task owner',
   },
 };

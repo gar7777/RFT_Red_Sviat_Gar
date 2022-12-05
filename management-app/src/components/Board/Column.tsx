@@ -7,7 +7,6 @@ import {
   Box,
   InputAdornment,
   Divider,
-  IconButton,
 } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Task from './Task';
@@ -17,7 +16,6 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
-import formStyles from '../../scss/Form.module.scss';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadColumns, updateColumn } from '../../store/columns/thunks/columns.thunks';
@@ -170,6 +168,7 @@ function Column({
             <Stack direction="row" component="form" className={styles.formWrapper}>
               <TextField
                 value={currentTitle}
+                variant="standard"
                 id="title"
                 {...register('title', {
                   minLength: { value: 3, message: i18n[lang].minLength },

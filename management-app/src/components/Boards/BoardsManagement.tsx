@@ -10,17 +10,20 @@ import SearchBoard from './SearchBoard';
 import styles from './Boards.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
 import mainStyles from '../Main/Main.module.scss';
+import spinnerStyles from '../../scss/Spinner.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { RootState } from '../../store/store';
 import { IBoard } from '../../store/boards/types/boards.type';
 import { i18n } from '../../features/i18n';
+import { CircularProgress } from '@mui/material';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
   const [currentBoard, setCurrentBoard] = React.useState<IBoard | null>(null);
   const [boardsToShow, setBoardsToShow] = React.useState<IBoard[]>([]);
+  const { isLoading } = useAppSelector((state) => state.boards);
 
   const { boards, searchQuery, filteredBoards } = useAppSelector(
     (state: RootState) => state.boards
@@ -43,6 +46,11 @@ export default function BoardsManagement() {
 
   return (
     <React.Fragment>
+      {isLoading && (
+        <div className={spinnerStyles.spinner__container}>
+          <CircularProgress />
+        </div>
+      )}
       <CssBaseline />
       <div className={mainStyles.mainContainer}>
         <Container className={styles.container}>

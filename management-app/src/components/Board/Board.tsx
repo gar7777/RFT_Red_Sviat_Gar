@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { CssBaseline, Stack, Button, Box } from '@mui/material';
+import { CssBaseline, Stack, Button, Box, CircularProgress } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
+import spinnerStyles from '../../scss/Spinner.module.scss';
 import AddColumnModal from './AddColumnModal';
 import styles from './Board.module.scss';
 import { useParams } from 'react-router';
@@ -50,6 +50,7 @@ function Board() {
   const { columns } = useAppSelector((state: RootState) => state.columns);
   const [currentColumns, setCurrentColumns] = useState<ILoadedColumn[]>([]);
   const { lang } = useAppSelector((state: RootState) => state.lang);
+  const { isLoading } = useAppSelector((state) => state.columns);
   const currentColumn = useAppSelector((state: RootState) => state.columns.currentColumn);
   const currentTasks = useAppSelector((state: RootState) => state.tasks.tasks);
   const navigate = useNavigate();
@@ -231,13 +232,20 @@ function Board() {
 
   return (
     <div className={mainStyles.mainContainer}>
+      {isLoading && (
+        <div className={spinnerStyles.spinner__container}>
+          <CircularProgress />
+        </div>
+      )}
       <CssBaseline />
       <div className={styles.wrapper}>
         <Stack className={styles.nameWrapper} direction="row">
           <Button onClick={handleBackToBoards}>
             <ArrowBackIcon /> <span className={styles.btnName}>{i18n[lang].backToBoards}</span>
           </Button>
-          <h2 className={typographyStyles.h2}>{boardTitle}</h2>
+          <h2 className={typographyStyles.h2} style={{ margin: '0' }}>
+            {boardTitle}
+          </h2>
           <Button onClick={handleAddColumn}>
             <AddBoxIcon /> <span className={styles.btnName}>{i18n[lang].addColumn}</span>
           </Button>

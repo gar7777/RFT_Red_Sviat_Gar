@@ -7,7 +7,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { AddBoard } from './AddBoard';
 import AddBoardModal from './AddBoardModal';
 import SearchBoard from './SearchBoard';
-import styles from './BoardsManagement.module.scss';
+import styles from './Boards.module.scss';
+import typographyStyles from '../../scss/Typography.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { RootState } from '../../store/store';
@@ -42,20 +43,15 @@ export default function BoardsManagement() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="xl" className={styles.board__container}>
-        <Box className={styles.board__container_inner}>
-          <h1>{i18n[lang].boards}</h1>
+      <Container className={styles.container}>
+        <Box className={styles.searchContainer}>
+          <h1 className={typographyStyles.h1} style={{ marginBottom: '0' }}>
+            {i18n[lang].boards}
+          </h1>
           <SearchBoard />
         </Box>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid
-            container
-            spacing={{ xs: 1, md: 2 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center"
-          >
+        <Box className={styles.boardsContainer}>
+          <Box className={styles.gridContainer}>
             {boardsToShow.length !== 0 ? (
               boardsToShow.map((board) => (
                 <Grid item xs={3} key={board.id}>
@@ -78,7 +74,7 @@ export default function BoardsManagement() {
             <Grid item xs={3}>
               <AddBoard setOpen={setOpen} setIsEditing={setIsEditing} />
             </Grid>
-          </Grid>
+          </Box>
         </Box>
         <AddBoardModal
           open={open}

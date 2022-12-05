@@ -9,15 +9,18 @@ import { useForm, FieldValues } from 'react-hook-form';
 import { IBoard, TBoardCreate } from '../../store/boards/types/boards.type';
 import { Typography } from '@mui/material';
 import { i18n } from '../../features/i18n';
+import styles from './Boards.module.scss';
+import formStyles from '../../scss/Form.module.scss';
 
 const style = {
+  display: 'flex',
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 350,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  //bgcolor: 'background.paper',
+  //border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
@@ -74,15 +77,16 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box className={styles.addBoardModal}>
           <Box
             component="form"
             onSubmit={handleSubmit(formSubmit)}
             sx={{
-              '& > :not(style)': { m: 1, width: '30ch' },
+              '& > :not(style)': { m: 1, width: '28ch' },
             }}
             noValidate
             autoComplete="off"
+            className={styles.modalForm}
           >
             <TextField
               id="title"
@@ -92,6 +96,7 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
                 required: i18n[lang].titleMustBeFilled,
                 minLength: { value: 3, message: i18n[lang].minLength },
               })}
+              className={styles.modalInput}
             />
             {errors.title && (
               <Typography component="p" align="center" variant="caption" style={{ color: 'red' }}>
@@ -107,13 +112,14 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
                 minLength: { value: 3, message: i18n[lang].minLength },
               })}
               multiline
+              className={styles.modalInput}
             />
             {errors.description && (
               <Typography component="p" align="center" variant="caption" style={{ color: 'red' }}>
                 {errors.description.message as string}
               </Typography>
             )}
-            <Button type="submit" variant="contained" size="small" fullWidth>
+            <Button type="submit" variant="contained" size="small" className={styles.modalButton}>
               {isEditing ? i18n[lang].update : i18n[lang].create}
             </Button>
           </Box>

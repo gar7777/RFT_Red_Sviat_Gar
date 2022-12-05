@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { BoardCardButtons } from './BoardCardButtons';
 import { IBoard } from '../../store/boards/types/boards.type';
+import styles from '../../components/Boards/Boards.module.scss';
 interface IBoardCard {
   title: string | undefined;
   description: string | undefined;
@@ -23,7 +24,7 @@ export default function BoardCard({
   setCurrentBoard,
 }: IBoardCard) {
   return (
-    <Card sx={{ maxWidth: 250 }}>
+    <Card className={styles.card}>
       <Link to={`/boards/${id}`} style={{ textDecoration: 'none' }}>
         <CardContent>
           <Typography gutterBottom variant="h4" component="div">

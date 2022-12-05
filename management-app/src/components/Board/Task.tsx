@@ -7,7 +7,7 @@ import { IUpdatetaskData } from '../../store/tasks/types/tasks.types';
 // import { IUsersLoad } from '../../store/user/types/user.types';
 import taskStyles from './Task.module.scss';
 import { Draggable } from 'react-beautiful-dnd';
-import TaskDetailed from './TaskDetailed';
+import TaskDetailed from '../Board/TaskDetailed/TaskDetailed';
 
 interface IProps {
   title: string;

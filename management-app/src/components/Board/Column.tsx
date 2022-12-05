@@ -7,6 +7,7 @@ import {
   Box,
   InputAdornment,
   Divider,
+  IconButton,
 } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Task from './Task';
@@ -16,6 +17,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
+import formStyles from '../../scss/Form.module.scss';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadColumns, updateColumn } from '../../store/columns/thunks/columns.thunks';
@@ -167,11 +169,8 @@ function Column({
           {isEditingTitle ? (
             <Stack direction="row" component="form" className={styles.formWrapper}>
               <TextField
-                margin="normal"
-                fullWidth
                 value={currentTitle}
                 id="title"
-                label={i18n[lang].title}
                 {...register('title', {
                   minLength: { value: 3, message: i18n[lang].minLength },
                 })}
@@ -180,16 +179,15 @@ function Column({
                 onBlur={handleTitleOnBlur}
                 onKeyDown={handleTitleOnKeyPress}
                 autoFocus
-                // className={formStyles.validatedInput}
+                className={styles.editing_input}
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position="end">
+                    <InputAdornment position="end" sx={{ cursor: 'pointer', color: 'white' }}>
                       <CheckIcon onClick={handleEditTitle} />
                     </InputAdornment>
                   ),
                 }}
               />
-
               {errors.title && (
                 <Typography
                   component="p"
@@ -203,18 +201,23 @@ function Column({
             </Stack>
           ) : (
             <Stack direction="row" component="form" className={styles.formWrapper}>
-              <h2
+              <Typography
+                component="h3"
                 className={typographyStyles.h3}
-                style={{ margin: '0', color: 'white', fontWeight: 'normal', padding: '10px 5px' }}
+                style={{
+                  color: 'white',
+                  fontWeight: 'normal',
+                  padding: '16px 12px',
+                }}
               >
                 {currentTitle}
-              </h2>
+              </Typography>
               <ModeEditIcon
                 onClick={() => {
                   setIsEditingTitle(true);
                   setPrevTitle(currentTitle);
                 }}
-                style={{ color: 'white' }}
+                sx={{ cursor: 'pointer', color: 'white' }}
               />
             </Stack>
           )}

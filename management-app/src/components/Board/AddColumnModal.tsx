@@ -2,8 +2,6 @@ import { Box, Typography, TextField, Button, IconButton, Dialog } from '@mui/mat
 import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { IFormData } from '../../store/columns/types/columns.type';
-import CloseIcon from '@mui/icons-material/Close';
-import overlayStyles from '../../scss/Overlay.module.scss';
 import formStyles from '../../scss/Form.module.scss';
 import styles from './Column.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';

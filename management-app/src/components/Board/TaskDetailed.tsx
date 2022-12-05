@@ -33,7 +33,7 @@ function TaskDetailed({
       const [currentUser] = users.filter((user) => user.id === userId);
       setUserName(currentUser.name as string);
     }
-  }, []);
+  }, [users]);
 
   return (
     <Dialog open={taskDetailedOpen} onClose={() => setTaskDetailedOpen(false)}>

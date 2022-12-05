@@ -3,7 +3,6 @@ import {
   Typography,
   TextField,
   Button,
-  Dialog,
   FormControl,
   InputLabel,
   Select,
@@ -19,7 +18,6 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { updateTask } from '../../store/tasks/thunks/tasks.thunks';
 import { RootState } from '../../store/store';
 import { i18n } from '../../features/i18n';
-import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
 import styles from './Task.module.scss';
 
 interface IProps {
@@ -51,7 +49,6 @@ function UpdateTaskModal({
   } = useForm();
 
   useEffect(() => {
-    dispatch(loadUsers());
     setTimeout(() => setFocus('title'), 0);
     setTimeout(() => setNewUser(userId as string), 200);
   }, []);

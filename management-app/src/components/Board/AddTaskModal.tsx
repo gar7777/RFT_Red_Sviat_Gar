@@ -4,7 +4,6 @@ import {
   Typography,
   TextField,
   Button,
-  Dialog,
   Select,
   MenuItem,
   InputLabel,
@@ -17,7 +16,6 @@ import formStyles from '../../scss/Form.module.scss';
 import styles from './Task.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
 
 interface IProps {
   addTask: (data: FieldValues) => void;
@@ -40,7 +38,6 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal, userId }: IProps)
   } = useForm();
 
   useEffect(() => {
-    dispatch(loadUsers());
     setTimeout(() => setFocus('title'), 0);
     setTimeout(() => setNewUser(userId), 200);
   }, []);

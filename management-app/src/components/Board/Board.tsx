@@ -23,7 +23,7 @@ import {
   IUpdateColumn,
 } from '../../store/columns/types/columns.type';
 import { i18n } from '../../features/i18n';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { ComlumnList } from './ColumnListDnd';
@@ -245,15 +245,17 @@ function Board() {
     setAddColumnModal(false);
   };
 
+  const handleBackToBoards = () => {
+    navigate('/boards');
+  };
+
   return (
     <div className={styles.board__wrapper}>
       <CssBaseline />
       <Stack className={styles.board_name__wrapper} direction="row">
-        <Link to="/boards">
-          <Button>
-            <ArrowBackIcon /> {i18n[lang].backToBoards}
-          </Button>
-        </Link>
+        <Button onClick={handleBackToBoards} sx={{ marginRight: '1.5rem' }}>
+          <ArrowBackIcon /> {i18n[lang].backToBoards}
+        </Button>
         <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{boardTitle}</h2>
         <Button onClick={handleAddColumn}>
           <AddBoxIcon /> {i18n[lang].addColumn}

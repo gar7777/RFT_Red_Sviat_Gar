@@ -63,11 +63,11 @@ function Board() {
   }, [params]);
 
   useEffect(() => {
+    localStorage.setItem('currentBoard', boardId);
+    localStorage.setItem('currentBoardTitle', boardTitle);
     return () => {
       dispatch(resetTasks());
       dispatch(resetColumns());
-      localStorage.setItem('currentBoard', boardId);
-      localStorage.setItem('currentBoardTitle', boardTitle);
     };
   }, []);
 

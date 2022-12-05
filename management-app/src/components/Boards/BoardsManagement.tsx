@@ -7,7 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { AddBoard } from './AddBoard';
 import AddBoardModal from './AddBoardModal';
 import SearchBoard from './SearchBoard';
-import './style.css';
+import styles from './BoardsManagement.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
 import { RootState } from '../../store/store';
@@ -42,15 +42,8 @@ export default function BoardsManagement() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="xl" className="board-container">
-        <Box
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: '5px',
-          }}
-        >
+      <Container maxWidth="xl" className={styles.board__container}>
+        <Box className={styles.board__container_inner}>
           <h1>{i18n[lang].boards}</h1>
           <SearchBoard />
         </Box>
@@ -78,7 +71,7 @@ export default function BoardsManagement() {
               ))
             ) : (
               <Grid item xs={3}>
-                <h3>{i18n[lang].clickToAddATask}</h3>
+                <h3>{i18n[lang].clickToAddABoard}</h3>
               </Grid>
             )}
 

@@ -28,17 +28,10 @@ import ConfirmModal from '../ConfirmModal';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { ComlumnList } from './ColumnListDnd';
 import type { DropResult } from 'react-beautiful-dnd';
-import {
-  ILoadedColumnTasks,
-  ITaskCreateData,
-  ITaskFull,
-  IUpdateTask,
-} from '../../store/tasks/types/tasks.types';
+import { ILoadedColumnTasks, ITaskFull, IUpdateTask } from '../../store/tasks/types/tasks.types';
 import { deleteTask, getAllTasks, updateTask } from '../../store/tasks/thunks/tasks.thunks';
-import { resetTasks, updateColumnTasks } from '../../store/tasks/reducers/tasks.slice';
+import { resetTasks } from '../../store/tasks/reducers/tasks.slice';
 import { resetColumns } from '../../store/columns/reducers/columns.slice';
-import { API_URL } from '../../constants/api';
-import { getTokenFromLS } from '../../utilities/getToken';
 import { addNewTaskInColumn, getTaskById } from '../../api/tasksApi';
 
 function Board() {
@@ -265,7 +258,11 @@ function Board() {
           </Droppable>
         </DragDropContext>
         {addColumnModal && (
-          <AddColumnModal addColumn={addColumn} closeColumnModal={closeColumnModal} />
+          <AddColumnModal
+            addColumn={addColumn}
+            addColumnModal={addColumnModal}
+            setAddColumnModal={setAddColumnModal}
+          />
         )}
         {deleteConfirmModal && (
           <ConfirmModal

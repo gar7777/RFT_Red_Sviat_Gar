@@ -1,18 +1,6 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Dialog, IconButton, Typography } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { i18n } from '../../features/i18n';
-import { IFormData } from '../../store/columns/types/columns.type';
 import formStyles from '../../scss/Form.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
 import CloseIcon from '@mui/icons-material/Close';
@@ -34,6 +22,7 @@ function TaskDetailed({
   description,
   userId,
 }: IProps) {
+  const { lang } = useAppSelector((state) => state.lang);
   const { users } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [userName, setUserName] = useState('');
@@ -59,7 +48,7 @@ function TaskDetailed({
           {description}
         </Typography>
         <Typography component="p" variant="h6" className={typographyStyles.h4}>
-          {userName}
+          {i18n[lang].responcablePerson}: {userName}
         </Typography>
       </Box>
     </Dialog>

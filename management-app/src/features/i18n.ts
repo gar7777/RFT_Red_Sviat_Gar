@@ -71,6 +71,7 @@ export const i18n = {
     snackProfileDeleted: 'Профиль удален',
     backToBoards: 'НАЗАД К ДОСКАМ',
     chooseUser: 'Выберите пользователя',
+    responcablePerson: 'Исполнитель',
   },
   [enLang]: {
     signIn: 'Sign In',
@@ -143,5 +144,6 @@ export const i18n = {
     snackProfileDeleted: 'Profile was deleted',
     backToBoards: 'BACK TO ALL BOARDS',
     chooseUser: 'Choose user',
+    responcablePerson: 'Task owner',
   },
 };

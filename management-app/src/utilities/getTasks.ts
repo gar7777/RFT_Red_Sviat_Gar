@@ -11,7 +11,6 @@ export const getTasks = async (boardId: string, columnId: string) => {
       },
     });
     const json = await data.json();
-    // setTasks(json);
     return json;
   } catch (error) {
     console.log(error);

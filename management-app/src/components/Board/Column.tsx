@@ -122,7 +122,6 @@ function Column({
   const handleTitleOnKeyPress = (e: React.KeyboardEvent) => {
     if (e.code === 'Enter' || e.code === 'NumpadEnter') {
       e.preventDefault();
-      console.log(currentTitle);
       handleEditTitle();
     }
     if (e.code === 'Escape') {

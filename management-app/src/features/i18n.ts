@@ -174,7 +174,7 @@ export const i18n = {
     chooseUser: 'Choose user',
     responcablePerson: 'Task owner',
     kseniya: 'Kseniya Korolchuk',
-    gar: 'Gavriil Blinov',
+    gar: 'Garry Blinou',
     sviat: 'Sviatoslav Matsur',
     developer: 'Developer',
     teamLead: 'Team Lead',

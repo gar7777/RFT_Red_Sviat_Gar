@@ -84,7 +84,7 @@ export const i18n = {
     header: 'Хедер',
     footer: 'Футер',
     apiDeploy: 'Развертывание API',
-    mainPagetext: 'Славная страница',
+    mainPagetext: 'Главная страница',
     aboutTeamPage: 'Страница "О команде"',
     styles: 'Стили',
     adaptivity: 'Адаптивность',

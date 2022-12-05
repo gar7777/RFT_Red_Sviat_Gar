@@ -5,7 +5,6 @@ import { Link, Paper } from '@mui/material';
 import { Box } from '@mui/system';
 import { i18n } from '../../features/i18n';
 import { useAppSelector } from '../../store/hooks';
-import { join } from 'path/posix';
 
 const Team = () => {
   const { lang } = useAppSelector((state) => state.lang);

@@ -7,7 +7,7 @@ export interface ITaskFull {
   id: string;
   title: string;
   order: number;
-  done: boolean;
+  done?: boolean;
   description: string;
   userId: string;
   files?: ITaskFiles[];
@@ -68,4 +68,10 @@ export interface ITaskCreateData {
 export interface ITaskLoadData {
   boardId: string;
   columnId: string;
+}
+
+export interface ITaskGetData {
+  boardId: string;
+  columnId: string;
+  taskId: string;
 }

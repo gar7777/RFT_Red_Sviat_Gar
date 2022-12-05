@@ -140,7 +140,13 @@ function UpdateTaskModal({ setUpdateTaskModal, boardId, columnId, updateTaskModa
               ))}
             </Select>
           </FormControl>
-          <Button variant="contained" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            type="submit"
+            size="large"
+            fullWidth
+            sx={{ marginTop: '2rem' }}
+          >
             {i18n[lang].update}
           </Button>
         </Box>

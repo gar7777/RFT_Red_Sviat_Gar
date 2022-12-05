@@ -28,6 +28,14 @@ const tasksSlice = createSlice({
     resetTasks(state) {
       state.tasks = [];
     },
+    updateColumnTasks(state, action) {
+      const newState = [...state.tasks];
+      const { columnId, tasks } = action.payload;
+      const [updatedColumn] = newState.filter((column) => column.id === columnId);
+      updatedColumn.tasks = tasks;
+      state.tasks = newState;
+      console.log(action.payload);
+    },
   },
   extraReducers(builder) {
     builder.addCase(loadTasks.pending, (state) => {
@@ -106,11 +114,18 @@ const tasksSlice = createSlice({
     });
     builder.addCase(getAllTasks.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.tasks = [...state.tasks, action.payload];
+      const newState = [...state.tasks];
+      const { id } = action.payload;
+      const [deletedColumn] = newState.filter((column) => column.id === id);
+      if (deletedColumn) {
+        const index = newState.indexOf(deletedColumn);
+        newState.splice(index, 1);
+      }
+      state.tasks = [...newState, action.payload];
       state.error = '';
     });
   },
 });
 
-export const { setCurrentTask, resetTasks } = tasksSlice.actions;
+export const { setCurrentTask, resetTasks, updateColumnTasks } = tasksSlice.actions;
 export default tasksSlice.reducer;

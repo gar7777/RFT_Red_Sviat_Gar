@@ -43,7 +43,9 @@
 }
 
 .formWrapper {
+  width: 90%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
 }
@@ -63,12 +65,7 @@
 }
 
 .addColumnModal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-
+ 
   @media(max-width: 499px) {
       max-width: 300px;
       padding: 5px;
@@ -89,4 +86,11 @@
   @media(max-width: 499px) {
       width: 280px;
   }
+}
+
+.editing_input > * {
+  color: yellow;
+  font-size: $large;
+  margin: 0;
+  padding-right: 2px;
 }

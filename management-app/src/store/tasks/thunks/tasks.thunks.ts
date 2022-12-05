@@ -19,6 +19,7 @@ export const loadTasks = createAsyncThunk(
       method: 'GET',
       headers: {
         Authorization: `Bearer ${getTokenFromLS()}`,
+        'Access-Control-Allow-Origin': '*',
       },
     });
     const json = await data.json();
@@ -34,6 +35,7 @@ export const getAllTasks = createAsyncThunk(
       method: 'GET',
       headers: {
         Authorization: `Bearer ${getTokenFromLS()}`,
+        'Access-Control-Allow-Origin': '*',
       },
     });
     const json = await data.json();

@@ -254,7 +254,8 @@ function Board() {
       <CssBaseline />
       <Stack className={styles.board_name__wrapper} direction="row">
         <Button onClick={handleBackToBoards} sx={{ marginRight: '1.5rem' }}>
-          <ArrowBackIcon /> {i18n[lang].backToBoards}
+          <ArrowBackIcon />
+          {i18n[lang].backToBoards}
         </Button>
         <h2 style={{ marginTop: '0.3rem', marginRight: '2rem' }}>{boardTitle}</h2>
         <Button onClick={handleAddColumn}>

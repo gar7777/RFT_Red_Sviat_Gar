@@ -113,8 +113,8 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
                 {errors.description.message as string}
               </Typography>
             )}
-            <Button type="submit" variant="outlined" size="small">
-              {isEditing ? i18n[lang].edit : i18n[lang].create}
+            <Button type="submit" variant="contained" size="small" fullWidth>
+              {isEditing ? i18n[lang].update : i18n[lang].create}
             </Button>
           </Box>
         </Box>

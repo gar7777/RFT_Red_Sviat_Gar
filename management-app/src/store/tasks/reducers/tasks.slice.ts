@@ -5,7 +5,6 @@ import { ILoadedColumnTasks, ITaskFull, IUpdateTaskData } from '../types/tasks.t
 interface ITasksState {
   isLoading: boolean;
   error: string;
-  isEditing: boolean;
   currentTask: IUpdateTaskData | null;
   createdTask: ITaskFull | null;
   tasks: ILoadedColumnTasks[];
@@ -15,7 +14,6 @@ const initialState: ITasksState = {
   tasks: [],
   isLoading: false,
   error: '',
-  isEditing: false,
   currentTask: null,
   createdTask: null,
 };

@@ -1,0 +1,104 @@
+@import '../../scss/variables.scss';
+
+.contentWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  gap: 2rem;
+  
+  @media(max-width: 768px) {
+    row-gap: 1rem;
+  }
+}
+
+.paper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  row-gap: 1rem;
+  width: 300px;
+  height: 500px;
+  padding: 1rem;
+  background-color: $primary-main;
+
+  @media(max-width: 768px) {
+    max-width: 98%;
+  }
+}
+
+.picture {
+  width: 200px;
+  height: 200px;
+  background-size: contain;
+  background-position: center;  
+  background-repeat: no-repeat;
+  border-radius: 50%;
+}
+
+.pictureKs {
+  background-image: url(../.././../public/assets/images/redwood.JPG);
+}
+
+.pictureGr {
+  background-image: url(../.././../public/assets/images/Gar.jpg)
+}
+
+.pictureSv {
+  background-image: url(../.././../public/assets/images/sviat.png)
+}
+
+.iconGithub {
+  width: 30px;
+  height: 30px;
+  background-image: url(../../../public/assets/svg/github-white.svg);
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @media(max-width: 768px) {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.linkGithub {
+  display: inline-block;
+  font-size: 1.2rem;
+  color: white;
+
+  @media(max-width: 768px) {
+    font-size: 1.1rem;
+  }
+}
+
+.ghWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.name {
+  margin: 0;
+  text-align: center;
+  }
+
+.role {
+  margin: 0 0 0.5rem;
+  text-align: center;
+  color: white
+}
+
+ul {
+  margin: 0;
+}
+
+li {
+  margin: 0;
+  color: white
+}

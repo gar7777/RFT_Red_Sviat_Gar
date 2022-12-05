@@ -18,6 +18,7 @@ import VideoInstruction from '../VideoInstruction/VideoInstruction';
 import Layout from '../Main/Main';
 import Main from '../Main/Main';
 import TemporaryDrawer from '../Header/Burger/Drawer';
+import Team from '../Team/Team';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/boards" element={<BoardsManagement />} />
                 <Route path="/boards/:board" element={<Board />} />
                 <Route path="/video-instruction" element={<VideoInstruction />} />
+                <Route path="/team" element={<Team />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>

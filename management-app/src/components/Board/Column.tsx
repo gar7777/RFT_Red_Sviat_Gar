@@ -170,6 +170,7 @@ function Column({
             <Stack direction="row" component="form" className={styles.formWrapper}>
               <TextField
                 value={currentTitle}
+                variant="standard"
                 id="title"
                 {...register('title', {
                   minLength: { value: 3, message: i18n[lang].minLength },

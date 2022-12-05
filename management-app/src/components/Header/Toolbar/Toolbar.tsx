@@ -1,6 +1,6 @@
 import { Home, Task, Language } from '@mui/icons-material';
 import { Button, Toolbar } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { i18n } from '../../../features/i18n';
 import BtnProfile from '../Menu/BtnProfile';
@@ -10,10 +10,11 @@ import BtnSignUp from '../Menu/BtnSignUp';
 import Switcher from '../Menu/Switcher/Switcher';
 import styles from '../Header.module.scss';
 import { useAppSelector } from '../../../store/hooks';
+import { getTokenFromLS } from '../../../utilities/getToken';
 
 const UserToolbar = () => {
-  const { userToken } = useAppSelector((state) => state.auth);
   const { lang } = useAppSelector((state) => state.lang);
+  const userToken = getTokenFromLS();
 
   return (
     <Toolbar className={styles.toolbar}>

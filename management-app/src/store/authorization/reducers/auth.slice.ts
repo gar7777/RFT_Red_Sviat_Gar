@@ -47,7 +47,6 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = '';
       setTokenToLS(action.payload.token);
-      console.log(JSON.stringify(action.payload.token));
     });
     builder.addCase(signIn.rejected, (state, action) => {
       state.isLoading = false;

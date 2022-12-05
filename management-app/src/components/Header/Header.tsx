@@ -9,15 +9,14 @@ import BtnProfile from './Menu/BtnProfile';
 import BtnSignUp from './Menu/BtnSignUp';
 import { Link, NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { i18n } from '../../features/i18n';
 import { loadUser } from '../../store/user/thunks/loadUser.thunks';
 import TemporaryDrawer from './Burger/Drawer';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import UserToolbar from './Toolbar/Toolbar';
 
 function Header() {
-  const { lang } = useAppSelector((state) => state.lang);
-  const { userToken } = useAppSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
+  const userToken = auth.userToken;
   const dispatch = useAppDispatch();
   const setUser = async () => {
     await dispatch(loadUser());

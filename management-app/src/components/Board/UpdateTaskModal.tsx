@@ -51,7 +51,7 @@ function UpdateTaskModal({
   useEffect(() => {
     dispatch(loadUsers());
     setTimeout(() => setFocus('title'), 0);
-    setTimeout(() => setNewUser(userId as string), 400);
+    setTimeout(() => setNewUser(userId as string), 200);
   }, []);
 
   const handleUpdateTask = async (data: IFormData) => {

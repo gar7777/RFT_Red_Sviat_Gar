@@ -40,7 +40,7 @@ function AddTaskModal({ addTask, closeTaskModal, addTaskModal, userId }: IProps)
   useEffect(() => {
     dispatch(loadUsers());
     setTimeout(() => setFocus('title'), 0);
-    setTimeout(() => setNewUser(userId), 400);
+    setTimeout(() => setNewUser(userId), 200);
   }, []);
 
   return (

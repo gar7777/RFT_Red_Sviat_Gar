@@ -18,6 +18,7 @@ interface IProps {
   userId: string;
   setDeleteTaskModal: Dispatch<SetStateAction<boolean>>;
   setUpdateTaskModal: Dispatch<SetStateAction<boolean>>;
+  setUpdatedUser: Dispatch<SetStateAction<string | undefined>>;
 }
 
 function Task({
@@ -28,11 +29,12 @@ function Task({
   userId,
   setDeleteTaskModal,
   setUpdateTaskModal,
+  setUpdatedUser,
   index,
 }: IProps) {
   const dispatch = useAppDispatch();
   const { lang } = useAppSelector((state) => state.lang);
-  const { user } = useAppSelector((state) => state.user);
+  // const { user } = useAppSelector((state) => state.user);
   const [taskDetailedOpen, setTaskDetailedOpen] = useState(false);
 
   const updateCurrentTaskData: IUpdatetaskData = {
@@ -46,6 +48,7 @@ function Task({
   const handleUpdateTask = (e: SyntheticEvent) => {
     e.stopPropagation();
     setUpdateTaskModal(true);
+    setUpdatedUser(userId);
     dispatch(setCurrentTask(updateCurrentTaskData));
   };
 

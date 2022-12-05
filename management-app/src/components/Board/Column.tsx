@@ -55,6 +55,7 @@ function Column({
   const [tasksArray] = currentTasks.filter((task: ILoadedColumnTasks) => task.id === id);
   const [tasks, setTasks] = useState<ITaskFull[]>([]);
   const { user } = useAppSelector((state) => state.user);
+  const [updatedUser, setUpdatedUser] = useState(user.name);
   const currentTask = useAppSelector((state: RootState) => state.tasks.currentTask);
   const dispatch = useAppDispatch();
 
@@ -226,6 +227,7 @@ function Column({
                     setDeleteTaskModal={setDeleteTaskModal}
                     setUpdateTaskModal={setUpdateTaskModal}
                     index={index}
+                    setUpdatedUser={setUpdatedUser}
                   />
                 ))}
               {provided.placeholder}
@@ -269,7 +271,7 @@ function Column({
           boardId={boardId}
           columnId={id}
           updateTaskModal={updateTaskModal}
-          userId={user.id as string}
+          userId={updatedUser as string}
         />
       )}
     </>

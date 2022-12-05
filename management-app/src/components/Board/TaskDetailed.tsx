@@ -10,12 +10,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { i18n } from '../../features/i18n';
 import { IFormData } from '../../store/columns/types/columns.type';
 import formStyles from '../../scss/Form.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
 import CloseIcon from '@mui/icons-material/Close';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { loadUsers } from '../../store/user/thunks/loadUser.thunks';
 
 interface IProps {
   setTaskDetailedOpen: Dispatch<SetStateAction<boolean>>;
@@ -32,6 +34,18 @@ function TaskDetailed({
   description,
   userId,
 }: IProps) {
+  const { users } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    dispatch(loadUsers());
+    if (users) {
+      const [currentUser] = users.filter((user) => user.id === userId);
+      setUserName(currentUser.name as string);
+    }
+  }, []);
+
   return (
     <Dialog open={taskDetailedOpen} onClose={() => setTaskDetailedOpen(false)}>
       <Box className={formStyles.formContainer}>
@@ -45,7 +59,7 @@ function TaskDetailed({
           {description}
         </Typography>
         <Typography component="p" variant="h6" className={typographyStyles.h4}>
-          {userId}
+          {userName}
         </Typography>
       </Box>
     </Dialog>

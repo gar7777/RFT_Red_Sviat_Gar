@@ -74,3 +74,11 @@ header {
 .icon {
   margin-right: 0.5rem;
 }
+
+.linkMain {
+  margin-right: auto;
+
+  @media(max-width: 768px) {
+    margin: 0;
+  }
+}

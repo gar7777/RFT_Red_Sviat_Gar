@@ -11,6 +11,7 @@ import {
 import { TransitionProps } from '@mui/material/transitions';
 import { i18n } from '../features/i18n';
 import { useAppSelector } from '../store/hooks';
+import styles from './ConfirmModal.module.scss';
 
 interface IProps {
   confirm: () => void | Promise<void>;
@@ -54,7 +55,7 @@ function ConfirmModal({ confirm, deny, isOpen, title, type, action }: IProps) {
             </DialogContentText>
           )}
         </DialogContent>
-        <DialogActions>
+        <DialogActions className={styles.btnWrapper}>
           <Button onClick={() => deny(false)}>{i18n[lang].no}</Button>
           <Button onClick={confirm}>{i18n[lang].yes}</Button>
         </DialogActions>

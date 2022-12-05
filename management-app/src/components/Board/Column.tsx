@@ -1,4 +1,13 @@
-import { Button, Card, Stack, TextField, Typography, Box, InputAdornment } from '@mui/material';
+import {
+  Button,
+  Card,
+  Stack,
+  TextField,
+  Typography,
+  Box,
+  InputAdornment,
+  Divider,
+} from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Task from './Task';
 import AddCardIcon from '@mui/icons-material/AddCard';
@@ -6,6 +15,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CheckIcon from '@mui/icons-material/Check';
 import styles from './Column.module.scss';
+import typographyStyles from '../../scss/Typography.module.scss';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadColumns, updateColumn } from '../../store/columns/thunks/columns.thunks';
@@ -151,9 +161,9 @@ function Column({
   return (
     <>
       <Card variant="outlined" className={styles.column} ref={innerRef} {...props}>
-        <Box {...provided.dragHandleProps}>
+        <Box {...provided.dragHandleProps} className={styles.headingWrapper}>
           {isEditingTitle ? (
-            <Stack direction="row" component="form">
+            <Stack direction="row" component="form" className={styles.formWrapper}>
               <TextField
                 margin="normal"
                 fullWidth
@@ -190,17 +200,24 @@ function Column({
               )}
             </Stack>
           ) : (
-            <Stack direction="row" component="form">
-              <h2>{currentTitle}</h2>
+            <Stack direction="row" component="form" className={styles.formWrapper}>
+              <h2
+                className={typographyStyles.h3}
+                style={{ margin: '0', color: 'white', fontWeight: 'normal', padding: '10px 5px' }}
+              >
+                {currentTitle}
+              </h2>
               <ModeEditIcon
                 onClick={() => {
                   setIsEditingTitle(true);
                   setPrevTitle(currentTitle);
                 }}
+                style={{ color: 'white' }}
               />
             </Stack>
           )}
         </Box>
+        <Divider />
         <Droppable droppableId={id} type="tasks">
           {(provided) => (
             <Box
@@ -227,18 +244,19 @@ function Column({
             </Box>
           )}
         </Droppable>
-
-        <Button onClick={handleAddTask}>
-          <AddCardIcon /> {i18n[lang].addTask}
-        </Button>
-        <Button>
-          <DeleteForeverIcon
-            onClick={() => {
-              dispatch(setCurrentColumn({ title, id, order }));
-              setDeleteConfirmModal(true);
-            }}
-          />
-        </Button>
+        <Box className={styles.btnWrapper}>
+          <Button onClick={handleAddTask} className={styles.btn}>
+            <AddCardIcon /> {i18n[lang].addTask}
+          </Button>
+          <Button className={styles.btn}>
+            <DeleteForeverIcon
+              onClick={() => {
+                dispatch(setCurrentColumn({ title, id, order }));
+                setDeleteConfirmModal(true);
+              }}
+            />
+          </Button>
+        </Box>
       </Card>
       {addTaskModal && (
         <AddTaskModal

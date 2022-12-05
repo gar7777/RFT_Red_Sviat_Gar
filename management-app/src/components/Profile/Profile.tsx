@@ -3,7 +3,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
 import formStyles from '../../scss/Form.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
-import mainStyles from '../../scss/MainContainer.module.scss';
+import mainStyles from '../Main/Main.module.scss';
 import { deleteUser, loadUser, updateUser } from '../../store/user/thunks/loadUser.thunks';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { logoutUser } from '../../store/authorization/reducers/auth.slice';
@@ -91,129 +91,131 @@ function Profile() {
   return (
     <>
       <CssBaseline />
-      <Box className={formStyles.formContainer}>
-        <Typography component="h2" variant="h4" className={typographyStyles.h2}>
-          {i18n[lang].profile}
-        </Typography>
-        <Box component="form" sx={{ mt: 1 }} className={formStyles.form}>
-          <Box className={formStyles.labelWrapper}>
-            <TextField
-              type="input"
-              margin="normal"
+      <div className={mainStyles.mainContainer}>
+        <Box className={formStyles.formContainer}>
+          <Typography component="h2" variant="h4" className={typographyStyles.h2}>
+            {i18n[lang].profile}
+          </Typography>
+          <Box component="form" sx={{ mt: 1 }} className={formStyles.form}>
+            <Box className={formStyles.labelWrapper}>
+              <TextField
+                type="input"
+                margin="normal"
+                fullWidth
+                id="name"
+                label={i18n[lang].name}
+                value={nameValue}
+                {...register('name', {
+                  minLength: { value: 2, message: 'Name must be more than 2 symbols' },
+                })}
+                autoComplete="Name"
+                className={formStyles.validatedInput}
+                onChange={handleNameChange}
+              />
+              {errors.name && (
+                <Typography
+                  component="p"
+                  align="center"
+                  variant="caption"
+                  className={formStyles.validationAlert}
+                >
+                  {errors.name.message as string}
+                </Typography>
+              )}
+            </Box>
+            <Box className={formStyles.labelWrapper}>
+              <TextField
+                margin="normal"
+                fullWidth
+                id="login"
+                label={i18n[lang].login}
+                value={loginValue}
+                {...register('login', {
+                  minLength: { value: 3, message: 'Login must be more than 3 symbols' },
+                })}
+                autoComplete="Login"
+                className={formStyles.validatedInput}
+                onChange={handleLoginChange}
+              />
+              {errors.login && (
+                <Typography
+                  component="p"
+                  align="center"
+                  variant="caption"
+                  className={formStyles.validationAlert}
+                >
+                  {errors.login.message as string}
+                </Typography>
+              )}
+            </Box>
+            <Box className={formStyles.labelWrapper}>
+              <TextField
+                margin="normal"
+                fullWidth
+                id="password"
+                label={i18n[lang].password}
+                {...register('password', {
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                    message: 'Eight characters, at least one letter and one number',
+                  },
+                })}
+                autoComplete="Password"
+                className={formStyles.validatedInput}
+              />
+              {errors.password && (
+                <Typography
+                  component="p"
+                  align="center"
+                  variant="caption"
+                  className={formStyles.validationAlert}
+                >
+                  {errors.password.message as string}
+                </Typography>
+              )}
+            </Box>
+            <Button
+              variant="contained"
+              type="button"
               fullWidth
-              id="name"
-              label={i18n[lang].name}
-              value={nameValue}
-              {...register('name', {
-                minLength: { value: 2, message: 'Name must be more than 2 symbols' },
-              })}
-              autoComplete="Name"
-              className={formStyles.validatedInput}
-              onChange={handleNameChange}
-            />
-            {errors.name && (
-              <Typography
-                component="p"
-                align="center"
-                variant="caption"
-                className={formStyles.validationAlert}
-              >
-                {errors.name.message as string}
-              </Typography>
+              disabled={!isDirty}
+              sx={{ marginBottom: '10px' }}
+              onClick={() => setUpdateConfirmModal(true)}
+            >
+              {i18n[lang].updateProfile}
+            </Button>
+            <Button
+              variant="contained"
+              type="button"
+              fullWidth
+              disabled={!isDirty}
+              onClick={() => setDeleteConfirmModal(true)}
+            >
+              {i18n[lang].deleteProfile}
+            </Button>
+            {updateConfirmModal && (
+              <ConfirmModal
+                confirm={handleSubmit(formSubmit)}
+                deny={closeUpdateModal}
+                isOpen={updateConfirmModal}
+                type={i18n[lang].profile}
+                title=""
+                action={i18n[lang].updateS}
+              />
+            )}
+            {deleteConfirmModal && (
+              <ConfirmModal
+                confirm={handleDeleteProfile}
+                deny={closeDeleteModal}
+                isOpen={deleteConfirmModal}
+                type={i18n[lang].profile}
+                title=""
+                action={i18n[lang].deleteS}
+              />
             )}
           </Box>
-          <Box className={formStyles.labelWrapper}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="login"
-              label={i18n[lang].login}
-              value={loginValue}
-              {...register('login', {
-                minLength: { value: 3, message: 'Login must be more than 3 symbols' },
-              })}
-              autoComplete="Login"
-              className={formStyles.validatedInput}
-              onChange={handleLoginChange}
-            />
-            {errors.login && (
-              <Typography
-                component="p"
-                align="center"
-                variant="caption"
-                className={formStyles.validationAlert}
-              >
-                {errors.login.message as string}
-              </Typography>
-            )}
-          </Box>
-          <Box className={formStyles.labelWrapper}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="password"
-              label={i18n[lang].password}
-              {...register('password', {
-                pattern: {
-                  value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                  message: 'Eight characters, at least one letter and one number',
-                },
-              })}
-              autoComplete="Password"
-              className={formStyles.validatedInput}
-            />
-            {errors.password && (
-              <Typography
-                component="p"
-                align="center"
-                variant="caption"
-                className={formStyles.validationAlert}
-              >
-                {errors.password.message as string}
-              </Typography>
-            )}
-          </Box>
-          <Button
-            variant="contained"
-            type="button"
-            fullWidth
-            disabled={!isDirty}
-            sx={{ marginBottom: '10px' }}
-            onClick={() => setUpdateConfirmModal(true)}
-          >
-            {i18n[lang].updateProfile}
-          </Button>
-          <Button
-            variant="contained"
-            type="button"
-            fullWidth
-            disabled={!isDirty}
-            onClick={() => setDeleteConfirmModal(true)}
-          >
-            {i18n[lang].deleteProfile}
-          </Button>
-          {updateConfirmModal && (
-            <ConfirmModal
-              confirm={handleSubmit(formSubmit)}
-              deny={closeUpdateModal}
-              isOpen={updateConfirmModal}
-              type={i18n[lang].profile}
-              title=""
-              action={i18n[lang].updateS}
-            />
-          )}
-          {deleteConfirmModal && (
-            <ConfirmModal
-              confirm={handleDeleteProfile}
-              deny={closeDeleteModal}
-              isOpen={deleteConfirmModal}
-              type={i18n[lang].profile}
-              title=""
-              action={i18n[lang].deleteS}
-            />
-          )}
         </Box>
-      </Box>
+      </div>
     </>
   );
 }

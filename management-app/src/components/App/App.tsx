@@ -14,7 +14,7 @@ import { store } from '../../store/store';
 import SnackBar from '../SnackBar/SnackBar';
 import { StyledEngineProvider } from '@mui/material/styles';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import VideoInstruction from '../VideoInstruction';
+import VideoInstruction from '../VideoInstruction/VideoInstruction';
 import Layout from '../Main/Main';
 import Main from '../Main/Main';
 import TemporaryDrawer from '../Header/Burger/Drawer';

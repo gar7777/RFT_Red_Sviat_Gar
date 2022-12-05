@@ -1,6 +1,6 @@
 import { i18n } from '../../features/i18n';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { Card, Button, Typography } from '@mui/material';
+import { Card, Button, Typography, Divider, Box } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { setCurrentTask } from '../../store/tasks/reducers/tasks.slice';
 import { IUpdatetaskData } from '../../store/tasks/types/tasks.types';
@@ -48,23 +48,26 @@ function Task({
           ref={provided.innerRef}
         >
           <Typography className={taskStyles.task__h2}>{title}</Typography>
-          <p>{description}</p>
-          <Button
-            onClick={() => {
-              setUpdateTaskModal(true);
-              dispatch(setCurrentTask(updateCurrentTaskData));
-            }}
-          >
-            {i18n[lang].update}
-          </Button>
-          <Button
-            onClick={() => {
-              setDeleteTaskModal(true);
-              dispatch(setCurrentTask(updateCurrentTaskData));
-            }}
-          >
-            {i18n[lang].delete}
-          </Button>
+          <Divider />
+          <p className={taskStyles.description}>{description}</p>
+          <Box className={taskStyles.btnWrapper}>
+            <Button
+              onClick={() => {
+                setUpdateTaskModal(true);
+                dispatch(setCurrentTask(updateCurrentTaskData));
+              }}
+            >
+              {i18n[lang].update}
+            </Button>
+            <Button
+              onClick={() => {
+                setDeleteTaskModal(true);
+                dispatch(setCurrentTask(updateCurrentTaskData));
+              }}
+            >
+              {i18n[lang].delete}
+            </Button>
+          </Box>
         </Card>
       )}
     </Draggable>

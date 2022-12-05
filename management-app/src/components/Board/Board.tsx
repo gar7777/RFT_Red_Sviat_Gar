@@ -32,8 +32,6 @@ import { ILoadedColumnTasks, ITaskFull, IUpdateTask } from '../../store/tasks/ty
 import { deleteTask, getAllTasks, updateTask } from '../../store/tasks/thunks/tasks.thunks';
 import { resetTasks } from '../../store/tasks/reducers/tasks.slice';
 import { resetColumns } from '../../store/columns/reducers/columns.slice';
-import { API_URL } from '../../constants/api';
-import { getTokenFromLS } from '../../utilities/getToken';
 import mainStyles from '../Main/Main.module.scss';
 import typographyStyles from '../../scss/Typography.module.scss';
 import { addNewTaskInColumn, getTaskById } from '../../api/tasksApi';

@@ -84,6 +84,10 @@ function Column({
   }, [isEditingTitle]);
 
   useEffect(() => {
+    dispatch(loadUsers());
+  }, []);
+
+  useEffect(() => {
     if (tasksArray) {
       const sortedTasks: ITaskFull[] = [...tasksArray.tasks];
       setTasks(sortedTasks.sort((a, b) => a.order - b.order));

@@ -34,7 +34,6 @@ const tasksSlice = createSlice({
       const [updatedColumn] = newState.filter((column) => column.id === columnId);
       updatedColumn.tasks = tasks;
       state.tasks = newState;
-      console.log(action.payload);
     },
   },
   extraReducers(builder) {

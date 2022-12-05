@@ -67,7 +67,7 @@ export default function BoardsManagement() {
               ))
             ) : (
               <Grid item xs={3}>
-                <h3>{i18n[lang].clickToAddATask}</h3>
+                <h3>{i18n[lang].clickToAddABoard}</h3>
               </Grid>
             )}
 

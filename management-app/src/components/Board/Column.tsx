@@ -202,12 +202,15 @@ function Column({
           )}
         </Box>
         <Droppable droppableId={id} type="tasks">
-          {(provided) => (
+          {(provided, snapshot) => (
             <Box
               className={styles.tasks_wrapper}
               {...provided.droppableProps}
               ref={provided.innerRef}
-              style={{ minHeight: '10px' }}
+              style={{
+                minHeight: '10px',
+                backgroundColor: `${snapshot.isDraggingOver ? '#d1e6f9' : 'white'}`,
+              }}
             >
               {tasks
                 .sort((a, b) => a.order - b.order)

@@ -25,7 +25,7 @@ function VideoInstruction() {
           <iframe
             width="100%"
             height="600"
-            src={'https://www.youtube.com/embed/WrZTxA_X1AQ'}
+            src={'https://www.youtube.com/embed/qHoL8Qs8D30'}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             sandbox="allow-forms allow-scripts allow-pointer-lock allow-same-origin allow-top-navigation allow-presentation"

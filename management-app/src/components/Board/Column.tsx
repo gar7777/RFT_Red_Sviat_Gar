@@ -191,12 +191,7 @@ function Column({
                 }}
               />
               {errors.title && (
-                <Typography
-                  component="p"
-                  align="center"
-                  variant="caption"
-                  // className={formStyles.validationAlert}
-                >
+                <Typography component="p" align="center" variant="caption">
                   {errors.title.message as string}
                 </Typography>
               )}
@@ -205,11 +200,10 @@ function Column({
             <Stack direction="row" component="form" className={styles.formWrapper}>
               <Typography
                 component="h3"
-                className={typographyStyles.h3}
+                className={styles.h3}
                 style={{
                   color: 'white',
                   fontWeight: 'normal',
-                  padding: '16px 12px',
                 }}
               >
                 {currentTitle}
@@ -266,6 +260,7 @@ function Column({
                 dispatch(setCurrentColumn({ title, id, order }));
                 setDeleteConfirmModal(true);
               }}
+              sx={{ width: '30px' }}
             />
           </Button>
         </Box>

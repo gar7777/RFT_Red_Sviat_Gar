@@ -2,18 +2,17 @@ import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { setSnackBarIsOpen } from '../../snack/reducers/snack.slice';
 import { signIn, signUp } from '../thunks/authorization.thunks';
 import { i18n } from '../../../features/i18n';
-import { getLangfromLS } from '../../../utilities/getLang';
+import { enLang, ruLang } from '../../../utilities/getLang';
 
 export const authlistenerMiddleWare = createListenerMiddleware();
-
-const lang = getLangfromLS();
 
 authlistenerMiddleWare.startListening({
   actionCreator: signUp.fulfilled,
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackSignUp,
+        enMessage: i18n[enLang].snackSignUp,
+        ruMessage: i18n[ruLang].snackSignUp,
         type: 'success',
       })
     );
@@ -25,7 +24,8 @@ authlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackError,
+        enMessage: i18n[enLang].snackError,
+        ruMessage: i18n[ruLang].snackError,
         type: 'error',
       })
     );
@@ -37,7 +37,8 @@ authlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackSignIn,
+        enMessage: i18n[enLang].snackSignIn,
+        ruMessage: i18n[ruLang].snackSignIn,
         type: 'success',
       })
     );
@@ -49,7 +50,8 @@ authlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackError,
+        enMessage: i18n[enLang].snackError,
+        ruMessage: i18n[ruLang].snackError,
         type: 'error',
       })
     );

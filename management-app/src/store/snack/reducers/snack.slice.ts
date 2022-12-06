@@ -3,7 +3,8 @@ import { ISnackState } from '../types/snackState.type';
 
 const initialState: ISnackState = {
   isOpen: false,
-  allertMessage: '',
+  enMessage: '',
+  ruMessage: '',
   allertType: 'success',
 };
 
@@ -15,7 +16,8 @@ const snackSlice = createSlice({
       return {
         ...state,
         isOpen: true,
-        allertMessage: action.payload.message,
+        enMessage: action.payload.enMessage,
+        ruMessage: action.payload.ruMessage,
         allertType: action.payload.type,
       };
     },

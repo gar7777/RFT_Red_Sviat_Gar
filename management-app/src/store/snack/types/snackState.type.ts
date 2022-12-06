@@ -1,5 +1,6 @@
 export interface ISnackState {
   isOpen: boolean;
-  allertMessage: string;
+  ruMessage: string;
+  enMessage: string;
   allertType: 'warning' | 'info' | 'success' | 'error';
 }

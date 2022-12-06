@@ -11,8 +11,8 @@ export default function Switcher() {
   const [isChecked, setIsChecked] = useState(lang === ruLang);
 
   useEffect(() => {
-    setLangToLs(!isChecked ? enLang : ruLang);
     dispatch(setLang(!isChecked ? enLang : ruLang));
+    setLangToLs(!isChecked ? enLang : ruLang);
   }, [isChecked]);
 
   return (

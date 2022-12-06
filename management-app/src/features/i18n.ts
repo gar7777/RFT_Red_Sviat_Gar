@@ -33,6 +33,7 @@ export const i18n = {
     update: 'Обновить',
     updateS: 'обновить',
     deleteS: 'удалить',
+    error: 'Ошибка',
     minLength: 'Минимум 3 символа',
     minDescrLength: 'Минимум 8 символов',
     titleMustBeFilled: 'Поле должно быть заполнено',
@@ -99,6 +100,8 @@ export const i18n = {
     page404: 'Страница 404',
     dndColumns: 'Drag-n-Drop колонок',
     globalToast: 'Global toast',
+    userNotFound:
+      'К сожалению мы не можем найти пользователя с таким логином и паролем в базе. Проверьте написание или попробуйте зайти позже',
     enterLogin: 'Введите логин',
     enterName: 'Введите имя',
     enterPassword: 'Введите пароль',
@@ -136,6 +139,7 @@ export const i18n = {
     create: 'Create',
     delete: 'Delete',
     update: 'Update',
+    error: 'Error',
     minLength: 'At least 3 symbols',
     minDescrLength: 'At least 8 symbols',
     titleMustBeFilled: 'Title must be filled',
@@ -204,6 +208,8 @@ export const i18n = {
     page404: 'Page 404',
     dndColumns: 'Drag-n-Drop columns',
     globalToast: 'Global toast',
+    userNotFound:
+      'Sorry! We can not find user with such login and password. Check your info or try to sign in later',
     enterLogin: 'Please, enter login',
     enterName: 'Please, enter your name',
     enterPassword: 'Please, enter password',

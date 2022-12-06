@@ -102,7 +102,7 @@ function SignUp() {
                 {...register('password', {
                   required: i18n[lang].enterPassword,
                   pattern: {
-                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                    value: /^(?=.*[A-Za-zА-Яа-я])(?=.*\d)[A-Za-zА-Яа-я\d]{8,}$/,
                     message: i18n[lang].passwordReq,
                   },
                 })}

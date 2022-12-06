@@ -106,7 +106,8 @@ function Profile() {
                 label={i18n[lang].name}
                 value={nameValue}
                 {...register('name', {
-                  minLength: { value: 2, message: 'Name must be more than 2 symbols' },
+                  required: i18n[lang].enterName,
+                  minLength: { value: 2, message: i18n[lang].nameReq },
                 })}
                 autoComplete="Name"
                 className={formStyles.validatedInput}
@@ -131,7 +132,8 @@ function Profile() {
                 label={i18n[lang].login}
                 value={loginValue}
                 {...register('login', {
-                  minLength: { value: 3, message: 'Login must be more than 3 symbols' },
+                  required: i18n[lang].enterLogin,
+                  minLength: { value: 3, message: i18n[lang].loginReq },
                 })}
                 autoComplete="Login"
                 className={formStyles.validatedInput}
@@ -157,7 +159,7 @@ function Profile() {
                 {...register('password', {
                   pattern: {
                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                    message: 'Eight characters, at least one letter and one number',
+                    message: i18n[lang].passwordReq,
                   },
                 })}
                 autoComplete="Password"

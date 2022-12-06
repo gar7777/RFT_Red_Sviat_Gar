@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, Button, IconButton, Dialog } from '@mui/material';
+import { Box, Typography, TextField, Button, IconButton, Dialog, Modal } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { IFormData } from '../../store/columns/types/columns.type';
@@ -24,13 +24,14 @@ function AddColumnModal({ addColumn, setAddColumnModal, addColumnModal }: IProps
   const { lang } = useAppSelector((state) => state.lang);
 
   return (
-    <Dialog open={addColumnModal} onClose={() => setAddColumnModal(false)}>
+    <Modal open={addColumnModal} onClose={() => setAddColumnModal(false)}>
       <Box className={styles.addColumnModal}>
         <Box>
           <Box
             component="form"
             onSubmit={handleSubmit((data) => addColumn(data as IFormData))}
             className={styles.modalForm}
+            sx={{ margin: '0' }}
           >
             <Typography component="h3" className={typographyStyles.h3}>
               {i18n[lang].addColumn}
@@ -67,7 +68,7 @@ function AddColumnModal({ addColumn, setAddColumnModal, addColumnModal }: IProps
           </Box>
         </Box>
       </Box>
-    </Dialog>
+    </Modal>
   );
 }
 

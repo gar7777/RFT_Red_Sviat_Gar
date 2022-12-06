@@ -63,8 +63,8 @@ function SignIn() {
                 id="login"
                 label={i18n[lang].login}
                 {...register('login', {
-                  required: 'Please, enter login',
-                  minLength: { value: 3, message: 'Login must be more than 3 symbols' },
+                  required: i18n[lang].enterLogin,
+                  minLength: { value: 3, message: i18n[lang].loginReq },
                 })}
                 autoComplete="Login"
                 className={formStyles.validatedInput}
@@ -89,10 +89,10 @@ function SignIn() {
                 id="password"
                 label={i18n[lang].password}
                 {...register('password', {
-                  required: 'Please, enter password',
+                  required: i18n[lang].enterPassword,
                   pattern: {
                     value: /^(?=.*[A-Za-zА-Яа-я])(?=.*\d)[A-Za-zА-Яа-я\d]{8,}$/,
-                    message: 'Eight characters, at least one letter and one number',
+                    message: i18n[lang].passwordReq,
                   },
                 })}
                 autoComplete="Password"

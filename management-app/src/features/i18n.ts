@@ -102,6 +102,12 @@ export const i18n = {
     globalToast: 'Global toast',
     userNotFound:
       'К сожалению мы не можем найти пользователя с таким логином и паролем в базе. Проверьте написание или попробуйте зайти позже',
+    enterLogin: 'Введите логин',
+    enterName: 'Введите имя',
+    enterPassword: 'Введите пароль',
+    loginReq: 'Минимум 3 символа',
+    nameReq: 'Минимум 2 символа',
+    passwordReq: '8 символов, минимум 1 цифра и 1 буква',
   },
   [enLang]: {
     signIn: 'Sign In',
@@ -204,5 +210,11 @@ export const i18n = {
     globalToast: 'Global toast',
     userNotFound:
       'Sorry! We can not find user with such login and password. Check your info or try to sign in later',
+    enterLogin: 'Please, enter login',
+    enterName: 'Please, enter your name',
+    enterPassword: 'Please, enter password',
+    loginReq: 'Login must be more than 3 symbols',
+    nameReq: 'Name must be more than 2 symbols',
+    passwordReq: 'Eight characters, at least 1 letter and 1 number',
   },
 };

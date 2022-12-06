@@ -2,18 +2,17 @@ import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { setSnackBarIsOpen } from '../../snack/reducers/snack.slice';
 import { createBoard, deleteBoard, updateBoard } from '../thunks/loadBoards.thunk';
 import { i18n } from '../../../features/i18n';
-import { getLangfromLS } from '../../../utilities/getLang';
+import { enLang, ruLang } from '../../../utilities/getLang';
 
 export const boardlistenerMiddleWare = createListenerMiddleware();
-
-const lang = getLangfromLS();
 
 boardlistenerMiddleWare.startListening({
   actionCreator: createBoard.fulfilled,
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackBoardCreated,
+        enMessage: i18n[enLang].snackBoardCreated,
+        ruMessage: i18n[ruLang].snackBoardCreated,
         type: 'success',
       })
     );
@@ -25,7 +24,8 @@ boardlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackError,
+        enMessage: i18n[enLang].snackError,
+        ruMessage: i18n[ruLang].snackError,
         type: 'error',
       })
     );
@@ -37,7 +37,8 @@ boardlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackBoardDeleted,
+        enMessage: i18n[enLang].snackBoardDeleted,
+        ruMessage: i18n[ruLang].snackBoardDeleted,
         type: 'success',
       })
     );
@@ -49,7 +50,8 @@ boardlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackError,
+        enMessage: i18n[enLang].snackError,
+        ruMessage: i18n[ruLang].snackError,
         type: 'error',
       })
     );
@@ -61,7 +63,8 @@ boardlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackBoardUpdated,
+        enMessage: i18n[enLang].snackBoardUpdated,
+        ruMessage: i18n[ruLang].snackBoardUpdated,
         type: 'success',
       })
     );
@@ -73,7 +76,8 @@ boardlistenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackError,
+        enMessage: i18n[enLang].snackError,
+        ruMessage: i18n[ruLang].snackError,
         type: 'error',
       })
     );

@@ -2,18 +2,17 @@ import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { setSnackBarIsOpen } from '../../snack/reducers/snack.slice';
 import { createTask, deleteTask, updateTask } from '../thunks/tasks.thunks';
 import { i18n } from '../../../features/i18n';
-import { getLangfromLS } from '../../../utilities/getLang';
+import { enLang, ruLang } from '../../../utilities/getLang';
 
 export const taskListenerMiddleWare = createListenerMiddleware();
-
-const lang = getLangfromLS();
 
 taskListenerMiddleWare.startListening({
   actionCreator: createTask.fulfilled,
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackTaskCreated,
+        enMessage: i18n[enLang].snackTaskCreated,
+        ruMessage: i18n[ruLang].snackTaskCreated,
         type: 'success',
       })
     );
@@ -25,7 +24,8 @@ taskListenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackError,
+        enMessage: i18n[enLang].snackError,
+        ruMessage: i18n[ruLang].snackError,
         type: 'error',
       })
     );
@@ -37,7 +37,8 @@ taskListenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackTaskDeleted,
+        enMessage: i18n[enLang].snackTaskDeleted,
+        ruMessage: i18n[ruLang].snackTaskDeleted,
         type: 'success',
       })
     );
@@ -49,7 +50,8 @@ taskListenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackError,
+        enMessage: i18n[enLang].snackError,
+        ruMessage: i18n[ruLang].snackError,
         type: 'error',
       })
     );
@@ -61,7 +63,8 @@ taskListenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackTaskUpdated,
+        enMessage: i18n[enLang].snackTaskUpdated,
+        ruMessage: i18n[ruLang].snackTaskUpdated,
         type: 'success',
       })
     );
@@ -73,7 +76,8 @@ taskListenerMiddleWare.startListening({
   effect: (_, listenerAPI) => {
     listenerAPI.dispatch(
       setSnackBarIsOpen({
-        message: i18n[lang].snackError,
+        enMessage: i18n[enLang].snackError,
+        ruMessage: i18n[ruLang].snackError,
         type: 'error',
       })
     );

@@ -8,7 +8,7 @@ type UserCreate = {
   password?: string;
 };
 
-export const signIn = createAsyncThunk(SIGN_UP, async (user: UserCreate) => {
+export const signIn = createAsyncThunk(SIGN_IN, async (user: UserCreate) => {
   const url = `${API_URL}/signin`;
   const data = await fetch(url, {
     method: 'POST',
@@ -18,10 +18,13 @@ export const signIn = createAsyncThunk(SIGN_UP, async (user: UserCreate) => {
     body: JSON.stringify(user),
   });
   const json = await data.json();
+  if (json.statusCode === 403) {
+    throw new Error(json.message);
+  }
   return json;
 });
 
-export const signUp = createAsyncThunk(SIGN_IN, async (user: UserCreate) => {
+export const signUp = createAsyncThunk(SIGN_UP, async (user: UserCreate) => {
   const url = `${API_URL}/signup`;
   const data = await fetch(url, {
     method: 'POST',

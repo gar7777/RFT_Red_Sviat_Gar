@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
@@ -10,9 +10,12 @@ import { loadUser } from '../store/user/thunks/loadUser.thunks';
 import { signIn } from '../store/authorization/thunks/authorization.thunks';
 import { i18n } from '../features/i18n';
 import { getTokenFromLS } from '../utilities/getToken';
+import ErrorModal from './ErrorModal';
 
 function SignIn() {
   const { lang } = useAppSelector((state) => state.lang);
+  const { error } = useAppSelector((state) => state.auth);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {
@@ -21,6 +24,12 @@ function SignIn() {
     reset,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (error) {
+      setIsErrorModalOpen(true);
+    }
+  }, [error]);
 
   const formSubmit = async (data: FieldValues) => {
     const { login, password } = data;
@@ -82,7 +91,7 @@ function SignIn() {
                 {...register('password', {
                   required: 'Please, enter password',
                   pattern: {
-                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                    value: /^(?=.*[A-Za-zА-Яа-я])(?=.*\d)[A-Za-zА-Яа-я\d]{8,}$/,
                     message: 'Eight characters, at least one letter and one number',
                   },
                 })}
@@ -108,6 +117,13 @@ function SignIn() {
             </Button>
           </Box>
         </Box>
+        {error && (
+          <ErrorModal
+            error={error}
+            isErrorModalOpen={isErrorModalOpen}
+            setIsErrorModalOpen={setIsErrorModalOpen}
+          />
+        )}
       </div>
     </>
   );

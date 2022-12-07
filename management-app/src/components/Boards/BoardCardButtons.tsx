@@ -6,6 +6,7 @@ import { deleteBoard, loadBoards } from '../../store/boards/thunks/loadBoards.th
 import { IBoard } from '../../store/boards/types/boards.type';
 import { i18n } from '../../features/i18n';
 import ConfirmModal from '../ConfirmModal';
+import styles from '../Boards/Boards.module.scss';
 
 interface IBoardCardButtons {
   id: string | undefined;
@@ -48,7 +49,7 @@ export const BoardCardButtons = ({
 
   return (
     <>
-      <CardActions>
+      <CardActions className={styles.btnWrapper}>
         <Button size="small" onClick={editHandle}>
           {i18n[lang].edit}
         </Button>

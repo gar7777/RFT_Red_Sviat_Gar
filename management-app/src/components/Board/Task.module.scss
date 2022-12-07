@@ -10,9 +10,15 @@
 
   &__h2 {
     margin-left: 5px;
+    max-height: 150px;
+    overflow-x: auto;
     font-size: 1.25rem;
     font-weight: bold;
     background-color: lightgray;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   
 };

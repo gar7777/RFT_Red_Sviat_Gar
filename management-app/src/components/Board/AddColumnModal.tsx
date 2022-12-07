@@ -46,6 +46,7 @@ function AddColumnModal({ addColumn, setAddColumnModal, addColumnModal }: IProps
                 {...register('title', {
                   required: i18n[lang].enterTitle,
                   minLength: { value: 3, message: i18n[lang].minLength },
+                  maxLength: { value: 17, message: i18n[lang].maxLength },
                 })}
                 autoComplete="Title"
                 className={formStyles.validatedInput}

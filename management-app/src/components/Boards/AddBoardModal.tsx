@@ -82,6 +82,7 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
               {...register('title', {
                 required: i18n[lang].titleMustBeFilled,
                 minLength: { value: 3, message: i18n[lang].minLength },
+                maxLength: { value: 40, message: i18n[lang].maxLength30 },
               })}
               className={styles.modalInput}
             />
@@ -99,7 +100,7 @@ export default function AddBoardModal({ open, setOpen, isEditing, currentBoard }
                 minLength: { value: 3, message: i18n[lang].minLength },
               })}
               multiline
-              className={styles.modalInput}
+              className={[styles.modalInput, styles.description].join(' ')}
             />
             {errors.description && (
               <Typography component="p" align="center" variant="caption" style={{ color: 'red' }}>

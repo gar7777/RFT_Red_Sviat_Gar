@@ -175,6 +175,7 @@ function Column({
                 id="title"
                 {...register('title', {
                   minLength: { value: 3, message: i18n[lang].minLength },
+                  maxLength: { value: 17, message: i18n[lang].maxLength },
                 })}
                 autoComplete="Title"
                 onChange={handleTitleChange}

@@ -241,9 +241,7 @@ function Board() {
           <Button onClick={handleBackToBoards}>
             <ArrowBackIcon /> <span className={styles.btnName}>{i18n[lang].backToBoards}</span>
           </Button>
-          <h2 className={typographyStyles.h2} style={{ margin: '0' }}>
-            {boardTitle}
-          </h2>
+          <h2 className={[typographyStyles.h2, styles.boardTitle].join(' ')}>{boardTitle}</h2>
           <Button onClick={handleAddColumn}>
             <AddBoxIcon /> <span className={styles.btnName}>{i18n[lang].addColumn}</span>
           </Button>

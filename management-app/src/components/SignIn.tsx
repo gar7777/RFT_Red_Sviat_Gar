@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
+import { Button, CssBaseline, Typography, TextField, Box, CircularProgress } from '@mui/material';
 import formStyles from '../scss/Form.module.scss';
 import typographyStyles from '../scss/Typography.module.scss';
 import mainStyles from './Main/Main.module.scss';
@@ -11,6 +11,7 @@ import { signIn } from '../store/authorization/thunks/authorization.thunks';
 import { i18n } from '../features/i18n';
 import { getTokenFromLS } from '../utilities/getToken';
 import ErrorModal from './ErrorModal';
+import spinnerStyles from '../scss/Spinner.module.scss';
 
 function SignIn() {
   const { lang } = useAppSelector((state) => state.lang);
@@ -18,6 +19,8 @@ function SignIn() {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector((state) => state.columns);
+
   const {
     register,
     handleSubmit,
@@ -43,6 +46,11 @@ function SignIn() {
 
   return (
     <>
+      {isLoading && (
+        <div className={spinnerStyles.spinner__container}>
+          <CircularProgress />
+        </div>
+      )}
       <CssBaseline />
       <div className={mainStyles.mainContainer}>
         <Box className={formStyles.formContainer}>

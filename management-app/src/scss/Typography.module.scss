@@ -1,0 +1,28 @@
+@import './variables.scss';
+
+.h1,
+.h3 {
+  margin-top: 0;
+  color: $primary-dark;
+  text-align: center;
+}
+
+.h1 {
+  font-weight: bold;
+  font-size: $h1;
+}
+
+.h2 {
+  color: $primary-dark;
+  font-size: calc($large * 2);
+  font-weight: bold;
+};
+
+.h3 {
+  color: $primary-dark;
+  font-size: $large;
+  font-weight: bold;
+};
+.h4 {
+  
+}

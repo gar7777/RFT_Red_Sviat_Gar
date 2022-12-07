@@ -1,0 +1,116 @@
+@import '../../scss/variables.scss';
+
+.column {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  padding: 10px;
+  width: 300px;
+
+  @media(max-width: 768px) {
+    width: 280px;
+  }
+}
+
+.tasks_wrapper {
+  max-height: 60vh;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+    background-color: transparent;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    width: 5px;
+    background: linear-gradient(180deg, $primary-main, $primary-light);
+  }
+}
+
+.headingWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 1rem;
+  background-color: $primary-main;
+  border-radius: 5px;
+}
+
+.formWrapper {
+  position: relative;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  @media(max-width: 768px) {
+    padding: 0;
+  }
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.addColumnModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+ 
+  @media(max-width: 499px) {
+      max-width: 300px;
+      border-radius: 5px;
+  }
+}
+
+.modalForm {
+  padding: 1rem;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+
+  @media(max-width: 499px) {
+      max-width: 98%;
+  }
+}
+
+.editing_input > * {
+  color: yellow;
+  font-size: $large;
+  margin: 0;
+  padding: 12px 2px 13px 12px;
+}
+
+.h3 {
+   font-size: 1.2rem;
+   max-height: 3.2rem;
+   padding: 1rem;
+   overflow: hidden;
+
+   @media(max-width: 499px) {
+    padding: 0.5rem;
+  }
+}

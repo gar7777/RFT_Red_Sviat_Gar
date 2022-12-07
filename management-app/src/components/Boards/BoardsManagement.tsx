@@ -5,72 +5,95 @@ import BoardCard from './BoardCard';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AddBoard } from './AddBoard';
-import AddBoardModal, { IElement } from './AddBoardModal';
+import AddBoardModal from './AddBoardModal';
+import SearchBoard from './SearchBoard';
+import styles from './Boards.module.scss';
+import typographyStyles from '../../scss/Typography.module.scss';
+import mainStyles from '../Main/Main.module.scss';
+import spinnerStyles from '../../scss/Spinner.module.scss';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { loadBoards } from '../../store/boards/thunks/loadBoards.thunk';
+import { RootState } from '../../store/store';
+import { IBoard } from '../../store/boards/types/boards.type';
+import { i18n } from '../../features/i18n';
+import { CircularProgress } from '@mui/material';
 
 export default function BoardsManagement() {
   const [open, setOpen] = React.useState(false);
-  const [inputText, setInputText] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [todos, setTodos] = React.useState<IElement[]>([]);
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [currentBoard, setCurrentBoard] = React.useState<IBoard | null>(null);
+  const [boardsToShow, setBoardsToShow] = React.useState<IBoard[]>([]);
+  const { isLoading } = useAppSelector((state) => state.boards);
+
+  const { boards, searchQuery, filteredBoards } = useAppSelector(
+    (state: RootState) => state.boards
+  );
+  const { lang } = useAppSelector((state) => state.lang);
+
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    dispatch(loadBoards());
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    if (searchQuery.length > 0) {
+      setBoardsToShow(filteredBoards);
+    } else {
+      setBoardsToShow(boards);
+    }
+  }, [searchQuery, filteredBoards, boards]);
 
   return (
     <React.Fragment>
+      {isLoading && (
+        <div className={spinnerStyles.spinner__container}>
+          <CircularProgress />
+        </div>
+      )}
       <CssBaseline />
-      <Container maxWidth="xl">
-        <h1
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: '5px',
-          }}
-        >
-          План заданий
-        </h1>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid
-            container
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center"
-          >
-            {todos.length !== 0 ? (
-              todos.map((todo) => (
-                <Grid item xs={3} key={todo.id}>
-                  <BoardCard
-                    title={todo.title}
-                    description={todo.description}
-                    todos={todos}
-                    setTodos={setTodos}
-                    todo={todo}
-                    setOpen={setOpen}
-                  />
+      <div className={mainStyles.mainContainer}>
+        <Container className={styles.container}>
+          <Box className={styles.searchContainer}>
+            <h1 className={typographyStyles.h1} style={{ marginBottom: '0' }}>
+              {i18n[lang].boards}
+            </h1>
+            <SearchBoard />
+          </Box>
+          <Box className={styles.boardsContainer}>
+            <Box className={styles.gridContainer}>
+              {boardsToShow.length !== 0 ? (
+                boardsToShow.map((board) => (
+                  <Grid item xs={3} key={board.id}>
+                    <BoardCard
+                      title={board.title}
+                      description={board.description}
+                      id={board.id}
+                      setOpen={setOpen}
+                      setIsEditing={setIsEditing}
+                      setCurrentBoard={setCurrentBoard}
+                    />
+                  </Grid>
+                ))
+              ) : (
+                <Grid item xs={3}>
+                  <h3>{i18n[lang].clickToAddATask}</h3>
                 </Grid>
-              ))
-            ) : (
-              <Grid item xs={3}>
-                <h3>Нажмите на крестик, чтобы добавить задание</h3>
-              </Grid>
-            )}
+              )}
 
-            <Grid item xs={3}>
-              <AddBoard setOpen={setOpen} />
-            </Grid>
-          </Grid>
-        </Box>
-        <AddBoardModal
-          open={open}
-          setOpen={setOpen}
-          setInputText={setInputText}
-          todos={todos}
-          setTodos={setTodos}
-          inputText={inputText}
-          description={description}
-          setDescription={setDescription}
-        />
-      </Container>
+              <Grid item xs={3}>
+                <AddBoard setOpen={setOpen} setIsEditing={setIsEditing} />
+              </Grid>
+            </Box>
+          </Box>
+          <AddBoardModal
+            open={open}
+            setOpen={setOpen}
+            isEditing={isEditing}
+            currentBoard={currentBoard}
+          />
+        </Container>
+      </div>
     </React.Fragment>
   );
 }

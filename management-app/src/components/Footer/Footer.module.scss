@@ -1,0 +1,104 @@
+@import '../../scss/variables.scss';
+
+Footer {
+  width: 100%;
+  margin-top: auto;
+  background-color: $primary-dark;
+  min-height: 3rem;
+
+  @media(max-width: 768px) {
+    background-color: rgba($primary-dark, 0.8);
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1280px;
+  height: 100%;
+  padding: 0 20px;
+  margin: 0 auto;
+  color: white;
+  font-size: 1.4rem;
+
+  @media(max-width: 768px) {
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.linksContainer {
+  display: flex;
+  justify-content: center;
+  gap: 5%;
+  flex-grow: 1;
+
+  @media(max-width: 768px) {
+    order: 1;
+  }
+
+  @media(max-width: 500px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.iconRss {
+  width: 80px;
+  height: 60px;
+  background-image: url(../../../public/assets/svg/rs-school.svg);
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @media(max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5px;
+  }
+}
+
+.iconGithub {
+  width: 40px;
+  height: 40px;
+  background-image: url(../../../public/assets/svg/github-white.svg);
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @media(max-width: 768px) {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.linkGithub {
+  display: inline-block;
+  font-size: 1.2rem;
+
+  @media(max-width: 768px) {
+    font-size: 1.1rem;
+  }
+}
+
+.itemContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  @media(max-width: 768px) {
+    order: 2;
+  }
+}
+
+.year {
+  font-size: 1.1rem;
+
+  @media(max-width: 768px) {
+    font-size: 1rem;
+    order: 3;
+  }
+}
+

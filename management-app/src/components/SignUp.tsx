@@ -1,18 +1,21 @@
 import React from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, CssBaseline, Typography, Container, TextField, Box } from '@mui/material';
+import { Button, CssBaseline, Typography, CircularProgress, TextField, Box } from '@mui/material';
 import formStyles from '../scss/Form.module.scss';
 import typographyStyles from '../scss/Typography.module.scss';
 import mainStyles from './Main/Main.module.scss';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { signUp } from '../store/authorization/thunks/authorization.thunks';
 import { i18n } from '../features/i18n';
+import spinnerStyles from '../scss/Spinner.module.scss';
 
 function SignUp() {
   const { lang } = useAppSelector((state) => state.lang);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector((state) => state.columns);
+
   const {
     register,
     handleSubmit,
@@ -29,6 +32,11 @@ function SignUp() {
 
   return (
     <>
+      {isLoading && (
+        <div className={spinnerStyles.spinner__container}>
+          <CircularProgress />
+        </div>
+      )}
       <CssBaseline />
       <div className={mainStyles.mainContainer}>
         <Box className={formStyles.formContainer}>
